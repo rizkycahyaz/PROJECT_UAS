@@ -1,0 +1,27 @@
+
+<body>
+  <div class="container">
+    <h1 class="text-center mt-4 mb-4">Data Kategori</h1>
+    <a href="/kategori/create" class="btn btn-sm btn-primary btn-add">Tambah Kategori</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i = 0; i < data.length; i++){ %>
+          <tr>
+            <th scope="row"><%= (i+1) %></th>
+            <td><%= data[i].nama_kategori %></td>
+            <td>
+              <a href="/kategori/edit/<%= data[i].id_kategori %>" class="btn btn-sm btn-warning btn-action">Edit</a>
+              <a href="/kategori/delete/<%= data[i].id_kategori %>" class="btn btn-sm btn-danger btn-action">Delete</a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>

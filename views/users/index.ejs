@@ -1,0 +1,16 @@
+
+<body>
+  <div class="container">
+    <% if (messages.success) { %>
+    <div class="alert alert-info" role="alert"><%- messages.success %></div>
+    <% } %>
+    <div class="row text-center">
+      <div class="col">
+        <h1 >Hello : <%= email %></h1>
+        <a href="/logout">Logout </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+
