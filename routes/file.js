@@ -27,6 +27,7 @@ router.get("/", async function (req, res, next) {
       let rows = await Model_File.getAll();
       res.render("file/index", {
         data: rows,
+        email: Data[0].email,
       });
     } else {
       res.redirect("/login");
@@ -38,7 +39,11 @@ router.get("/", async function (req, res, next) {
 
 router.get("/create", async function (req, res, next) {
   try {
-    res.render("file/create");
+    let id = req.session.userId;
+    let Data = await Model_Users.getId(id);
+    res.render("file/create", {
+      email: Data[0].email,
+    });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");

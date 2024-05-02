@@ -1,0 +1,99 @@
+/*=========== TABLE OF CONTENTS ===========
+1. Text CSS
+2. Heading CSS
+3. Container CSS
+==========================================*/
+
+/*-------------------------------------
+  1. Text CSS
+--------------------------------------*/
+.ui.text.size-xs {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.ui.text.size-lg {
+  font-size: 25px;
+  font-weight: 400;
+  @media only screen and (max-width: 1050px) {
+    font-size: 23px;
+  }
+
+  @media only screen and (max-width: 550px) {
+    font-size: 21px;
+  }
+}
+
+.ui.text.size-s {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ui.text.size-xl {
+  font-size: 50px;
+  font-weight: 400;
+  @media only screen and (max-width: 1050px) {
+    font-size: 46px;
+  }
+
+  @media only screen and (max-width: 550px) {
+    font-size: 40px;
+  }
+}
+
+.ui.text.size-md {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.ui.text {
+  color: var(--black_900_01);
+  font-family: Manrope;
+}
+
+/*-------------------------------------
+  2. Heading CSS
+--------------------------------------*/
+.ui.heading.size-s {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.ui.heading.size-md {
+  font-size: 32px;
+  font-weight: 700;
+  @media only screen and (max-width: 1050px) {
+    font-size: 30px;
+  }
+
+  @media only screen and (max-width: 550px) {
+    font-size: 28px;
+  }
+}
+
+.ui.heading.size-xs {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ui.heading {
+  color: var(--gray_900);
+  font-family: Red Hat Display;
+}
+
+/*-------------------------------------
+  3. Container CSS
+--------------------------------------*/
+.container-xs {
+  max-width: 1368px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-sm {
+  max-width: 1370px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

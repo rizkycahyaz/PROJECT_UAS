@@ -1,0 +1,23 @@
+.file {
+  background-color: var(--white_A700);
+  width: 100%;
+}
+
+.column_one {
+  margin-top: -84px;
+  padding-top: 1446px;
+  position: relative;
+  @media only screen and (max-width: 1050px) {
+    padding-top: var(--space-5xl);
+  }
+}
+
+.landing-page-footer-1 {
+  height: 619px;
+  padding-top: 94px;
+  position: relative;
+  @media only screen and (max-width: 1050px) {
+    height: auto;
+    padding-top: var(--space-5xl);
+  }
+}

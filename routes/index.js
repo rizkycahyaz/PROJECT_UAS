@@ -9,7 +9,7 @@ const e = require('express');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Express'
+    title: 'Express',
   });
 });
 router.get('/register', function (req, res, next) {
@@ -20,14 +20,11 @@ router.get('/login', function (req, res, next) {
 });
 
 router.post('/saveusers', async (req, res) => {
-  let {
-    email,
-    password
-  } = req.body;
+  let { email, password } = req.body;
   let enkripsi = await bcrypt.hash(password, 10);
   let Data = {
     email,
-    password: enkripsi
+    password: enkripsi,
   };
   await Model_Users.Store(Data);
   req.flash('success', 'Berhasil Register!');
@@ -47,28 +44,27 @@ router.post('/log', async (req, res) => {
         // Tambahkan kondisi pengecekan role pada user yang login
         if (Data[0].role == 1) {
           req.flash('success', 'Berhasil login');
-          res.redirect('/superusers');
+          return res.redirect('/superusers');
         } else if (Data[0].role == 2) {
           req.flash('success', 'Berhasil login');
-          res.redirect('/users');
+          return res.redirect('/users');
         } else {
-          res.redirect('/login');
+          return res.redirect('/login');
         }
       } else {
         req.flash('error', 'Email atau password salah');
-        res.redirect('/login');
+        return res.redirect('/login');
       }
     } else {
       req.flash('error', 'Akun tidak ditemukan');
-      res.redirect('/login');
+      return res.redirect('/login');
     }
   } catch (err) {
-    // Tambahkan penanganan error di sini
+    console.error(err);
     req.flash('error', 'Terjadi kesalahan saat mencoba login');
-    res.redirect('/login');
+    return res.redirect('/login');
   }
 });
-
 
 router.get('/logout', function (req, res) {
   req.session.destroy(function (err) {
@@ -79,7 +75,5 @@ router.get('/logout', function (req, res) {
     }
   });
 });
-
-
 
 module.exports = router;
