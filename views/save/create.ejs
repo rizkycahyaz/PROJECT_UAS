@@ -1,0 +1,32 @@
+<body>
+  <div class="container mt-3">
+    <form action="/save/store" method="POST">
+     
+      <div class="mb-3">
+        <label for="file" class="form-label">FIlE</label>
+        <select class="form-select" name="id_file" id="id_file" required>
+          <% for(var i = 0; i < file.length; i++){ %>
+          <option value="<%= file[i].id_file %>">
+            <%= file[i].nama_file %>
+          </option>
+          <% } %>
+        </select>
+      </div>
+      <input type="hidden" name="" />
+      <!-- <div class="mb-3">
+        <label for="pengguna" class="form-label">Pengguna</label>
+        <select class="form-select" name="id_user" required>
+          <% for(var i = 0; i < users.length; i++){ %>
+          <option value="<%= user[i].id_user %>">
+            <%= users[i].nama_pengguna %>
+          </option>
+          <% } %>
+        </select>
+      </div> -->
+
+      <div class="mb-3">
+        <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+      </div>
+    </form>
+  </div>
+</body>
