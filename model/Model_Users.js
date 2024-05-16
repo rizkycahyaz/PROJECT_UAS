@@ -48,7 +48,7 @@ class Model_Users {
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT * FROM users WHERE id_user = ?",
-        id,
+        [id],
         (err, rows) => {
           if (err) {
             reject(err);

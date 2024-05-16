@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Record</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Record</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID File</th>
+          <th>File Name</th>
+          <th>email</th>
+          <th>Tanggal</th>
+          <th>Bulan</th>
+          <th>Tahun</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% record.forEach(item => { %>
+        <tr>
+          <td><%= item.id_file %></td>
+          <td><%= item.file_name %></td>
+          <td><%= item.email %></td>
+          <td><%= item.tanggal %></td>
+          <td><%= item.bulan %></td>
+          <td><%= item.tahun %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>
