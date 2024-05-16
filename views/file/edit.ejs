@@ -14,7 +14,7 @@
 
   <body>
     <div class="container">
-      <form action="/file/update/<%= id %>" method="POST">
+      <form action="/file/update/<%= id %>" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
           <label for="nama" class="form-label">File</label>
           <input
@@ -22,7 +22,6 @@
             class="form-control"
             name="file_pdf"
             value="<%= file_pdf %>"
-            required
           />
         </div>
         <div class="mb-3">
@@ -37,12 +36,12 @@
         </div>
         <div class="mb-3">
           <label for="nama" class="form-label">Kategori</label>
-        <select class="form-select" name="privasi" required>
-          <option value="<%= kategoriById.id_kategori %>" selected ><%= kategoriById.nama_kategori %></option>
-          <% for(let i = 0; i < kategoriData.length; i++) { %>
-          <option value="<%= kategoriData[i].id_kategori %>" ><%= kategoriData[i].nama_kategori %></option>
-          <% } %>
-        </select>
+          <select class="form-select" name="id_kategori" required>
+            <option value="<%= kategoriById.id_kategori %>" selected ><%= kategoriById.nama_kategori %></option>
+            <% for(let i = 0; i < kategoriData.length; i++) { %>
+            <option value="<%= kategoriData[i].id_kategori %>" ><%= kategoriData[i].nama_kategori %></option>
+            <% } %>
+          </select>
         </div>
         <div class="mb-3">
           <label for="nama" class="form-label">Deskripsi</label>
@@ -53,31 +52,31 @@
             value="<%= deskripsi %>"
             required
           />
+        </div>
         <div class="mb-3">
-  <label for="privasi" class="form-label">Privasi</label>
-  <select class="form-select" name="privasi" required>
-    <option value="<%= privasi %>" selected><%= privasi %></option>
-    <option value="public">public</option>
-    <option value="private">private</option>
-  </select>
-</div>
-<div class="mb-3">
-  <label for="izin" class="form-label">Izin</label>
-  <select class="form-select" name="izin" required>
-    <option value="<%= izin %>" selected><%= izin %></option>
-    <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
-    <option value="Unduh dokumen">Unduh dokumen</option>
-  </select>
-</div>
-<div class="mb-3">
-  <label for="hak_cipta" class="form-label">Hak Cipta</label>
-  <select class="form-select" name="hak_cipta" required>
-    <option value="<%= hak_cipta %>" selected><%= hak_cipta %></option>
-    <option value="All Rights Reserved">All Rights Reserved</option>
-    <option value="Public Domain">Public Domain</option>
-  </select>
-</div>
-
+          <label for="privasi" class="form-label">Privasi</label>
+          <select class="form-select" name="privasi" required>
+            <option value="<%= privasi %>" selected><%= privasi %></option>
+            <option value="public">public</option>
+            <option value="private">private</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="izin" class="form-label">Izin</label>
+          <select class="form-select" name="izin" required>
+            <option value="<%= izin %>" selected><%= izin %></option>
+            <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
+            <option value="Unduh dokumen">Unduh dokumen</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="hak_cipta" class="form-label">Hak Cipta</label>
+          <select class="form-select" name="hak_cipta" required>
+            <option value="<%= hak_cipta %>" selected><%= hak_cipta %></option>
+            <option value="All Rights Reserved">All Rights Reserved</option>
+            <option value="Public Domain">Public Domain</option>
+          </select>
+        </div>
         <div class="mb-3">
           <button type="submit" class="btn btn-sm btn-success">Simpan</button>
         </div>

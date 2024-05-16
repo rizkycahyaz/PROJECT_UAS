@@ -118,40 +118,41 @@ router.post(
   upload.single("file_pdf"),
   async function (req, res, next) {
     let id = req.params.id;
-    // try {
-    let filebaru = req.file ? req.file.filename : null;
-    let rows = await Model_File.getById(id);
-    const namaFileLama = rows[0].file_pdf;
-    if (filebaru && namaFileLama) {
-      const pathFileLama = path.join(
-        __dirname,
-        "../public/images/upload",
-        namaFileLama
-      );
-      fs.unlinkSync(pathFileLama);
-    }
-    let { nama_file, deskripsi, id_kategori } = req.body;
-    let file_pdf = filebaru || namaFileLama;
-    let Data = {
-      nama_file,
-      deskripsi,
-      file_pdf,
-      id_kategori: id_kategori,
-      privasi: req.body.privasi,
-      izin: req.body.izin,
-      hak_cipta: req.body.hak_cipta,
-    };
+    try {
+      let filebaru = req.file ? req.file.filename : null;
+      let rows = await Model_File.getById(id);
+      const namaFileLama = rows[0].file_pdf;
+      if (filebaru && namaFileLama) {
+        const pathFileLama = path.join(
+          __dirname,
+          "../public/images/upload",
+          namaFileLama
+        );
+        fs.unlinkSync(pathFileLama);
+      }
+      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } = req.body;
+      let file_pdf = filebaru || namaFileLama;
+      let Data = {
+        nama_file,
+        deskripsi,
+        file_pdf,
+        id_kategori,
+        privasi,
+        izin,
+        hak_cipta,
+      };
 
-    await Model_File.Update(id, Data);
-    req.flash("success", "Berhasil menyimpan data");
-    res.redirect("/file");
-    // } catch (error) {
-    //   console.error("Error:", error);
-    //   req.flash("error", "Gagal menyimpan data");
-    //   res.redirect("/file/edit/" + id);
-    // }
+      await Model_File.Update(id, Data);
+      req.flash("success", "Berhasil menyimpan data");
+      res.redirect("/file");
+    } catch (error) {
+      console.error("Error:", error);
+      req.flash("error", "Gagal menyimpan data");
+      res.redirect("/file/edit/" + id);
+    }
   }
 );
+
 
 router.get("/delete/:id", async function (req, res, next) {
   let id = req.params.id;
