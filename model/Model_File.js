@@ -4,7 +4,7 @@ class Model_File {
   static async getAll() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM file ORDER BY id_file DESC",
+        "SELECT  file.*, users.*, kategori.* FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori",
         (err, rows) => {
           if (err) {
             reject(err);

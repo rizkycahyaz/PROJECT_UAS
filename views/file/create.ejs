@@ -1,189 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Beescript's Application1</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <img
-      alt="Logo"
-      src="https://appproject.dhiwise.com/dhiwise-logo.png?c=&v="
-      style="width: 0px; height: 0px; display: none"
-    />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/font.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/style.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/stylesheets/css/components.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/stylesheets/css/Uploadpage.css"
-    />
-  </head>
-  <body>
-    <div class="landing-page">
-      <header class="header-1">
-        <div class="rowheaderlogo">
-          <img
-            src="/images/img_header_logo.png"
-            alt="headerlogo"
-            class="header__logo"
-          />
-          <label class="header__search">
-            <img src="/images/img_rewind.svg" alt="rewind" class="rewind" />
-            <input name="search" placeholder="Search..." type="text" />
-          </label>
-          <div class="row">
-            <div class="header__upload">
-              <a href="#">
-                <img
-                  src="/images/img_upload.png"
-                  alt="upload"
-                  class="header__upload-icon"
-                />
-              </a>
-              <p class="header__upload-text ui text size-s">Unggah</p>
-            </div>
-            <div class="header__profile">
-              <p class="content__title ui text size-s"><%= email %>></p>
-              <div class="header__profile-divider"></div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- upload section -->
-      <div class="upload-section container-sm">
-        <div class="upload-section__column">
-          <div class="footer__copyright-row">
-            <h1 class="upload-section__title ui heading size-s">Upload</h1>
-          </div>
-          <div class="flex-col-center-center upload-section__upload-file">
-            <img
-              src="/images/img_upload_icon.svg"
-              alt="uploadicon"
-              class="upload-section__icon"
-            />
-            <div class="upload-section__drag-drop-container">
-              <div class="upload-section__drag-drop-instructions">
-                <h2 class="upload-section__drag-drop-text ui heading size-xs">
-                  <span class="upload-section__drag-drop-text-span">
-                    Drag & drop files or</span
-                  >
-                  <span class="upload-section__drag-drop-text-span-1">
-                    &nbsp;</span
-                  >
-                  <a href="#" class="upload-section__drag-drop-text-span-2">
-                    Browse</a
-                  >
-                </h2>
-              </div>
-              <div class="upload-section__supported-formats">
-                <p class="upload-section__formats-list ui text size-xs">
-                  Supported formates: JPEG, PNG, GIF, MP4, PDF, PSD, AI, Word,
-                  PPT
-                </p>
-              </div>
-            </div>
-          </div>
-          <button class="flex-row-center-center upload-section__button">
-            Upload Files
-          </button>
-        </div>
+<body>
+  <div class="container mt-3">
+    <form action="/file/store" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="nama" class="form-label">Nama File</label>
+        <input type="text" class="form-control" name="nama_file" required />
       </div>
-
-      <!-- footer section -->
-      <div class="footer-2">
-        <footer class="footer-1">
-          <img
-            src="/images/img_rectangle_97.png"
-            alt="image"
-            class="footer__image"
-          />
-        </footer>
-        <div class="footer__column">
-          <div class="footer__column__content container-sm">
-            <img
-              src="/images/img_footer_logo.png"
-              alt="footerlogo"
-              class="header__logo"
-            />
-            <p class="footer__column__content__text ui text size-s">
-              High level experience in web design and development knowledge,
-              producing quality work.
-            </p>
-            <button class="flex-row-center-center footer__contact-button">
-              Contact Us
-            </button>
-            <div class="footer__social-row">
-              <button class="footer__icon-button--facebook">
-                <img
-                  src="/images/img_facebook.svg"
-                  alt="facebook"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <button class="footer__icon-button--facebook">
-                <img
-                  src="/images/img_light_bulb.svg"
-                  alt="lightbulb"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <button class="footer__icon-button--facebook">
-                <img
-                  src="/images/img_settings.svg"
-                  alt="settings"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <img
-                src="/images/img_social.svg"
-                alt="social"
-                class="footer__social-image"
-              />
-              <button class="footer__icon-button--info">
-                <img
-                  src="/images/img_info.svg"
-                  alt="info"
-                  class="footer__icon-button--info"
-                />
-              </button>
-              <img
-                src="/images/img_social_white_a700.svg"
-                alt="social"
-                class="footer__social-image"
-              />
-            </div>
-          </div>
-          <div class="footer__row">
-            <div class="footer__row--rights">
-              <div class="footer__column--navigation container-xs">
-                <button class="footer__icon-button--arrowright">
-                  <img
-                    src="/images/img_arrow_right.svg"
-                    alt="arrowright"
-                    class="footer__icon-button--arrowright"
-                  />
-                </button>
-                <div class="footer__copyright-row">
-                  <p class="footer__copyright-text ui text size-xs">
-                    © 2021 All Rights Reserved
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="mb-3">
+        <label for="kategori" class="form-label">Kategori</label>
+        <select class="form-select" name="id_kategori" required>
+          <% for(var i = 0; i < kategori.length; i++){ %>
+          <option value="<%= kategori[i].id_kategori %>">
+            <%= kategori[i].nama_kategori %>
+          </option>
+          <% } %>
+        </select>
       </div>
-    </div>
-  </body>
-</html>
+      <input type="hidden" name="" />
+      <!-- <div class="mb-3">
+        <label for="pengguna" class="form-label">Pengguna</label>
+        <select class="form-select" name="id_user" required>
+          <% for(var i = 0; i < users.length; i++){ %>
+          <option value="<%= users[i].id_user %>">
+            <%= users[i].nama_pengguna %>
+          </option>
+          <% } %>
+        </select>
+      </div> -->
+      <div class="mb-3">
+        <label for="file" class="form-label">File PDF</label>
+        <input type="file" class="form-control" name="file_pdf" required />
+      </div>
+      <div class="mb-3">
+        <label for="deskripsi" class="form-label">Deskripsi</label>
+        <input type="text" class="form-control" name="deskripsi" required />
+      </div>
+      <div class="mb-3">
+        <label for="privasi" class="form-label">Privasi</label>
+        <select class="form-select" name="privasi" required>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="izin" class="form-label">Izin</label>
+        <select class="form-select" name="izin" required>
+          <option value="Salin dan rekatkan teks">
+            Salin dan rekatkan teks
+          </option>
+          <option value="Unduh dokumen">Unduh dokumen</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="hak_cipta" class="form-label">Hak Cipta</label>
+        <select class="form-select" name="hak_cipta" required>
+          <option value="All Rights Reserved">All Rights Reserved</option>
+          <option value="Public Domain">Public Domain</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+      </div>
+    </form>
+  </div>
+</body>
