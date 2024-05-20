@@ -4,7 +4,7 @@ class Model_File {
   static async getAll() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT  file.*, users.*, kategori.* FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori",
+        "SELECT file.*, users.*, kategori.*, COUNT(file.id_file) as jumlah_file FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori GROUP BY file.id_file",
         (err, rows) => {
           if (err) {
             reject(err);
@@ -70,6 +70,58 @@ class Model_File {
             reject(err);
           } else {
             resolve(result);
+          }
+        }
+      );
+    });
+  }
+
+  static async getUploadedFilesCount(userId) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT COUNT(id_file) as total FROM file WHERE id_user = ?",
+        [userId],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows[0].total);
+          }
+        }
+      );
+    });
+  }
+
+  static async downloadFile(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM file WHERE id_file = ?",
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            if (rows.length === 0) {
+              reject(new Error("File not found"));
+            } else {
+              const file = rows[0];
+              const filePath = path.join(
+                __dirname,
+                "../public/images/upload",
+                file.file_pdf
+              );
+              // Baca file dari sistem file
+              fs.readFile(filePath, (err, data) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve({
+                    filename: file.file_pdf,
+                    data: data,
+                  });
+                }
+              });
+            }
           }
         }
       );

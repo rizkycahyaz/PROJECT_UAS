@@ -40,29 +40,45 @@ router.get("/create", async function (req, res, next) {
 });
 
 router.post("/store", async function (req, res, next) {
-    try {
-        let { id_file } = req.body;
-        let userData = await Model_Users.getId(req.session.userId);
-        let currentDate = new Date(); // Mengambil tanggal saat ini
-        let saveData = {
-          id_user: req.session.userId,
-          id_file,
-          tanggal: currentDate.getDate(),
-          bulan: currentDate.getMonth() + 1, // Bulan dimulai dari 0, jadi tambahkan 1
-          tahun: currentDate.getFullYear(),
-        };
-        await Model_Save.Store(saveData);
-      
-        req.flash("success", "Berhasil menyimpan data");
-        res.redirect("/save");
-      } catch (error) {
-        console.error("Error:", error);
-        req.flash("error", "Gagal menyimpan data");
-        res.redirect("/save");
-      }
-      
+  try {
+    let { id_file } = req.body;
+    let userData = await Model_Users.getId(req.session.userId);
+    let currentDate = new Date(); // Mengambil tanggal saat ini
+    let saveData = {
+      id_user: req.session.userId,
+      id_file,
+      tanggal: currentDate.getDate(),
+      bulan: currentDate.getMonth() + 1, // Bulan dimulai dari 0, jadi tambahkan 1
+      tahun: currentDate.getFullYear(),
+    };
+    await Model_Save.Store(saveData);
+
+    req.flash("success", "Berhasil menyimpan data");
+    res.redirect("/save");
+  } catch (error) {
+    console.error("Error:", error);
+    req.flash("error", "Gagal menyimpan data");
+    res.redirect("/save");
+  }
 });
 
-// Bagian lain dari kode tetap sama
+router.get("/delete/(:id)", async function (req, res) {
+  try {
+    let id = req.params.id;
+    let id_user = req.session.userId;
+    let Data = await Model_Users.getId(id_user);
+    if (Data[0].role == 1) {
+      await Model_Save.Delete(id);
+      req.flash("success", "Berhasil menghapus data");
+      res.redirect("/save");
+    } else if (Data[0].role == 2) {
+      req.flash("failure", "Anda bukan admin");
+      res.redirect("/save");
+    }
+  } catch {
+    req.flash("invalid", "Anda harus login");
+    res.redirect("/login");
+  }
+});
 
 module.exports = router;

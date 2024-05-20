@@ -130,7 +130,8 @@ router.post(
         );
         fs.unlinkSync(pathFileLama);
       }
-      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } = req.body;
+      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
+        req.body;
       let file_pdf = filebaru || namaFileLama;
       let Data = {
         nama_file,
@@ -153,7 +154,6 @@ router.post(
   }
 );
 
-
 router.get("/delete/:id", async function (req, res, next) {
   let id = req.params.id;
   try {
@@ -173,6 +173,38 @@ router.get("/delete/:id", async function (req, res, next) {
     console.error("Error:", error);
     req.flash("error", "Gagal menghapus data");
   } finally {
+    res.redirect("/file");
+  }
+});
+
+router.get("/download/:id", async function (req, res, next) {
+  try {
+    // Periksa jumlah file yang diunggah oleh pengguna
+    let uploadedFiles = await Model_File.getUploadedFilesCount(
+      req.session.userId
+    );
+    if (uploadedFiles < 3) {
+      // Jika jumlah file yang diunggah kurang dari 3, kirimkan pesan kesalahan
+      req.flash(
+        "error",
+        "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
+      );
+      res.redirect("/file");
+    } else {
+      // Jika syarat terpenuhi, lanjutkan untuk mengunduh file
+      // Panggil fungsi untuk mengunduh file dari kelas Model_File
+      let fileData = await Model_File.downloadFile(req.params.id);
+      // Lakukan pengiriman file ke pengguna
+      res.setHeader(
+        "Content-disposition",
+        "attachment; filename=" + fileData.filename
+      );
+      res.setHeader("Content-type", "application/pdf");
+      res.end(fileData.data);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    req.flash("error", "Gagal mengunduh file.");
     res.redirect("/file");
   }
 });
