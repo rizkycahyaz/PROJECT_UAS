@@ -24,7 +24,7 @@ router.get("/", async function (req, res, next) {
   let Data = await Model_Users.getId(id);
   try {
     if (Data.length > 0) {
-      let rows = await Model_File.getAll();
+      let rows = await Model_File.getByUser(id);
       console.log(id);
       res.render("file/index", {
         data: rows,

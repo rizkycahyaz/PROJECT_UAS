@@ -1,4 +1,6 @@
 const connection = require("../config/database");
+const path = require("path");
+const fs = require("fs");
 
 class Model_File {
   static async getAll() {
@@ -32,6 +34,22 @@ class Model_File {
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT * FROM file WHERE id_file = ?",
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  }
+
+  static async getByUser(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM file WHERE id_user = ?",
         [id],
         (err, rows) => {
           if (err) {

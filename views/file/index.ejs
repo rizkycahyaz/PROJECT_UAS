@@ -32,7 +32,7 @@
           <td><%= data[i].izin %></td>
           <td><%= data[i].hak_cipta %></td>
           <td>
-            <% if (data[i].jumlah_file >= 3) { %>
+            <% if (data.length >= 3) { %>
             <a
               href="/file/download/<%= data[i].id_file %>"
               class="btn btn-sm btn-primary btn-action"
