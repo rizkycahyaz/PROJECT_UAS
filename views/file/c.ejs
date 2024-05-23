@@ -1,0 +1,65 @@
+<body>
+  <div class="container mt-3">
+    <form action="/file/store" method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="nama" class="form-label">Nama File</label>
+        <input type="text" class="form-control" name="nama_file" required />
+      </div>
+      <div class="mb-3">
+        <label for="kategori" class="form-label">Kategori</label>
+        <select class="form-select" name="id_kategori" required>
+          <% for(var i = 0; i < kategori.length; i++){ %>
+          <option value="<%= kategori[i].id_kategori %>">
+            <%= kategori[i].nama_kategori %>
+          </option>
+          <% } %>
+        </select>
+      </div>
+      <input type="hidden" name="" />
+      <!-- <div class="mb-3">
+        <label for="pengguna" class="form-label">Pengguna</label>
+        <select class="form-select" name="id_user" required>
+          <% for(var i = 0; i < users.length; i++){ %>
+          <option value="<%= users[i].id_user %>">
+            <%= users[i].nama_pengguna %>
+          </option>
+          <% } %>
+        </select>
+      </div> -->
+      <div class="mb-3">
+        <label for="file" class="form-label">File PDF</label>
+        <input type="file" class="form-control" name="file_pdf" required />
+      </div>
+      <div class="mb-3">
+        <label for="deskripsi" class="form-label">Deskripsi</label>
+        <input type="text" class="form-control" name="deskripsi" required />
+      </div>
+      <div class="mb-3">
+        <label for="privasi" class="form-label">Privasi</label>
+        <select class="form-select" name="privasi" required>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="izin" class="form-label">Izin</label>
+        <select class="form-select" name="izin" required>
+          <option value="Salin dan rekatkan teks">
+            Salin dan rekatkan teks
+          </option>
+          <option value="Unduh dokumen">Unduh dokumen</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="hak_cipta" class="form-label">Hak Cipta</label>
+        <select class="form-select" name="hak_cipta" required>
+          <option value="All Rights Reserved">All Rights Reserved</option>
+          <option value="Public Domain">Public Domain</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+      </div>
+    </form>
+  </div>
+</body>

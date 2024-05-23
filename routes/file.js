@@ -22,12 +22,14 @@ const upload = multer({ storage: storage });
 router.get("/", async function (req, res, next) {
   let id = req.session.userId;
   let Data = await Model_Users.getId(id);
+
   try {
     if (Data.length > 0) {
       let rows = await Model_File.getByUser(id);
       console.log(id);
       res.render("file/index", {
         data: rows,
+        email: Data[0].email,
       });
     } else {
       res.redirect("/login");

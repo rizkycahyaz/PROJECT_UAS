@@ -1,49 +1,49 @@
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/ManropeRegular.ttf');
-  font-family: 'Manrope';
+  src: url("/fonts/ManropeRegular.ttf");
+  font-family: "Manrope";
   font-weight: 400;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/RedHatDisplayBold.ttf');
-  font-family: 'Red Hat Display';
+  src: url("/fonts/RedHatDisplayBold.ttf");
+  font-family: "Red Hat Display";
   font-weight: 700;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/RobotoRegular.ttf');
-  font-family: 'Roboto';
+  src: url("/fonts/RobotoRegular.ttf");
+  font-family: "Roboto";
   font-weight: 400;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/RobotoLight.ttf');
-  font-family: 'Roboto';
+  src: url("/fonts/RobotoLight.ttf");
+  font-family: "Roboto";
   font-weight: 300;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/MulishBold.ttf');
-  font-family: 'Mulish';
+  src: url("/fonts/MulishBold.ttf");
+  font-family: "Mulish";
   font-weight: 700;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/MulishRomanBold.ttf');
-  font-family: 'Mulish';
+  src: url("/fonts/MulishRomanBold.ttf");
+  font-family: "Mulish";
   font-weight: 700;
 }
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url('/fonts/MulishRomanRegular.ttf');
-  font-family: 'Mulish';
+  src: url("/fonts/MulishRomanRegular.ttf");
+  font-family: "Mulish";
   font-weight: 400;
 }

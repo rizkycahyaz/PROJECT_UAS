@@ -1,65 +1,740 @@
-<body>
-  <div class="container mt-3">
-    <form action="/file/store" method="POST" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="nama" class="form-label">Nama File</label>
-        <input type="text" class="form-control" name="nama_file" required />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CREATE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1,
+    shrink-to-fit=no"
+    />
+
+    <meta name="theme-color" content="#000000" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/css/font.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/css/style.css" />
+    <link rel="stylesheet" href="/stylesheets/css/Landingpage.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/css/components.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/stylesheets/css/Uploadpage.css"
+    />
+    <style>
+      * {
+        margin: 0;
+      }
+      /* Tata letak utama */
+      .upload-section {
+        padding-left: 163px;
+        padding-right: 156px;
+      }
+
+      /* Responsif untuk layar berukuran kecil */
+      @media only screen and (max-width: 1050px) {
+        .upload-section {
+          padding-left: var(--space-5xl);
+          padding-right: var(--space-5xl);
+          padding: var(--space-5xl);
+        }
+      }
+
+      /* Container untuk drop area */
+      .upload-section__drag-drop-container {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .upload-section__drag-drop-container.dragging {
+        background-color: #f0f0f0;
+      }
+
+      /* Container untuk file previews */
+      .file-previews-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%; /* Membuat lebar 100% */
+      }
+
+      /* Kartu untuk file preview */
+      .file-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px; /* Sesuaikan lebar card sesuai kebutuhan Anda */
+        text-align: center;
+        background-color: #f9f9f9;
+      }
+
+      /* Gambar dalam file preview */
+      .file-preview img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      /* Input, select, dan textarea dalam file preview */
+      .file-preview input,
+      .file-preview select,
+      .file-preview textarea {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px;
+      }
+
+      /* Tombol unggah */
+      #upload-button {
+        display: none; /* Sembunyikan tombol unggah awal */
+        margin: 20px 0;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #upload-button:hover {
+        background-color: #0056b3;
+      }
+
+      /* CSS tambahan untuk tampilan di atas upload section */
+      .upload-preview-container {
+        margin-bottom: 20px;
+      }
+
+      /* Kartu untuk upload preview */
+      .upload-preview {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      /* Gambar dalam upload preview */
+      .upload-preview img {
+        max-width: 80px;
+        height: auto;
+        margin-right: 10px;
+      }
+
+      /* Informasi dalam upload preview */
+      .upload-preview-info {
+        flex: 1;
+      }
+
+      .upload-preview-info p {
+        margin-bottom: 5px;
+      }
+
+      .upload-preview-info input,
+      .upload-preview-info select,
+      .upload-preview-info textarea {
+        min-width: 500px;
+        padding: 5px;
+        margin-bottom: 5px;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .header__menu-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .header__menu {
+        /* Gaya menu */
+      }
+
+      .header__actions {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="landing-page">
+      <header class="header">
+        <a href="/users">
+          <img
+            src="/images/img_header_logo.png"
+            alt="headerlogo"
+            class="header__logo"
+        /></a>
+        <ul class="header__menu">
+          <li>
+            <a href="#">
+              <p class="ui text size-s">Contact</p>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <p class="ui text size-s">About Us</p>
+            </a>
+          </li>
+          <li class="group">
+            <div class="header__submenu">
+              <p class="ui text size-s">Kategori</p>
+              <img
+                src="/images/img_arrow_down.svg"
+                alt="arrowdown"
+                class="header__submenu-icon"
+              />
+            </div>
+            <div class="group-1">
+              <div class="menu-container">
+                <div class="menu-group">
+                  <div class="menu">
+                    <p class="mega-menu__title ui text">Title 1</p>
+                    <div class="menu-column">
+                      <a href="#">
+                        <p class="mega-menu__text ui text">Menu 1</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 2</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 3</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 4</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 5</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="menu">
+                    <p class="mega-menu__title ui text">Title 2</p>
+                    <div class="menu-column">
+                      <a href="#">
+                        <p class="mega-menu__text ui text">Menu 1</p>
+                      </a>
+                      <p class="mega-menu__link ui text">Menu 2</p>
+                      <p class="mega-menu__link ui text">Menu 3</p>
+                      <p class="mega-menu__link ui text">Menu 4</p>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 5</p>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="menu">
+                    <p class="mega-menu__title ui text">Title 3</p>
+                    <div class="menu-column">
+                      <a href="#">
+                        <p class="mega-menu__text ui text">Menu 1</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 2</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 3</p>
+                      </a>
+                      <a href="#" class="menu-link">
+                        <p class="mega-menu__text ui text">Menu 4</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="/file">
+              <p class="ui text size-s">Semua Dokumen</p>
+            </a>
+          </li>
+        </ul>
+        <div class="header__actions">
+          <div class="header__upload">
+            <a href="/file/create">
+              <img
+                src="/images/img_upload.png"
+                alt="upload"
+                class="header__upload-icon"
+              />
+            </a>
+            <p class="header__upload-text ui text size-s">Unggah</p>
+          </div>
+          <ul class="header__user-menu">
+            <li>
+              <a href="#">
+                <p class="header__user-menu-item ui text size-xs"></p>
+              </a>
+            </li>
+          </ul>
+          <div class="header__extra-view"></div>
+        </div>
+      </header>
+
+      <h1 class="mt-5 upload-section__title ui heading size-s">Upload</h1>
+
+      <!-- file previews section -->
+      <form
+        id="upload-form"
+        action="/file/store"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="upload-section">
+          <div class="upload-section container-sm">
+            <!-- File previews section -->
+            <div class="col justify-content-center w-100">
+              <div
+                id="file-previews-container"
+                class="file-previews-container container"
+              ></div>
+            </div>
+            <div class="col justify-content-center text-center mt-3">
+              <input
+                type="submit"
+                class="btn btn-primary mx-auto w-50"
+                value="Upload Files"
+                id="upload-button"
+                style="display: none"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- upload section -->
+      <div class="upload-section container-sm">
+        <div class="upload-section__column">
+          <div class="flex-col-center-center upload-section__upload-file">
+            <img
+              src="/images/img_upload_icon.svg"
+              alt="uploadicon"
+              class="upload-section__icon"
+            />
+            <div
+              class="upload-section__drag-drop-container"
+              id="drop-container"
+            >
+              <input
+                type="file"
+                id="file-input"
+                name="file_pdf"
+                multiple
+                style="display: none"
+              />
+              <div class="upload-section__drag-drop-instructions">
+                <h2 class="upload-section__drag-drop-text ui heading size-xs">
+                  <span class="upload-section__drag-drop-text-span"
+                    >Drag & drop files or</span
+                  >
+                  <span class="upload-section__drag-drop-text-span-1"
+                    >&nbsp;</span
+                  >
+                  <a
+                    href="#"
+                    class="upload-section__drag-drop-text-span-2"
+                    id="browse-link"
+                    >Browse</a
+                  >
+                </h2>
+              </div>
+              <div class="upload-section__supported-formats">
+                <p class="upload-section__formats-list ui text size-xs">
+                  Supported formats: JPEG, PNG, GIF, MP4, PDF, PSD, AI, Word,
+                  PPT
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="kategori" class="form-label">Kategori</label>
-        <select class="form-select" name="id_kategori" required>
-          <% for(var i = 0; i < kategori.length; i++){ %>
-          <option value="<%= kategori[i].id_kategori %>">
-            <%= kategori[i].nama_kategori %>
-          </option>
-          <% } %>
-        </select>
+
+      <!-- footer section -->
+      <div class="landing-page-footer">
+        <div class="footer__column">
+          <div class="footer__column--info container-sm">
+            <img
+              src="/images/img_footer_logo.png"
+              alt="footerlogo"
+              class="header__logo"
+            />
+            <p class="footer__description ui text size-s">
+              High level experience in web design and development knowledge,
+              producing quality work.
+            </p>
+            <button class="flex-row-center-center footer__contact-button">
+              Contact Us
+            </button>
+            <div class="footer__social-row">
+              <button class="footer__icon-button--facebook">
+                <img
+                  src="/images/img_facebook.svg"
+                  alt="facebook"
+                  class="footer__icon-button--facebook"
+                />
+              </button>
+              <button class="footer__icon-button--facebook">
+                <img
+                  src="/images/img_light_bulb.svg"
+                  alt="lightbulb"
+                  class="footer__icon-button--facebook"
+                />
+              </button>
+              <button class="footer__icon-button--facebook">
+                <img
+                  src="/images/img_settings.svg"
+                  alt="settings"
+                  class="footer__icon-button--facebook"
+                />
+              </button>
+              <img
+                src="/images/img_social.svg"
+                alt="social"
+                class="footer__social-image"
+              />
+              <button class="footer__icon-button--info">
+                <img
+                  src="/images/img_info.svg"
+                  alt="info"
+                  class="footer__icon-button--info"
+                />
+              </button>
+              <img
+                src="/images/img_social_white_a700.svg"
+                alt="social"
+                class="footer__social-image"
+              />
+            </div>
+          </div>
+          <div class="footer__row">
+            <div class="footer__row--rights">
+              <div class="footer__column--navigation container-xs">
+                <button class="footer__icon-button--arrowright">
+                  <img
+                    src="/images/img_arrow_right.svg"
+                    alt="arrowright"
+                    class="footer__icon-button--arrowright"
+                  />
+                </button>
+                <div class="footer__copyright-row">
+                  <p class="footer__copyright-text ui text size-xs">
+                    © 2021 All Rights Reserved
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <input type="hidden" name="" />
-      <!-- <div class="mb-3">
-        <label for="pengguna" class="form-label">Pengguna</label>
-        <select class="form-select" name="id_user" required>
-          <% for(var i = 0; i < users.length; i++){ %>
-          <option value="<%= users[i].id_user %>">
-            <%= users[i].nama_pengguna %>
-          </option>
-          <% } %>
-        </select>
-      </div> -->
-      <div class="mb-3">
-        <label for="file" class="form-label">File PDF</label>
-        <input type="file" class="form-control" name="file_pdf" required />
-      </div>
-      <div class="mb-3">
-        <label for="deskripsi" class="form-label">Deskripsi</label>
-        <input type="text" class="form-control" name="deskripsi" required />
-      </div>
-      <div class="mb-3">
-        <label for="privasi" class="form-label">Privasi</label>
-        <select class="form-select" name="privasi" required>
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="izin" class="form-label">Izin</label>
-        <select class="form-select" name="izin" required>
-          <option value="Salin dan rekatkan teks">
-            Salin dan rekatkan teks
-          </option>
-          <option value="Unduh dokumen">Unduh dokumen</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label for="hak_cipta" class="form-label">Hak Cipta</label>
-        <select class="form-select" name="hak_cipta" required>
-          <option value="All Rights Reserved">All Rights Reserved</option>
-          <option value="Public Domain">Public Domain</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-sm btn-success">Simpan</button>
-      </div>
-    </form>
-  </div>
-</body>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropContainer = document.getElementById("drop-container");
+        const fileInput = document.getElementById("file-input");
+        const browseLink = document.getElementById("browse-link");
+        const filePreviewsContainer = document.getElementById(
+          "file-previews-container"
+        );
+        const uploadForm = document.getElementById("upload-form");
+        const uploadButton = document.getElementById("upload-button");
+
+        let filePDF; // Definisikan filePDF di luar fungsi handlePDFUpload
+
+        browseLink.addEventListener("click", function (event) {
+          event.preventDefault();
+          fileInput.click();
+        });
+
+        dropContainer.addEventListener("dragover", function (event) {
+          event.preventDefault();
+          dropContainer.classList.add("dragging");
+        });
+
+        dropContainer.addEventListener("dragleave", function () {
+          dropContainer.classList.remove("dragging");
+        });
+
+        dropContainer.addEventListener("drop", function (event) {
+          event.preventDefault();
+          dropContainer.classList.remove("dragging");
+          const files = event.dataTransfer.files;
+          handleFiles(files);
+        });
+
+        fileInput.addEventListener("change", function (event) {
+          const files = event.target.files;
+          handleFiles(files);
+        });
+
+        // Function to handle files
+        function handleFiles(files) {
+          filePreviewsContainer.innerHTML = ""; // Clear previous file previews
+          for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const filePreview = document.createElement("div");
+            filePreview.classList.add("file-preview");
+
+            const fileName = document.createElement("p");
+            fileName.textContent = file.name;
+            filePreview.appendChild(fileName);
+
+            // Add unique data attribute for each file preview
+            filePreview.dataset.index = i;
+
+            // Add delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Hapus";
+            deleteButton.classList.add("delete-button");
+            deleteButton.addEventListener("click", function () {
+              const index = filePreview.dataset.index; // Get the index from data attribute
+              deleteFile(index);
+              checkRemainingFiles(); // Check remaining files after deletion
+            });
+
+            // Add input elements for additional information
+            const additionalInputs = `
+                        <input class="form-control form-label" type="text" name="nama_file" placeholder="Nama File">
+                        <select class="form-select" name="id_kategori" required>
+                            <% for(var i = 0; i < kategori.length; i++){ %>
+                                <option value="<%= kategori[i].id_kategori %>">
+                                    <%= kategori[i].nama_kategori %>
+                                </option>
+                            <% } %>
+                        </select>
+                        <input type="hidden" name="" />
+                        <input class="form-control form-label" type="text" name="deskripsi" placeholder="Deskripsi">
+                        <select class="form-select" name="privasi" required>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                        <select class="form-select" name="izin" required>
+                            <option value="Salin dan rekatkan teks">
+                                Salin dan rekatkan teks
+                            </option>
+                            <option value="Unduh dokumen">Unduh dokumen</option>
+                        </select>
+                        <select class="form-select" name="hak_cipta" required>
+                            <option value="All Rights Reserved">All Rights Reserved</option>
+                            <option value="Public Domain">Public Domain</option>
+                        </select>
+                    `;
+            filePreview.insertAdjacentHTML("beforeend", additionalInputs);
+
+            filePreview.appendChild(deleteButton);
+
+            // Append file preview to the container
+            filePreviewsContainer.appendChild(filePreview);
+          }
+
+          // Show upload button after files are added
+          uploadButton.style.display = "block";
+        }
+
+        // Function to delete file preview
+        function deleteFile(index) {
+          const previewElement = document.querySelector(
+            `[data-index="${index}"]`
+          );
+          previewElement.remove();
+        }
+
+        // Function to check remaining files after deletion
+        function checkRemainingFiles() {
+          const remainingFiles = document.querySelectorAll(".file-preview");
+          if (remainingFiles.length === 0) {
+            // Hide upload button if no remaining files
+            uploadButton.style.display = "none";
+          }
+        }
+
+        // Function to handle PDF upload
+        function handlePDFUpload(files) {
+          // Hanya mengambil file PDF pertama jika ada lebih dari satu file
+          filePDF = files[0];
+
+          // Membuat objek FileReader
+          const reader = new FileReader();
+
+          // Menangani saat file selesai dibaca
+          reader.onload = function (event) {
+            // Buat elemen baru untuk menampilkan PDF
+            const pdfElement = document.createElement("embed");
+            pdfElement.setAttribute("src", event.target.result);
+            pdfElement.setAttribute("type", "application/pdf");
+            pdfElement.setAttribute("style", "width: 200px; height: 250px;");
+
+            // Dapatkan file preview pertama
+            const filePreview = document.querySelector(
+              '.file-preview[data-index="0"]'
+            );
+
+            // Sisipkan elemen PDF ke dalam file preview
+            filePreview.appendChild(pdfElement);
+          };
+
+          // Membaca file sebagai URL data
+          reader.readAsDataURL(filePDF);
+        }
+
+        // Function to get user ID from session
+        function getUserIdFromSession() {
+          // Implement logic to get user ID from session
+          // For example:
+          const userId = sessionStorage.getItem("userId");
+          return userId;
+        }
+
+        // Function to handle PDF upload
+        function handlePDFUpload(files) {
+          // Hanya mengambil file PDF pertama jika ada lebih dari satu file
+          filePDF = files[0];
+
+          // Membuat objek FileReader
+          const reader = new FileReader();
+
+          // Menangani saat file selesai dibaca
+          reader.onload = function (event) {
+            // Buat elemen baru untuk menampilkan PDF
+            const pdfElement = document.createElement("embed");
+            pdfElement.setAttribute("src", event.target.result);
+            pdfElement.setAttribute("type", "application/pdf");
+            pdfElement.setAttribute("style", "width: 200px; height: 250px;");
+
+            // Dapatkan file preview pertama
+            const filePreview = document.querySelector(
+              '.file-preview[data-index="0"]'
+            );
+
+            // Sisipkan elemen PDF di atas elemen nama file
+            const fileNameElement = filePreview.querySelector("p");
+            filePreview.insertBefore(pdfElement, fileNameElement);
+          };
+
+          // Membaca file sebagai URL data
+          reader.readAsDataURL(filePDF);
+        }
+        // Function to handle form submission
+        function handleSubmit(event) {
+          event.preventDefault();
+          const formData = new FormData();
+
+          if (filePDF) {
+            formData.append("file_pdf", filePDF);
+          }
+
+          const additionalInputs = document.querySelectorAll(".file-preview");
+          additionalInputs.forEach((filePreview, index) => {
+            const namaFile = filePreview.querySelector(
+              'input[name="nama_file"]'
+            ).value;
+            const idKategori = filePreview.querySelector(
+              'select[name="id_kategori"]'
+            ).value;
+            const deskripsi = filePreview.querySelector(
+              'input[name="deskripsi"]'
+            ).value;
+            const privasi = filePreview.querySelector(
+              'select[name="privasi"]'
+            ).value;
+            const izin = filePreview.querySelector('select[name="izin"]').value;
+            const hakCipta = filePreview.querySelector(
+              'select[name="hak_cipta"]'
+            ).value;
+            const idUser = getUserIdFromSession();
+
+            formData.append("nama_file[]", namaFile);
+            formData.append("id_kategori[]", idKategori);
+            formData.append("deskripsi[]", deskripsi);
+            formData.append("privasi[]", privasi);
+            formData.append("izin[]", izin);
+            formData.append("hak_cipta[]", hakCipta);
+            formData.append("id_user[]", idUser);
+          });
+
+          fetch("/file/store", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Response:", data);
+              // Handle response as needed
+              if (data.success) {
+                // Jika unggahan berhasil, hapus file PDF dari tampilan
+                const uploadedFilePreview = document.querySelector(
+                  '.file-preview[data-index="0"]'
+                );
+                if (uploadedFilePreview) {
+                  uploadedFilePreview.remove();
+                }
+                // Reset nilai filePDF
+                filePDF = null;
+                // Sembunyikan tombol unggah setelah file dihapus
+                uploadButton.style.display = "none";
+
+                // Jalankan deleteFile di sini
+                deleteFile(0); // Menghapus file pertama karena file PDF
+              } else {
+                // Di sini, jika Anda ingin tetap melanjutkan dengan deleteFile
+                // meskipun ada kesalahan, maka jalankan deleteFile langsung di sini
+                deleteFile(0); // Menghapus file pertama karena file PDF
+
+                // Mungkin tambahkan logging untuk menandai bahwa ada kesalahan
+                console.error(
+                  "Terjadi kesalahan saat mengunggah file dan data."
+                );
+              }
+            });
+        }
+
+        uploadForm.addEventListener("submit", handleSubmit);
+
+        fileInput.addEventListener("change", function (event) {
+          const files = event.target.files;
+          handlePDFUpload(files);
+        });
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
