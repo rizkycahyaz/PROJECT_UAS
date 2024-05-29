@@ -28,14 +28,14 @@ router.get("/create", async function (req, res, next) {
     let role = req.session.role;
     let id = req.session.userId;
     let Data = await Model_Users.getId(id);
-    if (Data[0].role == "1") {
+    if (Data[0].role == "2") {
       res.render("kategori/create", {
         nama_kategori: "",
         judul_kategori: "",
         deskripsi: "",
         role: role,
       });
-    } else if (Data[0].role == "2") {
+    } else if (Data[0].role == "1") {
       req.flash("failure", "Anda bukan bagian admin");
       res.redirect("/kategori");
     }
@@ -69,7 +69,7 @@ router.get("/edit/(:id)", async function (req, res, next) {
     let id = req.params.id;
     let rows = await Model_Kategori.getId(id);
     let Data = await Model_Users.getId(id_user);
-    if (Data[0].role == "1") {
+    if (Data[0].role == "2") {
       res.render("kategori/edit", {
         id: rows[0].id_kategori,
         nama_kategori: rows[0].nama_kategori,
@@ -77,7 +77,7 @@ router.get("/edit/(:id)", async function (req, res, next) {
         deskripsi: rows[0].deskripsi,
         role: role,
       });
-    } else if (Data[0].role == "2") {
+    } else if (Data[0].role == "1") {
       req.flash("failure", "Anda bukan admin");
       res.redirect("/kategori");
     }
@@ -110,11 +110,11 @@ router.get("/delete/(:id)", async function (req, res) {
     let id = req.params.id;
     let id_user = req.session.userId;
     let Data = await Model_Users.getId(id_user);
-    if (Data[0].role == 1) {
+    if (Data[0].role == 2) {
       await Model_Kategori.Delete(id);
       req.flash("success", "Berhasil menghapus data");
       res.redirect("/kategori");
-    } else if (Data[0].role == 2) {
+    } else if (Data[0].role == 1) {
       req.flash("failure", "Anda bukan admin");
       res.redirect("/kategori");
     }
