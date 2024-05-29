@@ -2,52 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>CREATE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UAS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1,
-    shrink-to-fit=no"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <meta name="theme-color" content="#000000" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/index.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/font.css" />
-    <link rel="stylesheet" type="text/css" href="/stylesheets/css/style.css" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/css/index.css" />
+    <link rel="stylesheet" href="/stylesheets/css/font.css" />
+    <link rel="stylesheet" href="/stylesheets/css/style.css" />
+    <link rel="stylesheet" href="/stylesheets/css/components.css" />
     <link rel="stylesheet" href="/stylesheets/css/Landingpage.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/stylesheets/css/components.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/stylesheets/css/Uploadpage.css"
-    />
     <style>
-      * {
-        margin: 0;
-      }
       /* Tata letak utama */
       .upload-section {
         padding-left: 163px;
         padding-right: 156px;
-      }
-
-      /* Responsif untuk layar berukuran kecil */
-      @media only screen and (max-width: 1050px) {
-        .upload-section {
-          padding-left: var(--space-5xl);
-          padding-right: var(--space-5xl);
-          padding: var(--space-5xl);
-        }
       }
 
       /* Container untuk drop area */
@@ -64,8 +51,8 @@
       /* Container untuk file previews */
       .file-previews-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
         margin-top: 20px;
         width: 100%; /* Membuat lebar 100% */
       }
@@ -73,22 +60,22 @@
       /* Kartu untuk file preview */
       .file-preview {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         margin: 10px;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        width: 300px; /* Sesuaikan lebar card sesuai kebutuhan Anda */
+        min-width: 600px; /* Sesuaikan lebar card sesuai kebutuhan Anda */
         text-align: center;
         background-color: #f9f9f9;
       }
 
       /* Gambar dalam file preview */
       .file-preview img {
-        max-width: 100%;
+        max-width: 80px;
         height: auto;
-        margin-bottom: 10px;
+        margin-right: 10px;
       }
 
       /* Input, select, dan textarea dalam file preview */
@@ -155,7 +142,6 @@
         padding: 5px;
         margin-bottom: 5px;
       }
-
       .header {
         display: flex;
         align-items: center;
@@ -167,13 +153,137 @@
         align-items: center;
       }
 
-      .header__menu {
-        /* Gaya menu */
-      }
-
       .header__actions {
         display: flex;
         align-items: center;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: calc(0% + 180px);
+        right: -100%;
+        left: auto;
+        transform: translateY(-50%);
+        padding: 1em;
+        width: 80%;
+        max-width: 400px;
+        border-radius: 0.5em 0 0 0.5em;
+        transition: right 0.5s ease;
+      }
+      .modal.active {
+        display: block;
+        right: 0;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 0.5em;
+      }
+      .modal-header h5 {
+        margin: 0;
+      }
+      .modal-body {
+        margin-top: 1em;
+      }
+      .modal-body a {
+        display: block;
+        margin-bottom: 0.5em;
+        color: #007bff;
+        text-decoration: none;
+      }
+      .modal-body a:hover {
+        text-decoration: underline;
+      }
+      .modal-close {
+        cursor: pointer;
+      }
+
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0);
+      }
+
+      .modal-backdrop.active {
+        display: block;
+      }
+
+      .hamburger-menu {
+        display: none;
+        cursor: pointer;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+      }
+
+      .header__logo {
+        max-height: 50px;
+      }
+
+      .hamburger-menu {
+        display: none;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .hamburger-menu {
+          display: block;
+        }
+
+        .header__menu {
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          background-color: #fff;
+          padding: 1em;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 9999;
+        }
+
+        .header__actions {
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          background-color: #fff;
+          padding: 1em;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          width: 100%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 9999;
+        }
+
+        .header__upload {
+          display: block;
+          margin-top: 1em;
+        }
+
+        .header__user-menu {
+          display: block;
+          margin-top: 1em;
+        }
+
+        .header__menu.show,
+        .header__actions.show {
+          display: flex;
+        }
       }
     </style>
   </head>
@@ -186,109 +296,56 @@
             alt="headerlogo"
             class="header__logo"
         /></a>
+        <div class="hamburger-menu">
+          <i class="bi bi-list" id="menuToggle"></i>
+        </div>
         <ul class="header__menu">
           <li>
-            <a href="#">
-              <p class="ui text size-s">Contact</p>
-            </a>
+            <a href="#"><p class="ui text size-s">Contact</p></a>
           </li>
           <li>
-            <a href="#">
-              <p class="ui text size-s">About Us</p>
-            </a>
+            <a href="#"><p class="ui text size-s">About Us</p></a>
           </li>
           <li class="group">
             <div class="header__submenu">
               <p class="ui text size-s">Kategori</p>
-              <img
-                src="/images/img_arrow_down.svg"
-                alt="arrowdown"
-                class="header__submenu-icon"
-              />
+              <i class="bi bi-chevron-down header__submenu-icon"></i>
             </div>
             <div class="group-1">
               <div class="menu-container">
                 <div class="menu-group">
+                  <% kategori.forEach((item) => { %>
                   <div class="menu">
-                    <p class="mega-menu__title ui text">Title 1</p>
-                    <div class="menu-column">
-                      <a href="#">
-                        <p class="mega-menu__text ui text">Menu 1</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 2</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 3</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 4</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 5</p>
-                      </a>
-                    </div>
+                    <p class="mega-menu__title ui text">
+                      <%= item.nama_kategori %>
+                    </p>
+                    <div class="menu-column"></div>
                   </div>
-                  <div class="menu">
-                    <p class="mega-menu__title ui text">Title 2</p>
-                    <div class="menu-column">
-                      <a href="#">
-                        <p class="mega-menu__text ui text">Menu 1</p>
-                      </a>
-                      <p class="mega-menu__link ui text">Menu 2</p>
-                      <p class="mega-menu__link ui text">Menu 3</p>
-                      <p class="mega-menu__link ui text">Menu 4</p>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 5</p>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="menu">
-                    <p class="mega-menu__title ui text">Title 3</p>
-                    <div class="menu-column">
-                      <a href="#">
-                        <p class="mega-menu__text ui text">Menu 1</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 2</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 3</p>
-                      </a>
-                      <a href="#" class="menu-link">
-                        <p class="mega-menu__text ui text">Menu 4</p>
-                      </a>
-                    </div>
-                  </div>
+                  <% }); %>
                 </div>
               </div>
             </div>
           </li>
           <li>
-            <a href="/file">
-              <p class="ui text size-s">Semua Dokumen</p>
-            </a>
+            <a href="/file"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create">
-              <img
-                src="/images/img_upload.png"
-                alt="upload"
-                class="header__upload-icon"
-              />
+            <a href="/file/create" class="header__upload-link">
+              <i class="bi bi-upload header__upload-icon"></i>
+              <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
-            <p class="header__upload-text ui text size-s">Unggah</p>
           </div>
           <ul class="header__user-menu">
             <li>
-              <a href="#">
-                <p class="header__user-menu-item ui text size-xs"></p>
-              </a>
+              <a href="#" id="emailLink"
+                ><p class="header__user-menu-item ui text size-xs">
+                  <%= email %>
+                </p></a
+              >
             </li>
           </ul>
-          <div class="header__extra-view"></div>
         </div>
       </header>
 
@@ -372,13 +429,13 @@
       <!-- footer section -->
       <div class="landing-page-footer">
         <div class="footer__column">
-          <div class="footer__column--info container-sm">
+          <div class="footer__column--info">
             <img
               src="/images/img_footer_logo.png"
               alt="footerlogo"
               class="header__logo"
             />
-            <p class="footer__description ui text size-s">
+            <p class="footer__description">
               High level experience in web design and development knowledge,
               producing quality work.
             </p>
@@ -400,7 +457,7 @@
                   class="footer__icon-button--facebook"
                 />
               </button>
-              <button class="footer__icon-button--facebook">
+              <button class="footer __icon-button--facebook">
                 <img
                   src="/images/img_settings.svg"
                   alt="settings"
@@ -428,16 +485,9 @@
           </div>
           <div class="footer__row">
             <div class="footer__row--rights">
-              <div class="footer__column--navigation container-xs">
-                <button class="footer__icon-button--arrowright">
-                  <img
-                    src="/images/img_arrow_right.svg"
-                    alt="arrowright"
-                    class="footer__icon-button--arrowright"
-                  />
-                </button>
+              <div class="footer__column--navigation">
                 <div class="footer__copyright-row">
-                  <p class="footer__copyright-text ui text size-xs">
+                  <p class="footer__copyright-text mt-5">
                     © 2021 All Rights Reserved
                   </p>
                 </div>
@@ -446,7 +496,76 @@
           </div>
         </div>
       </div>
+      <!-- Modal -->
+      <div
+        id="emailModalBackdrop"
+        class="modal-backdrop"
+        onclick="closeModal()"
+      ></div>
+      <div id="emailModal" class="modal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Hai <%= email %>!</h5>
+              <button
+                type="button"
+                class="btn-close"
+                aria-label="Close"
+                onclick="toggleModal()"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <a href="/profile"><i class="bi bi-person"></i> Profile</a>
+              <a href="/save"><i class="bi bi-heart"></i> Disimpan</a>
+              <a href="/record"
+                ><i class="bi bi-file-earmark-text"></i> Unggahan Dokumen</a
+              >
+              <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <script>
+      function toggleModal() {
+        var modal = document.getElementById("emailModal");
+        var backdrop = document.getElementById("emailModalBackdrop");
+        modal.classList.toggle("active");
+        backdrop.classList.toggle("active");
+      }
+
+      document
+        .getElementById("emailLink")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          toggleModal();
+        });
+
+      function closeModal() {
+        var modal = document.getElementById("emailModal");
+        var backdrop = document.getElementById("emailModalBackdrop");
+        modal.classList.remove("active");
+        backdrop.classList.remove("active");
+      }
+
+      document
+        .getElementById("emailModalBackdrop")
+        .addEventListener("click", function () {
+          closeModal();
+        });
+
+      window.addEventListener("scroll", function () {
+        closeModal();
+      });
+
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".header__menu").classList.toggle("show");
+          document.querySelector(".header__actions").classList.toggle("show");
+        });
+    </script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -514,27 +633,26 @@
 
             // Add input elements for additional information
             const additionalInputs = `
-                        <input class="form-control form-label" type="text" name="nama_file" placeholder="Nama File">
-                        <select class="form-select" name="id_kategori" required>
+                        <input class="form-control form-label" type="text" name="nama_file[]" placeholder="Nama File">
+                        <select class="form-select" name="id_kategori[]" required>
                             <% for(var i = 0; i < kategori.length; i++){ %>
                                 <option value="<%= kategori[i].id_kategori %>">
                                     <%= kategori[i].nama_kategori %>
                                 </option>
                             <% } %>
                         </select>
-                        <input type="hidden" name="" />
-                        <input class="form-control form-label" type="text" name="deskripsi" placeholder="Deskripsi">
-                        <select class="form-select" name="privasi" required>
+                        <input class="form-control form-label" type="text" name="deskripsi[]" placeholder="Deskripsi">
+                        <select class="form-select" name="privasi[]" required>
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
-                        <select class="form-select" name="izin" required>
+                        <select class="form-select" name="izin[]" required>
                             <option value="Salin dan rekatkan teks">
                                 Salin dan rekatkan teks
                             </option>
                             <option value="Unduh dokumen">Unduh dokumen</option>
                         </select>
-                        <select class="form-select" name="hak_cipta" required>
+                        <select class="form-select" name="hak_cipta[]" required>
                             <option value="All Rights Reserved">All Rights Reserved</option>
                             <option value="Public Domain">Public Domain</option>
                         </select>
@@ -545,6 +663,11 @@
 
             // Append file preview to the container
             filePreviewsContainer.appendChild(filePreview);
+
+            // Handle PDF upload separately
+            if (file.type === "application/pdf") {
+              handlePDFUpload(file, filePreview);
+            }
           }
 
           // Show upload button after files are added
@@ -569,73 +692,30 @@
         }
 
         // Function to handle PDF upload
-        function handlePDFUpload(files) {
-          // Hanya mengambil file PDF pertama jika ada lebih dari satu file
-          filePDF = files[0];
-
-          // Membuat objek FileReader
+        function handlePDFUpload(file, filePreview) {
           const reader = new FileReader();
 
-          // Menangani saat file selesai dibaca
           reader.onload = function (event) {
-            // Buat elemen baru untuk menampilkan PDF
             const pdfElement = document.createElement("embed");
             pdfElement.setAttribute("src", event.target.result);
             pdfElement.setAttribute("type", "application/pdf");
             pdfElement.setAttribute("style", "width: 200px; height: 250px;");
 
-            // Dapatkan file preview pertama
-            const filePreview = document.querySelector(
-              '.file-preview[data-index="0"]'
-            );
-
-            // Sisipkan elemen PDF ke dalam file preview
-            filePreview.appendChild(pdfElement);
-          };
-
-          // Membaca file sebagai URL data
-          reader.readAsDataURL(filePDF);
-        }
-
-        // Function to get user ID from session
-        function getUserIdFromSession() {
-          // Implement logic to get user ID from session
-          // For example:
-          const userId = sessionStorage.getItem("userId");
-          return userId;
-        }
-
-        // Function to handle PDF upload
-        function handlePDFUpload(files) {
-          // Hanya mengambil file PDF pertama jika ada lebih dari satu file
-          filePDF = files[0];
-
-          // Membuat objek FileReader
-          const reader = new FileReader();
-
-          // Menangani saat file selesai dibaca
-          reader.onload = function (event) {
-            // Buat elemen baru untuk menampilkan PDF
-            const pdfElement = document.createElement("embed");
-            pdfElement.setAttribute("src", event.target.result);
-            pdfElement.setAttribute("type", "application/pdf");
-            pdfElement.setAttribute("style", "width: 200px; height: 250px;");
-
-            // Dapatkan file preview pertama
-            const filePreview = document.querySelector(
-              '.file-preview[data-index="0"]'
-            );
-
-            // Sisipkan elemen PDF di atas elemen nama file
             const fileNameElement = filePreview.querySelector("p");
             filePreview.insertBefore(pdfElement, fileNameElement);
           };
 
-          // Membaca file sebagai URL data
-          reader.readAsDataURL(filePDF);
+          reader.readAsDataURL(file);
         }
+
+        // Function to get user ID from session
+        function getUserIdFromSession() {
+          const userId = sessionStorage.getItem("userId");
+          return userId;
+        }
+
         // Function to handle form submission
-        function handleSubmit(event) {
+        uploadForm.addEventListener("submit", function (event) {
           event.preventDefault();
           const formData = new FormData();
 
@@ -646,20 +726,22 @@
           const additionalInputs = document.querySelectorAll(".file-preview");
           additionalInputs.forEach((filePreview, index) => {
             const namaFile = filePreview.querySelector(
-              'input[name="nama_file"]'
+              'input[name="nama_file[]"]'
             ).value;
             const idKategori = filePreview.querySelector(
-              'select[name="id_kategori"]'
+              'select[name="id_kategori[]"]'
             ).value;
             const deskripsi = filePreview.querySelector(
-              'input[name="deskripsi"]'
+              'input[name="deskripsi[]"]'
             ).value;
             const privasi = filePreview.querySelector(
-              'select[name="privasi"]'
+              'select[name="privasi[]"]'
             ).value;
-            const izin = filePreview.querySelector('select[name="izin"]').value;
+            const izin = filePreview.querySelector(
+              'select[name="izin[]"]'
+            ).value;
             const hakCipta = filePreview.querySelector(
-              'select[name="hak_cipta"]'
+              'select[name="hak_cipta[]"]'
             ).value;
             const idUser = getUserIdFromSession();
 
@@ -686,38 +768,16 @@
               console.log("Response:", data);
               // Handle response as needed
               if (data.success) {
-                // Jika unggahan berhasil, hapus file PDF dari tampilan
                 const uploadedFilePreview = document.querySelector(
                   '.file-preview[data-index="0"]'
                 );
-                if (uploadedFilePreview) {
-                  uploadedFilePreview.remove();
-                }
-                // Reset nilai filePDF
-                filePDF = null;
-                // Sembunyikan tombol unggah setelah file dihapus
-                uploadButton.style.display = "none";
-
-                // Jalankan deleteFile di sini
-                deleteFile(0); // Menghapus file pertama karena file PDF
-              } else {
-                // Di sini, jika Anda ingin tetap melanjutkan dengan deleteFile
-                // meskipun ada kesalahan, maka jalankan deleteFile langsung di sini
-                deleteFile(0); // Menghapus file pertama karena file PDF
-
-                // Mungkin tambahkan logging untuk menandai bahwa ada kesalahan
-                console.error(
-                  "Terjadi kesalahan saat mengunggah file dan data."
-                );
+                uploadedFilePreview.remove();
+                checkRemainingFiles();
               }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
             });
-        }
-
-        uploadForm.addEventListener("submit", handleSubmit);
-
-        fileInput.addEventListener("change", function (event) {
-          const files = event.target.files;
-          handlePDFUpload(files);
         });
       });
     </script>

@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 router.get("/", async function (req, res, next) {
   let id = req.session.userId;
   let Data = await Model_Users.getId(id);
-
+  let kategori = await Model_Kategori.getAll();
   try {
     if (Data.length > 0) {
       let rows = await Model_File.getByUser(id);
@@ -30,6 +30,7 @@ router.get("/", async function (req, res, next) {
       res.render("file/index", {
         data: rows,
         email: Data[0].email,
+        kategori: kategori,
       });
     } else {
       res.redirect("/login");
@@ -47,7 +48,8 @@ router.get("/create", async function (req, res, next) {
     let kategoriData = await Model_Kategori.getAll(); // Mengambil semua data kategori
     res.render("file/create", {
       users: userData[0],
-      kategori: kategoriData, // Mengirimkan data kategori ke view
+      kategori: kategoriData,
+      email: userData[0].email, // Mengirimkan data kategori ke view
     });
   } catch (error) {
     console.error("Error:", error);

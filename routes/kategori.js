@@ -14,6 +14,7 @@ router.get("/", async function (req, res, next) {
         role: req.session.role,
         data: rows,
         role: role,
+        kategori: kategori,
       });
     }
   } catch (err) {
