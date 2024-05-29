@@ -1,99 +1,208 @@
-/*=========== TABLE OF CONTENTS ===========
-1. Text CSS
-2. Heading CSS
-3. Container CSS
-==========================================*/
-
-/*-------------------------------------
-  1. Text CSS
---------------------------------------*/
-.ui.text.size-xs {
-  font-size: 12px;
-  font-weight: 300;
+/* General reset for margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.ui.text.size-lg {
-  font-size: 25px;
-  font-weight: 400;
-  @media only screen and (max-width: 1050px) {
-    font-size: 23px;
-  }
+/* Header Styles */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
 
-  @media only screen and (max-width: 550px) {
-    font-size: 21px;
-  }
+.header__logo {
+  max-height: 50px;
+}
+
+.header__menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Ensure menu items are centered vertically */
+}
+
+.header__menu li {
+  position: relative;
+  margin: 0 15px;
+  display: flex;
+  align-items: center; /* Ensure text and icon are centered vertically */
+}
+
+.header__menu a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center; /* Ensure text and icon are centered vertically */
+}
+
+.header__submenu {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header__submenu-icon {
+  margin-left: 5px;
+  font-size: 12px; /* Adjust size as needed */
+}
+
+.group-1 {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  z-index: 1000;
+}
+
+.group:hover .group-1 {
+  display: block;
+}
+
+.menu-container {
+  display: flex;
+  padding: 20px;
+}
+
+.menu-group {
+  display: flex;
+}
+
+.menu {
+  margin-right: 30px;
+}
+
+.mega-menu__title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.menu-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-menu__text {
+  margin: 5px 0;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+}
+
+.header__upload {
+  margin-right: 20px;
+}
+
+.header__upload-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+}
+
+.header__upload-icon {
+  font-size: 20px; /* Adjust size as needed */
+  margin-right: 5px;
+}
+
+.header__upload-text {
+  margin: 0;
+  padding: 0;
+}
+
+.header__user-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center; /* Ensure menu items are centered vertically */
+}
+
+.header__user-menu-item {
+  margin-left: 15px;
+  display: flex;
+  align-items: center; /* Ensure text and icon are centered vertically */
+}
+
+/* Utility Classes */
+.ui.text.size-s,
+.ui.text.size-xs {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  line-height: 1; /* Adjust line height */
 }
 
 .ui.text.size-s {
   font-size: 14px;
-  font-weight: 400;
 }
 
-.ui.text.size-xl {
-  font-size: 50px;
-  font-weight: 400;
-  @media only screen and (max-width: 1050px) {
-    font-size: 46px;
-  }
-
-  @media only screen and (max-width: 550px) {
-    font-size: 40px;
-  }
+.ui.text.size-xs {
+  font-size: 12px;
 }
 
-.ui.text.size-md {
-  font-size: 16px;
-  font-weight: 400;
+.header__menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Ensure menu items are centered vertically */
 }
 
-.ui.text {
-  color: var(--black_900_01);
-  font-family: Manrope;
+.group {
+  position: relative; /* Set position to relative for the parent element */
 }
 
-/*-------------------------------------
-  2. Heading CSS
---------------------------------------*/
-.ui.heading.size-s {
-  font-size: 22px;
-  font-weight: 700;
+.group-1 {
+  display: none;
+  position: absolute;
+  /* Sesuaikan nilai ini agar submenu berada tepat di bawah ikon */
+  left: 0;
+  margin-top: 100px; /* Berikan margin atas untuk menjaga jarak */
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  z-index: 1000;
+  min-height: 100px; /* Sesuaikan nilai ini sesuai kebutuhan */
+  width: 200px; /* Sesuaikan lebar submenu */
 }
 
-.ui.heading.size-md {
-  font-size: 32px;
-  font-weight: 700;
-  @media only screen and (max-width: 1050px) {
-    font-size: 30px;
-  }
-
-  @media only screen and (max-width: 550px) {
-    font-size: 28px;
-  }
+.group:hover .group-1 {
+  display: block;
 }
 
-.ui.heading.size-xs {
-  font-size: 16px;
-  font-weight: 700;
+.menu-container {
+  padding: 20px;
 }
 
-.ui.heading {
-  color: var(--gray_900);
-  font-family: Red Hat Display;
+.menu-group {
+  display: flex;
 }
 
-/*-------------------------------------
-  3. Container CSS
---------------------------------------*/
-.container-xs {
-  max-width: 1368px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+.menu {
+  margin-right: 30px;
 }
 
-.container-sm {
-  max-width: 1370px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+.mega-menu__title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.menu-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-menu__text,
+.mega-menu__link {
+  margin: 5px 0;
 }
