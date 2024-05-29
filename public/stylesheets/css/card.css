@@ -1,0 +1,17 @@
+.card {
+  margin-bottom: 20px; /* Jarak antara setiap kartu */
+}
+
+.row-cols-10 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px; /* Margin negatif untuk menangani padding container */
+  margin-left: -15px; /* Margin negatif untuk menangani padding container */
+}
+
+.col {
+  flex: 0 0 33.333%; /* Lebar kartu */
+  max-width: 33.333%; /* Lebar maksimum kartu */
+  padding-right: 15px; /* Padding kanan untuk menangani margin negatif */
+  padding-left: 15px; /* Padding kiri untuk menangani margin negatif */
+}

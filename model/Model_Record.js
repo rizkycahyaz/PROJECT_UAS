@@ -6,7 +6,7 @@ class Model_Record {
           const query = `
             SELECT record.*, users.*, file.*
             FROM record
-            JOIN user ON record.id_user = user.id_user
+            JOIN users ON record.id_user = users.id_user
             JOIN file ON record.id_file = file.id_file
           `;
           const rows = await connection.query(query);
