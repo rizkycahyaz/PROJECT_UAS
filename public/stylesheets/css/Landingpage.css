@@ -101,20 +101,11 @@
   position: absolute;
   top: auto;
   min-width: 200px;
-  padding-top: var(--space-2xl);
   z-index: 99;
   display: none;
   group-hover {
     display: block;
   }
-}
-
-.menu-container {
-  background-color: var(--white_A700);
-  box-shadow: var(--shadow-xs);
-  width: 100%;
-  padding: var(--space-5xl);
-  border-radius: var(--radius-sm);
 }
 
 .menu-group {
