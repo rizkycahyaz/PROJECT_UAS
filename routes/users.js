@@ -10,7 +10,7 @@ router.get('/', async function (req, res, next) {
     let Data = await Model_Users.getId(id);
     if (Data.length > 0) {
       //tambahkan kondisi pengecekan role
-      if (Data[0].role != 2) {
+      if (Data[0].role != 1) {
         res.redirect('/logout')
       } else {
         res.render('users/index', {

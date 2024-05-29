@@ -14,6 +14,7 @@ const fileRouter = require("./routes/file");
 const saveRouter = require("./routes/save");
 const recordRouter = require("./routes/record");
 const superusersRouter = require("./routes/superusers");
+const adminRouter = require("./routes/admin");
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/kategori", kategoriRouter);
 app.use("/file", fileRouter);
 app.use("/save", saveRouter);
 app.use("/record", recordRouter);
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

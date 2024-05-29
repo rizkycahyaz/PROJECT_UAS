@@ -7,7 +7,7 @@ router.get('/', async function (req, res, next) {
         let id = req.session.userId;
         let Data = await Model_Users.getId(id);
         if (Data.length > 0) {
-            if (Data[0].role != 1) {
+            if (Data[0].role != 2) {
                 res.redirect('/logout')
             } else {
                 res.render('users/super', {

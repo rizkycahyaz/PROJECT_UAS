@@ -45,10 +45,10 @@ router.post('/log', async (req, res) => {
         req.session.userId = Data[0].id_user;
         req.session.role = Data[0].role;
         //tambahkan kondisi pengecekan role pada user yang login
-        if (Data[0].role == 1) {
+        if (Data[0].role == 2) {
           req.flash('success', 'Berhasil login');
           res.redirect('/superusers');
-        } else if (Data[0].role == 2) {
+        } else if (Data[0].role == 1) {
           req.flash('success', 'Berhasil login');
           res.redirect('/users');
         } else {
