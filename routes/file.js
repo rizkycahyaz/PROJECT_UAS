@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images/upload");
   },
-  file_name: (req, file, cb) => {
+  filename: (req, file, cb) => {
     console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   },
@@ -81,7 +81,7 @@ router.post(
       let Data = {
         nama_file,
         deskripsi,
-        file_pdf: req.file.file_name,
+        file_pdf: req.file.filename,
         id_kategori,
         id_user: req.session.userId,
         privasi: req.body.privasi,
@@ -134,7 +134,7 @@ router.post(
   async function (req, res, next) {
     let id = req.params.id;
     try {
-      let filebaru = req.file ? req.file.file_name : null;
+      let filebaru = req.file ? req.file.filename : null;
       let rows = await Model_File.getById(id);
       const namaFileLama = rows[0].file_pdf;
       if (filebaru && namaFileLama) {
@@ -217,7 +217,7 @@ router.get("/download/:id", async function (req, res, next) {
 
       res.setHeader(
         "Content-disposition",
-        "attachment; file_name=" + fileData.file_name
+        "attachment; filename=" + fileData.filename
       );
       res.setHeader("Content-type", "application/pdf");
       res.end(fileData.data);
