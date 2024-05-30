@@ -6,12 +6,13 @@ const path = require("path");
 const Model_File = require("../model/Model_File");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
+const Model_Record = require("../model/Model_Record");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images/upload");
   },
-  filename: (req, file, cb) => {
+  file_name: (req, file, cb) => {
     console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   },
@@ -25,7 +26,7 @@ router.get("/", async function (req, res, next) {
 
   try {
     if (Data.length > 0) {
-      let rows = await Model_File.getByUser(id);
+      let rows = await Model_File.getAll();
       let kategori = await Model_Kategori.getAll();
       console.log(id);
       res.render("file/index", {
@@ -35,10 +36,10 @@ router.get("/", async function (req, res, next) {
       });
     } else {
       res.redirect("/login");
-      console.log(id);
     }
   } catch (error) {
-    res.redirect("/login");
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -70,24 +71,22 @@ router.get("/create", async function (req, res, next) {
     res.status(500).send("Internal Server Error");
   }
 });
-
 router.post(
   "/store",
   upload.single("file_pdf"),
   async function (req, res, next) {
     try {
       let { nama_file, deskripsi, id_kategori } = req.body;
-      let userData = await Model_Users.getId(req.session.userId); // Mengambil data pengguna
+      let userData = await Model_Users.getId(req.session.userId);
       let Data = {
         nama_file,
         deskripsi,
-        file_pdf: req.file.filename,
+        file_pdf: req.file.file_name,
         id_kategori,
         id_user: req.session.userId,
         privasi: req.body.privasi,
         izin: req.body.izin,
         hak_cipta: req.body.hak_cipta,
-        // email: userData[0].email, // Menambahkan email pengguna ke data yang disimpan
       };
       await Model_File.Store(Data);
       req.flash("success", "Berhasil menyimpan data");
@@ -104,11 +103,10 @@ router.get("/edit/:id", async function (req, res, next) {
   let id = req.params.id;
   try {
     let rows = await Model_File.getById(id);
-    let userData = await Model_Users.getId(req.session.userId); // Mengambil data pengguna
-    let kategoriData = await Model_Kategori.getAll(); // Mengambil semua data kategori
+    let userData = await Model_Users.getId(req.session.userId);
+    let kategoriData = await Model_Kategori.getAll();
     let kategoriId = rows[0].id_kategori;
     let kategoriById = await Model_Kategori.getId(kategoriId);
-    console.log(kategoriData.id_kategori);
     res.render("file/edit", {
       id: rows[0].id_file,
       nama_file: rows[0].nama_file,
@@ -117,13 +115,12 @@ router.get("/edit/:id", async function (req, res, next) {
       kategoriData: kategoriData,
       privasi: rows[0].privasi,
       izin: rows[0].izin,
-      hak_cipta: rows[0].hak_cipta, // Mengirimkan data kategori ke view
+      hak_cipta: rows[0].hak_cipta,
       kategori: rows[0].id_kategori,
       kategoriById: kategoriById[0],
       user: userData,
       userId: req.params.userId,
       kategoriData,
-      // email: userData[0].email, // Menambahkan email pengguna ke data yang ditampilkan
     });
   } catch (error) {
     console.error("Error:", error);
@@ -137,7 +134,7 @@ router.post(
   async function (req, res, next) {
     let id = req.params.id;
     try {
-      let filebaru = req.file ? req.file.filename : null;
+      let filebaru = req.file ? req.file.file_name : null;
       let rows = await Model_File.getById(id);
       const namaFileLama = rows[0].file_pdf;
       if (filebaru && namaFileLama) {
@@ -197,25 +194,30 @@ router.get("/delete/:id", async function (req, res, next) {
 
 router.get("/download/:id", async function (req, res, next) {
   try {
-    // Periksa jumlah file yang diunggah oleh pengguna
     let uploadedFiles = await Model_File.getUploadedFilesCount(
       req.session.userId
     );
     if (uploadedFiles < 3) {
-      // Jika jumlah file yang diunggah kurang dari 3, kirimkan pesan kesalahan
       req.flash(
         "error",
         "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
       );
       res.redirect("/file");
     } else {
-      // Jika syarat terpenuhi, lanjutkan untuk mengunduh file
-      // Panggil fungsi untuk mengunduh file dari kelas Model_File
       let fileData = await Model_File.downloadFile(req.params.id);
-      // Lakukan pengiriman file ke pengguna
+      let now = new Date();
+      let recordData = {
+        id_user: req.session.userId,
+        id_file: req.params.id,
+        tanggal: now.getDate(),
+        bulan: now.getMonth() + 1, // Bulan dimulai dari 0
+        tahun: now.getFullYear(),
+      };
+      await Model_Record.store(recordData);
+
       res.setHeader(
         "Content-disposition",
-        "attachment; filename=" + fileData.filename
+        "attachment; file_name=" + fileData.file_name
       );
       res.setHeader("Content-type", "application/pdf");
       res.end(fileData.data);

@@ -1,30 +1,48 @@
-const connection = require("../config/database");
+const db = require("../config/database");
 
 class Model_Record {
-    static async getAll() {
-        try {
-          const query = `
-            SELECT record.*, users.*, file.*
-            FROM record
-            JOIN user ON record.id_user = user.id_user
-            JOIN file ON record.id_file = file.id_file
-          `;
-          const rows = await connection.query(query);
-          return Array.isArray(rows) ? rows : []; // Pastikan selalu mengembalikan array
-        } catch (err) {
-          throw new Error('Failed to get all records: ' + err.message);
+  static async store(data) {
+    return new Promise((resolve, reject) => {
+      const query = "INSERT INTO Record (id_user, id_file, tanggal, bulan, tahun) VALUES (?, ?, ?, ?, ?)";
+      db.query(query, [data.id_user, data.id_file, data.tanggal, data.bulan, data.tahun], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
         }
-      }
-      
+      });
+    });
+  }
 
-  static async getById(id) {
-    try {
-      const query = "SELECT * FROM record WHERE id_record = ?";
-      const rows = await connection.query(query, [id]);
-      return rows;
-    } catch (err) {
-      throw new Error("Failed to get record by id: " + err.message);
-    }
+  static async getAll() {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT Record.*, users.email, file.nama_file 
+        FROM Record 
+        JOIN users ON Record.id_user = users.id_user 
+        JOIN file ON Record.id_file = file.id_file
+      `;
+      db.query(query, (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
+
+  static async Delete(id) {
+    return new Promise((resolve, reject) => {
+      const query = "DELETE FROM Record WHERE id = ?";
+      db.query(query, [id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 }
 
