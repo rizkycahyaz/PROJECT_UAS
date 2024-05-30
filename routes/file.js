@@ -23,10 +23,12 @@ const upload = multer({ storage: storage });
 router.get("/", async function (req, res, next) {
   let id = req.session.userId;
   let Data = await Model_Users.getId(id);
-  let kategori = await Model_Kategori.getAll();
+
   try {
     if (Data.length > 0) {
       let rows = await Model_File.getAll();
+      let kategori = await Model_Kategori.getAll();
+      console.log(id);
       res.render("file/index", {
         data: rows,
         email: Data[0].email,
@@ -44,19 +46,31 @@ router.get("/", async function (req, res, next) {
 router.get("/create", async function (req, res, next) {
   try {
     let id = req.session.userId;
-    let userData = await Model_Users.getId(id);
-    let kategoriData = await Model_Kategori.getAll();
+
+    if (!id) {
+      return res.status(400).send("User ID not found in session");
+    }
+
+    let userData = await Model_Users.getId(id); // Mengambil data pengguna
+    if (!userData || userData.length === 0) {
+      return res.status(404).send("User data not found");
+    }
+
+    let kategoriData = await Model_Kategori.getAll(); // Mengambil semua data kategori
+    if (!kategoriData) {
+      return res.status(404).send("Category data not found");
+    }
+
     res.render("file/create", {
       users: userData[0],
       kategori: kategoriData,
-      email: userData[0].email,
+      email: userData[0].email, // Mengirimkan data pengguna ke view
     });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
 });
-
 router.post(
   "/store",
   upload.single("file_pdf"),
