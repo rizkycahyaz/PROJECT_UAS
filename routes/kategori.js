@@ -9,13 +9,17 @@ router.get("/", async function (req, res, next) {
     let Data = await Model_Users.getId(id);
     let rows = await Model_Kategori.getAll();
     let role = req.session.role;
+
     if (Data.length > 0) {
       res.render("kategori/index", {
-        role: req.session.role,
-        data: rows,
         role: role,
-        kategori: kategori,
+        data: rows,
+        kategori: rows, // Pass rows as kategori
       });
+    } else {
+      // Handle case where Data is empty if needed
+      req.flash("invalid", "Data not found");
+      res.redirect("/login");
     }
   } catch (err) {
     req.flash("invalid", "Anda harus login terlebih dahulu");
@@ -23,6 +27,7 @@ router.get("/", async function (req, res, next) {
     console.log(err);
   }
 });
+
 
 router.get("/create", async function (req, res, next) {
   try {
