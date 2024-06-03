@@ -1,44 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Save</title>
+  <!-- Tambahkan link ke Bootstrap CSS untuk styling yang lebih baik -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .card {
+      flex: 1 0 300px;
+      max-width: 300px;
+    }
+    .delete-icon {
+      fill: white; /* Mengubah warna ikon menjadi putih */
+      float: right; /* Meletakkan ikon di sebelah kanan */
+      margin-left: 5px; /* Memberi sedikit jarak antara ikon dan teks */
+      cursor: pointer;
+    }
+  </style>
+</head>
 <body>
   <div class="container">
     <h1 class="text-center mt-4 mb-4">Data Save</h1>
-    <a href="/save/create" class="btn btn-sm btn-primary btn-add"
-      >Tambah Save</a
-    >
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">tanggal</th>
-          <th scope="col">bulan</th>
-          <th scope="col">Tahun</th>
-          <th scope="col">Email</th>
-          <th scope="col">Nama File</th>
-          <th scope="col">Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for(var i = 0; i < data.length; i++){ %>
-        <tr>
-          <th scope="row"><%= (i+1) %></th>
-          <td><%= data[i].tanggal %></td>
-          <td>
-            <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new
-            Date(data[i].tahun, data[i].bulan - 1, data[i].tanggal)) %>
-          </td>
-
-          <td><%= data[i].tahun %></td>
-          <td><%= data[i].email %></td>
-          <td><%= data[i].nama_file %></td>
-          <td>
-            <a
-              href="/save/delete/<%= data[i].id_save %>"
-              class="btn btn-sm btn-danger btn-action"
-              >Delete</a
-            >
-          </td>
-        </tr>
-        <% } %>
-      </tbody>
-    </table>
+    <a href="/save/create" class="btn btn-sm btn-primary mb-4">Tambah Save</a>
+    <div class="card-container">
+      <!-- Asumsikan bahwa "data" adalah array objek JavaScript yang diteruskan ke template ini -->
+      <% data.forEach((item, index) => { %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Dokumen <%= index + 1 %></h5>
+          <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
+          <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
+          <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
+          <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
+          <p class="card-text"><strong>Nama File:</strong> <%= item.nama_file %></p>
+          <a href="/save/delete/<%= item.id_save %>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-bookmarks-fill delete-icon" viewBox="0 0 16 16" style="float: right;">
+              <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5z" stroke="black"/>
+              <path d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1z" stroke="black"/>
+            </svg>            
+            
+          </a>
+        </div>
+      </div>
+      <% }); %>
+    </div>
   </div>
+
+  <!-- Tambahkan script untuk mendukung JavaScript jika diperlukan -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+</html>

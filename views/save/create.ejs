@@ -3,7 +3,7 @@
     <form action="/save/store" method="POST">
      
       <div class="mb-3">
-        <label for="file" class="form-label">FIlE</label>
+        <label for="file" class="form-label">Nama file</label>
         <select class="form-select" name="id_file" id="id_file" required>
           <% for(var i = 0; i < file.length; i++){ %>
           <option value="<%= file[i].id_file %>">
