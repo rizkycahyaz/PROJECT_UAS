@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Footer Layout</title>
+  <title>Save Layout</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .card-container {
@@ -65,7 +65,7 @@
   </div>
   
   <div class="container">
-    <h1 class="text-center mt-4 mb-4">Title Data Save</h1>
+    <h1 class="text-center mt-4 mb-4">Title Data Document Save</h1>
     <a href="/save/create" class="btn btn-sm btn-primary mb-4">Tambah Save</a>
     <div class="card-container">
       <!-- Assuming "data" is an array of JavaScript objects passed to this template -->
@@ -74,10 +74,10 @@
         <div class="card-body">
           <h5 class="card-title">Dokumen File <%= index + 1 %></h5>
           <p class="card-text"><strong>File :</strong> <%= item.file_pdf %></p>
+          <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
           <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
           <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
           <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
-          <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
           <a href="/save/delete/<%= item.id_save %>">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-bookmarks-fill delete-icon" viewBox="0 0 16 16" style="float: right;">
               <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5z" stroke="black"/>
@@ -122,7 +122,7 @@
             <li><a href="#">Privacy</a></li>
             <li><a href="#">Copyright</a></li>
             <li><a href="#">Cookie Preferences</a></li>
-            <li><a href="#">Do not sell or share my personal information</a></li>
+            <li><a href="#">Do not sell or share my personal information in Website here</a></li>
           </ul>
         </div>
         <div class="col">
@@ -137,8 +137,8 @@
       </div>
 
       <div class="text-center mt-4">
-        <p>Language: English</p>
-        <p>Copyright © 2024 Masukin Inc.</p>
+        <p>Language : English And Indonesian</p>
+        <p>Copyright © 2023-2024 Masukin Inc.</p>
       </div>
     
   </footer>
