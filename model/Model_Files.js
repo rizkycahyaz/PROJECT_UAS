@@ -2,7 +2,7 @@ const connection = require("../config/database");
 const path = require("path");
 const fs = require("fs");
 
-class Model_File {
+class Model_Files {
   static async getAll() {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -147,4 +147,4 @@ class Model_File {
   }
 }
 
-module.exports = Model_File;
+module.exports = Model_Files;
