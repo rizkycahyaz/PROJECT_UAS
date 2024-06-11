@@ -208,15 +208,38 @@
           }
         }
 
-        document.querySelectorAll(".far.fa-bookmark").forEach((icon) => {
+        document.querySelectorAll(".bookmark-icon").forEach((icon) => {
           icon.addEventListener("click", function () {
             const index = this.closest(".file-preview").dataset.index;
-            bookmarkFile(index);
+            bookmarkFile(files[index].id_file);
           });
         });
 
-        function bookmarkFile(index) {
-          alert(`Bookmark clicked for file index: ${index}`);
+        function bookmarkFile(id_file) {
+          fetch("/save/store", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id_file }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                alert("Bookmark saved successfully!");
+              } else {
+                alert("Failed to save bookmark.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while saving the bookmark.");
+            });
         }
       });
 
