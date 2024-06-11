@@ -8,12 +8,25 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+      crossorigin="anonymous"
+    />
+
     <style>
       .file-previews-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px; /* Memberi jarak antar kartu */
+      }
+      .file-preview canvas {
+        max-width: 100%;
+        max-height: 300px; /* Sesuaikan dengan tinggi maksimum card */
+        height: auto;
+        margin-bottom: 10px;
       }
 
       .file-preview {
@@ -26,15 +39,10 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         width: 300px;
+        height: 500px; /* Sesuaikan dengan tinggi maksimum card */
         text-align: center;
         background-color: #f9f9f9;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Memberi efek bayangan */
-      }
-
-      .file-preview canvas {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 10px;
       }
 
       .file-preview input,
@@ -44,7 +52,6 @@
         margin-bottom: 10px;
         padding: 5px;
       }
-
       .bookmark-icon {
         position: absolute;
         bottom: 10px;
@@ -53,7 +60,6 @@
         cursor: pointer;
         color: #ffc107; /* Warna kuning bookmark */
       }
-
       .bookmark-icon:hover {
         color: #e0a800;
       }
@@ -68,46 +74,87 @@
           <canvas id="pdf-canvas-<%= item.id_file %>"></canvas>
           <div class="card-body">
             <h5 class="card-title"><%= item.nama_file %></h5>
-            <p class="card-text">Deskripsi: <%= item.deskripsi %></p>
-            <p class="card-text">Privasi: <%= item.privasi %></p>
-            <p class="card-text">Izin: <%= item.izin %></p>
-            <p class="card-text">Hak Cipta: <%= item.hak_cipta %></p>
+            <p class="card-text">Upload by: <%= item.email %></p>
+            <!-- Tampilkan email pengguna yang mengunggah -->
           </div>
-          <i class="fas fa-bookmark bookmark-icon"></i>
+          <div class="card-footer d-flex justify-content-between">
+            <i
+              class="fas fa-download"
+              style="cursor: pointer"
+              onclick="downloadFile('<%= item.file_pdf %>')"
+            ></i>
+            <i
+              class="far fa-bookmark"
+              style="cursor: pointer"
+              onclick="saveFile('<%= item.id_file %>')"
+            ></i>
+          </div>
         </div>
         <% }); %>
       </div>
     </div>
+
+    <!-- Menyisipkan data ke dalam JavaScript dengan aman -->
+    <script>
+      const files = JSON.parse(
+        `<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`
+      );
+
+      // Tambahkan properti file_url ke setiap objek data
+      files.forEach((file) => {
+        file.file_url = file.file_pdf
+          ? `/images/upload/${file.file_pdf}`
+          : undefined;
+      });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const pdfjsLib = window['pdfjs-dist/build/pdf'];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+      document.addEventListener("DOMContentLoaded", async function () {
+        const pdfjsLib = window["pdfjs-dist/build/pdf"];
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
 
-        const files = <%= JSON.stringify(data) %>; // Menggunakan JSON.stringify untuk menghindari kesalahan sintaks`
+        for (const file of files) {
+          const url = file.file_url;
 
-        files.forEach((file, index) => {
-          const url = file.file_url; // Menggunakan file_url untuk URL file PDF
+          if (!url || typeof url !== "string" || url.trim() === "") {
+            console.error(`Invalid URL for file id ${file.id_file}:`, url);
+            continue;
+          }
+
           const canvas = document.getElementById(`pdf-canvas-${file.id_file}`);
-          const context = canvas.getContext('2d');
+          const context = canvas.getContext("2d");
 
-          pdfjsLib.getDocument(url).promise.then(pdf => {
-            pdf.getPage(1).then(page => {
-              const viewport = page.getViewport({ scale: 1 });
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
+          try {
+            console.log(
+              `Loading PDF for file id ${file.id_file} from URL: ${url}`
+            );
+            const pdf = await pdfjsLib.getDocument(url).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1 });
 
-              const renderContext = {
-                canvasContext: context,
-                viewport: viewport
-              };
+            // Sesuaikan tinggi canvas berdasarkan aspek rasio PDF
+            const scale = canvas.width / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+            canvas.height = scaledViewport.height;
 
-              page.render(renderContext);
-            });
-          });
-        });
+            const renderContext = {
+              canvasContext: context,
+              viewport: scaledViewport,
+            };
 
-        document.querySelectorAll(".bookmark-icon").forEach((icon) => {
+            await page.render(renderContext).promise;
+            console.log(`Page 1 of PDF ${file.id_file} rendered.`);
+          } catch (error) {
+            console.error(
+              `Error loading/rendering PDF ${file.id_file}:`,
+              error
+            );
+          }
+        }
+
+        document.querySelectorAll(".far.fa-bookmark").forEach((icon) => {
           icon.addEventListener("click", function () {
             const index = this.closest(".file-preview").dataset.index;
             bookmarkFile(index);
@@ -119,6 +166,7 @@
         }
       });
     </script>
+
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <!-- Untuk ikon FontAwesome -->
   </body>
