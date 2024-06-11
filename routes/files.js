@@ -206,7 +206,7 @@ router.get("/delete/:id", async function (req, res, next) {
 
 router.get("/download/:id", async function (req, res, next) {
   try {
-    let uploadedFiles = await Model_File.getUploadedFilesCount(
+    let uploadedFiles = await Model_Files.getUploadedFilesCount(
       req.session.userId
     );
     if (uploadedFiles < 3) {
@@ -214,26 +214,37 @@ router.get("/download/:id", async function (req, res, next) {
         "error",
         "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
       );
-      res.redirect("/files");
-    } else {
-      let fileData = await Model_File.downloadFile(req.params.id);
-      let now = new Date();
-      let recordData = {
-        id_user: req.session.userId,
-        id_file: req.params.id,
-        tanggal: now.getDate(),
-        bulan: now.getMonth() + 1, // Bulan dimulai dari 0
-        tahun: now.getFullYear(),
-      };
-      await Model_Record.store(recordData);
-
-      res.setHeader(
-        "Content-disposition",
-        "attachment; filename=" + fileData.filename
-      );
-      res.setHeader("Content-type", "application/pdf");
-      res.end(fileData.data);
+      return res.redirect("/files");
     }
+
+    console.log(
+      `User ID: ${req.session.userId} is downloading file ID: ${req.params.id}`
+    );
+
+    let fileData = await Model_Files.downloadFile(req.params.id);
+    if (!fileData) {
+      throw new Error("File data not found.");
+    }
+
+    console.log(`File data retrieved: ${fileData.filename}`);
+
+    let now = new Date();
+    let recordData = {
+      id_user: req.session.userId,
+      id_file: req.params.id,
+      tanggal: now.getDate(),
+      bulan: now.getMonth() + 1, // Bulan dimulai dari 0
+      tahun: now.getFullYear(),
+    };
+
+    await Model_Record.store(recordData);
+
+    res.setHeader(
+      "Content-disposition",
+      "attachment; filename=" + fileData.filename
+    );
+    res.setHeader("Content-type", "application/pdf");
+    res.end(fileData.data);
   } catch (error) {
     console.error("Error:", error);
     req.flash("error", "Gagal mengunduh file.");

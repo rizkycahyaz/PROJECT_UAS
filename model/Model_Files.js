@@ -123,11 +123,12 @@ class Model_Files {
               reject(new Error("File not found"));
             } else {
               const file = rows[0];
-              const filePath = path.join(
+              const filePath = path.resolve(
                 __dirname,
                 "../public/images/upload",
                 file.file_pdf
               );
+
               // Baca file dari sistem file
               fs.readFile(filePath, (err, data) => {
                 if (err) {
