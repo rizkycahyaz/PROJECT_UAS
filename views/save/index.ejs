@@ -1,151 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Save Layout</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .card {
-      flex: 1 0 300px;
-      max-width: 300px;
-    }
-    .delete-icon {
-      fill: white; 
-      float: right; 
-      margin-left: 5px; 
-      cursor: pointer;
-    }
-    .footer {
-      background-color: #f8f9fa;
-      padding: 20px;
-    }
-    .footer .col {
-      margin-bottom: 20px;
-    }
-    .footer a {
-      color: #6c757d;
-      text-decoration: none;
-    }
-    .footer a:hover {
-      text-decoration: underline;
-    }
-    .social a {
-      display: inline-block;
-      margin-right: 15px;
-    }
-    .nav-menu {
-      background-color: #f8f9fa;
-      padding: 10px 0;
-    }
-    .nav-menu a {
-      color: #6c757d;
-      margin: 0 15px;
-      text-decoration: none;
-    }
-    .nav-menu a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <title>UAS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <!-- New Navigation Bar Section -->
-  <div class="container-fluid nav-menu text-center">
-    <a href="#">Contact</a>
-    <a href="#">About Us</a>
-    <a href="#">Kategori</a>
-    <a href="#">Semua Dokumen</a>
-  </div>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/css/index.css" />
+    <link rel="stylesheet" href="/stylesheets/css/font.css" />
+    <link rel="stylesheet" href="/stylesheets/css/style.css" />
+    <link rel="stylesheet" href="/stylesheets/css/components.css" />
+    <link rel="stylesheet" href="/stylesheets/css/Landingpage.css" />
+    <style>
+      /* Navbar CSS */
+      .hamburger-menu {
+        display: none;
+        cursor: pointer;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+      }
+
+      .header__logo {
+        max-height: 50px;
+      }
+
+      .hamburger-menu {
+        display: none;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .hamburger-menu {
+          display: block;
+        }
+
+        .header__menu {
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          background-color: #fff;
+          padding: 1em;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 9999;
+        }
+
+        .header__actions {
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          background-color: #fff;
+          padding: 1em;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          width: 100%;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 9999;
+        }
+
+        .header__upload {
+          display: block;
+          margin-top: 1em;
+        }
+
+        .header__user-menu {
+          display: block;
+          margin-top: 1em;
+        }
+
+        .header__menu.show,
+        .header__actions.show {
+          display: flex;
+        }
+      }
+
+      /* Custom styles for the page */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .nav-menu {
+        background-color: #f8f9fa;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #dee2e6;
+      }
+      .nav-menu .nav-left,
+      .nav-menu .nav-right {
+        display: flex;
+        align-items: center;
+      }
+      .nav-menu a {
+        color: #000;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+      .nav-menu a:hover {
+        text-decoration: underline;
+      }
+      .header__logo {
+        height: 30px;
+      }
+      .header__upload-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+      }
+      .header__upload-icon {
+        margin-right: 5px;
+      }
+      .header__user-menu-item {
+        margin-left: 20px;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+      .card {
+        flex: 1 0 300px;
+        max-width: 300px;
+      }
+      .btn-action {
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="landing-page">
+      <header class="header">
+        <a href="/users">
+          <img
+            src="/images/img_header_logo.png"
+            alt="headerlogo"
+            class="header__logo"
+          />
+        </a>
+        <div class="hamburger-menu">
+          <i class="bi bi-list" id="menuToggle"></i>
+        </div>
+        <ul class="header__menu">
+          <li>
+            <a href="#contacts"><p class="ui text size-s">Contact</p></a>
+          </li>
+          <li>
+            <a href="#about"><p class="ui text size-s">About Us</p></a>
+          </li>
+          <li class="group">
+            <div class="header__submenu">
+              <p class="ui text size-s">Kategori</p>
+              <i class="bi bi-chevron-down header__submenu-icon"></i>
+            </div>
+            <div class="group-1">
+              <div class="menu-container">
+                <div class="menu-group">
+                  <% kategori2.forEach((item) => { %>
+                  <div class="menu">
+                    <p class="mega-menu__title ui text">
+                      <%= item.nama_kategori %>
+                    </p>
+                    <div class="menu-column"></div>
+                  </div>
+                  <% }); %>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
+          </li>
+        </ul>
+        <div class="header__actions">
+          <div class="header__upload">
+            <a href="/files/create" class="header__upload-link">
+              <i class="bi bi-upload header__upload-icon"></i>
+              <p class="header__upload-text ui text size-s">Unggah</p>
+            </a>
+          </div>
+          <ul class="header__user-menu">
+            <li>
+              <a href="#" id="emailLink"
+                ><p class="header__user-menu-item ui text size-xs">
+                  <%= email %>
+                </p></a
+              >
+            </li>
+          </ul>
+        </div>
+      </header>
   
-  <div class="container">
-    <h1 class="text-center mt-4 mb-4">Title Data Document Save</h1>
-    <a href="/save/create" class="btn btn-sm btn-primary mb-4">Tambah Save</a>
-    <div class="card-container">
-      <!-- Assuming "data" is an array of JavaScript objects passed to this template -->
-      <% data.forEach((item, index) => { %>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Dokumen File <%= index + 1 %></h5>
-          <p class="card-text"><strong>File :</strong> <%= item.file_pdf %></p>
-          <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
-          <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
-          <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
-          <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
-          <a href="/save/delete/<%= item.id_save %>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-bookmarks-fill delete-icon" viewBox="0 0 16 16" style="float: right;">
-              <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5z" stroke="black"/>
-              <path d="M4.268 1A2 2 0 0 1 6 0h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L13 13.768V2a1 1 0 0 0-1-1z" stroke="black"/>
-            </svg>            
-          </a>
-        </div>
-      </div>
-      <% }); %>
-    </div>
-  </div>
-
-  <!-- Footer Section -->
-  <footer class="footer mt-5">
     <div class="container">
-      <div class="row">
-        <div class="col">
-          <h5>About</h5>
-          <ul class="list-unstyled">
-            <li><a href="#">About Website Masukin</a></li>
-            <li><a href="#">Everand: Ebooks & Audiobooks</a></li>
-            <li><a href="#">SlideShare</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Join our team!</a></li>
-            <li><a href="#">Contact us</a></li>
-            <li><a href="#">Invite friends</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h5>Support</h5>
-          <ul class="list-unstyled">
-            <li><a href="#">Help / FAQ</a></li>
-            <li><a href="#">Accessibility</a></li>
-            <li><a href="#">Purchase help</a></li>
-            <li><a href="#">AdChoices</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h5>Legal</h5>
-          <ul class="list-unstyled">
-            <li><a href="#">Terms</a></li>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Copyright</a></li>
-            <li><a href="#">Cookie Preferences</a></li>
-            <li><a href="#">Do not sell or share my personal information in Website here</a></li>
-          </ul>
-        </div>
-        <div class="col">
-          <h5>Social</h5>
-          <div class="social">
-            <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/000000/instagram-new.png"/></a>
-            <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/000000/twitter.png"/></a>
-            <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/000000/facebook-new.png"/></a>
-            <a href="#"><img src="https://img.icons8.com/ios-glyphs/30/000000/pinterest.png"/></a>
+      <h1 class="text-center mt-4 mb-4">Title Data Document Save</h1>
+      <div class="card-container">
+        <!-- Data Cards -->
+        <% data.forEach((item, index) => { %>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Dokumen File <%= index + 1 %></h5>
+            <p class="card-text"><strong></strong> <%= item.file_pdf %></p>
+            <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
+            <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
+            <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
+            <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
+            <a href="/save/delete/<%= item.id_save %>" class="btn btn-sm btn-danger btn-action">Delete from Saved</a>
           </div>
         </div>
+        <% }); %>
       </div>
+    </div>
+  
+        <!-- footer section -->
+        <div class="landing-page-footer">
+          <div class="footer__column">
+            <div class="footer__column--info">
+              <img
+                src="/images/img_footer_logo.png"
+                alt="footerlogo"
+                class="header__logo"
+              />
+            </div>
+            <div class="footer__row">
+              <div class="footer__row--rights">
+                <div class="footer__column--navigation">
+                  <div class="footer__copyright-row">
+                    <p class="footer__copyright-text mt-5">
+                      © 2021 All Rights Reserved
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+   <!-- Bootstrap Bundle with Popper -->
+   <script
+   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+   integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJxQy8/0wE63Awjzo/9Z1GdWJ6RKtk3S0m"
+   crossorigin="anonymous"
+ ></script>
+ <script>
+   // JavaScript untuk hamburger menu
+   const menuToggle = document.getElementById('menuToggle');
+   const headerMenu = document.querySelector('.header__menu');
+   const headerActions = document.querySelector('.header__actions');
 
-      <div class="text-center mt-4">
-        <p>Language : English And Indonesian</p>
-        <p>Copyright © 2023-2024 Masukin Inc.</p>
-      </div>
-    
-  </footer>
-
-  <!-- Tambahkan script untuk mendukung JavaScript jika diperlukan -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   menuToggle.addEventListener('click', () => {
+     headerMenu.classList.toggle('show');
+     headerActions.classList.toggle('show');
+   });
+ </script>
 </body>
 </html>
