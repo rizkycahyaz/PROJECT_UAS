@@ -1,6 +1,7 @@
 var express = require("express");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
+const Model_Record = require("../model/Model_Record");
 var router = express.Router();
 
 /* GET users listing. */
@@ -16,12 +17,16 @@ router.get("/", async function (req, res, next) {
       } else {
         // Ambil data kategori
         let kategori = await Model_Kategori.getAll();
+        let totalDownloads = await Model_Record.getAll();
+        let rekomendasiDownloads = await Model_Record.getTotalDownloads();
         res.render("users/index", {
           title: "Users Home",
           nama: Data[0].nama,
           role: Data[0].role,
           email: Data[0].email,
           kategori: kategori,
+          totalDownloads: totalDownloads,
+          rekomendasiDownloads: rekomendasiDownloads
         });
       }
       //akhir kondisi

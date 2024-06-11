@@ -235,17 +235,52 @@
             <img src="/images/img_rewind.svg" alt="rewind" class="rewind" />
             <input name="search" placeholder="Search..." type="text" />
           </label>
-
-          <div class="content__features">
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
-            <div class="content__feature-item"></div>
+          <div id="rekomendasiModal" class="modal">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    Rekomendasi File yang Sering Diunduh
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    onclick="toggleRekomendasiModal()"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nama File</th>
+                        <th>Total Download</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% rekomendasiDownloads.forEach((item) => { %>
+                      <tr>
+                        <td><%= item.nama_file %></td>
+                        <td><%= item.totalDownload %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- <div class="content__features">
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+            <div class="content__feature-item"></div>
+          </div> -->
 
           <div id="about" class="content__section">
             <h1 class="content__title ui heading size-md">
@@ -380,6 +415,15 @@
     </div>
 
     <script>
+      function toggleRekomendasiModal() {
+        var modal = document.getElementById("rekomendasiModal");
+        modal.classList.toggle("show");
+      }
+
+      // Tampilkan modal saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        toggleRekomendasiModal();
+      });
       function toggleModal() {
         var modal = document.getElementById("emailModal");
         var backdrop = document.getElementById("emailModalBackdrop");

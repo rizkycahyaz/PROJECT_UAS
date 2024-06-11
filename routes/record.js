@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Model_Record = require("../model/Model_Record");
 const Model_Users = require("../model/Model_Users");
+const Model_Kategori = require("../model/Model_Kategori");
 
 router.get("/", async function (req, res, next) {
   try {
@@ -9,7 +10,14 @@ router.get("/", async function (req, res, next) {
     let userData = await Model_Users.getId(id);
     if (userData.length > 0) {
       let records = await Model_Record.getAll();
-      res.render("record/index", { records: records, email: userData[0].email });
+      let kategori = await Model_Kategori.getAll();
+      let totalDownloads = await Model_Record.getTotalDownloads();
+      res.render("record/index", { 
+        records: records, 
+        email: userData[0].email, 
+        kategori: kategori, 
+        totalDownloads: totalDownloads 
+      });
     } else {
       res.redirect("/login");
     }

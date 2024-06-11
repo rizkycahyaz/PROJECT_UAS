@@ -32,6 +32,28 @@ class Model_Record {
     });
   }
 
+  static async getTotalDownloads(limit = 5) {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT Record.id_file, file.nama_file, COUNT(*) AS totalDownload 
+        FROM Record 
+        JOIN file ON Record.id_file = file.id_file
+        GROUP BY Record.id_file, file.nama_file 
+        ORDER BY totalDownload DESC 
+        LIMIT ?`;
+      db.query(query, [limit], (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
+  
+
+
   static async Delete(id) {
     return new Promise((resolve, reject) => {
       const query = "DELETE FROM Record WHERE id = ?";
