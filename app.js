@@ -11,6 +11,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const kategoriRouter = require("./routes/kategori");
 const fileRouter = require("./routes/file");
+const dokumenRouter = require("./routes/dokumen");
 const filesRouter = require("./routes/files");
 const saveRouter = require("./routes/save");
 const recordRouter = require("./routes/record");
@@ -56,6 +57,7 @@ app.use("/files", filesRouter);
 app.use("/save", saveRouter);
 app.use("/record", recordRouter);
 app.use("/admin", adminRouter);
+app.use("/dokumen", dokumenRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
