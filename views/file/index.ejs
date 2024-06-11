@@ -15,11 +15,50 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+
+    <!-- Bootstrap JS and dependencies (jQuery) -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+      integrity="sha384-Sk7+5n1ta9jzHeKgj+eTtPupckG+ItgBp6eZM1/SMhX8ehvz43JPLlLhS+Hne8oD"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2rO+eLY2vI3jxu5+BSsb1Dpj6eAMFjphP"
+      crossorigin="anonymous"
+    ></script>
+    <!-- CSS Bootstrap -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- JavaScript Bootstrap (Jika tidak menggunakan bundle) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
     <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
@@ -200,7 +239,7 @@
             </div>
           </li>
           <li>
-            <a href="/file"><p class="ui text size-s">Semua Dokumen</p></a>
+            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
         </ul>
         <div class="header__actions">
@@ -223,50 +262,81 @@
       </header>
       <!-- isi section -->
       <div class="container">
+        <% if(messages.error) { %>
+        <div role="alert" class="alert alert-success w-1/2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span><%- messages.error %></span>
+        </div>
+        <% } %>
+
         <h1 class="text-center mt-4 mb-4">Riwayat Unggahan</h1>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">File</th>
-              <th scope="col">Nama File</th>
-              <th scope="col">Kategori</th>
-              <th scope="col">Pengguna</th>
-              <th scope="col">Deskripsi</th>
-              <th scope="col">Privasi</th>
-              <th scope="col">Izin</th>
-              <th scope="col">Hak Cipta</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for(var i = 0; i < data.length; i++){ %>
-            <tr>
-              <th scope="row"><%= (i+1) %></th>
-              <td><%= data[i].file_pdf %></td>
-              <td><%= data[i].nama_file %></td>
-              <td><%= data[i].nama_kategori %></td>
-              <td><%= data[i].email %></td>
-              <td><%= data[i].deskripsi %></td>
-              <td><%= data[i].privasi %></td>
-              <td><%= data[i].izin %></td>
-              <td><%= data[i].hak_cipta %></td>
-              <td>
-                <% if (data.length >= 3) { %>
-                <a
-                  href="/file/download/<%= data[i].id_file %>"
-                  class="btn btn-sm btn-primary btn-action"
-                  >Download</a
-                >
-                <% } else { %>
-                <span class="text-muted">Minimal 3 file harus diunggah</span>
-                <% } %>
-                <a href="/" class="btn btn-sm btn-warning btn-action">Save</a>
-              </td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
+        <div
+          class="row"
+          style="
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            width: 80%;
+          "
+        >
+          <% data.forEach((item, index) => { %>
+          <div class="col" style="width: 100%">
+            <div class="card" style="width: 100%">
+              <img
+                class="LazyImage-module_image__uh0sq LazyImage-module_loaded__st9-P Thumbnail-module_image__CtmZD"
+                alt="Hipertensi"
+                aria-label="documentContentCell"
+                src="https://imgv2-2-f.scribdassets.com/img/document/50694462/original/216x287/75e707af56/1648829868?v=1"
+                srcset="
+                  https://imgv2-1-f.scribdassets.com/img/document/50694462/original/432x574/c30e86e469/1648829868?v=1
+                "
+              />
+              <div class="card-body">
+                <h5 class="card-title"><%= item.nama_file %></h5>
+                <p class="card-text"><%= item.deskripsi %></p>
+                <div class="d-flex justify-content-end">
+                  <a
+                    href="/file/download/<%= item.id_file %>"
+                    class=""
+                    title="Download"
+                  >
+                    <i class="bi bi-download text-dark fs-6"></i>
+                  </a>
+                  <% if (index + 1 >= 3) { %>
+                  <span class="ms-2 text-danger"> </span>
+                  <% } %>
+                  <a
+                    href="/file/edit/<%= item.id_file %>"
+                    class="ms-2"
+                    title="Edit"
+                  >
+                    <i class="bi bi-pencil text-dark fs-6"></i>
+                  </a>
+                  <a
+                    href="/file/delete/<%= item.id_file %>"
+                    class="ms-2"
+                    title="Delete"
+                  >
+                    <i class="bi bi-trash text-dark fs-6"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }); %>
+        </div>
       </div>
       <!-- isi section -->
       <!-- footer section -->
@@ -428,5 +498,11 @@
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 4 JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
