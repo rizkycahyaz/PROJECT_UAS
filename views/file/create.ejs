@@ -350,12 +350,12 @@
             </div>
           </li>
           <li>
-            <a href="/file"><p class="ui text size-s">Semua Dokumen</p></a>
+            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/files/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -373,13 +373,15 @@
       </header>
 
       <div class="centered-title">
-        <h1 class="mt-5 upload-section__title ui heading size-s">Upload</h1>
+        <h1 class="mt-5 upload-section__title ui heading size-s">
+          Upload File
+        </h1>
       </div>
 
       <!-- file previews section -->
       <form
         id="upload-form"
-        action="/file/store"
+        action="/files/store"
         method="POST"
         enctype="multipart/form-data"
       >
@@ -460,53 +462,6 @@
               alt="footerlogo"
               class="header__logo"
             />
-            <p class="footer__description">
-              High level experience in web design and development knowledge,
-              producing quality work.
-            </p>
-            <button class="flex-row-center-center footer__contact-button">
-              Contact Us
-            </button>
-            <div class="footer__social-row">
-              <button class="footer__icon-button--facebook">
-                <img
-                  src="/images/img_facebook.svg"
-                  alt="facebook"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <button class="footer__icon-button--facebook">
-                <img
-                  src="/images/img_light_bulb.svg"
-                  alt="lightbulb"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <button class="footer __icon-button--facebook">
-                <img
-                  src="/images/img_settings.svg"
-                  alt="settings"
-                  class="footer__icon-button--facebook"
-                />
-              </button>
-              <img
-                src="/images/img_social.svg"
-                alt="social"
-                class="footer__social-image"
-              />
-              <button class="footer__icon-button--info">
-                <img
-                  src="/images/img_info.svg"
-                  alt="info"
-                  class="footer__icon-button--info"
-                />
-              </button>
-              <img
-                src="/images/img_social_white_a700.svg"
-                alt="social"
-                class="footer__social-image"
-              />
-            </div>
           </div>
           <div class="footer__row">
             <div class="footer__row--rights">
@@ -658,31 +613,39 @@
 
             // Add input elements for additional information
             const additionalInputs = `
-                        <input class="form-control form-label" type="text" name="nama_file" placeholder="Nama File">
-                        <select class="form-select" name="id_kategori" required>
-                            <% for(var i = 0; i < kategori.length; i++){ %>
-                                <option value="<%= kategori[i].id_kategori %>">
-                                    <%= kategori[i].nama_kategori %>
-                                </option>
-                            <% } %>
-                        </select>
-                        <input type="hidden" name="" />
-                        <input class="form-control form-label" type="text" name="deskripsi" placeholder="Deskripsi">
-                        <select class="form-select" name="privasi" required>
-                            <option value="public">Public</option>
-                            <option value="private">Private</option>
-                        </select>
-                        <select class="form-select" name="izin" required>
-                            <option value="Salin dan rekatkan teks">
-                                Salin dan rekatkan teks
-                            </option>
-                            <option value="Unduh dokumen">Unduh dokumen</option>
-                        </select>
-                        <select class="form-select" name="hak_cipta" required>
-                            <option value="All Rights Reserved">All Rights Reserved</option>
-                            <option value="Public Domain">Public Domain</option>
-                        </select>
-                    `;
+    <label for="nama_file_${i}" class="form-label">Nama File</label>
+    <input id="nama_file_${i}" class="form-control" type="text" name="nama_file" placeholder="Nama File">
+
+    <label for="id_kategori_${i}" class="form-label">Kategori</label>
+    <select id="id_kategori_${i}" class="form-select" name="id_kategori" required>
+        <% for(var i = 0; i < kategori.length; i++){ %>
+            <option value="<%= kategori[i].id_kategori %>">
+                <%= kategori[i].nama_kategori %>
+            </option>
+        <% } %>
+    </select>
+
+    <label for="deskripsi_${i}" class="form-label">Deskripsi</label>
+    <input id="deskripsi_${i}" class="form-control" type="text" name="deskripsi" placeholder="Deskripsi">
+
+    <label for="privasi_${i}" class="form-label">Privasi</label>
+    <select id="privasi_${i}" class="form-select" name="privasi" required>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+    </select>
+
+    <label for="izin_${i}" class="form-label">Izin</label>
+    <select id="izin_${i}" class="form-select" name="izin" required>
+        <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
+        <option value="Unduh dokumen">Unduh dokumen</option>
+    </select>
+
+    <label for="hak_cipta_${i}" class="form-label">Hak Cipta</label>
+    <select id="hak_cipta_${i}" class="form-select" name="hak_cipta" required>
+        <option value="All Rights Reserved">All Rights Reserved</option>
+        <option value="Public Domain">Public Domain</option>
+    </select>
+`;
             filePreview.insertAdjacentHTML("beforeend", additionalInputs);
 
             filePreview.appendChild(deleteButton);
@@ -711,36 +674,6 @@
             uploadButton.style.display = "none";
           }
         }
-
-        // Function to handle PDF upload
-        function handlePDFUpload(files) {
-          // Hanya mengambil file PDF pertama jika ada lebih dari satu file
-          filePDF = files[0];
-
-          // Membuat objek FileReader
-          const reader = new FileReader();
-
-          // Menangani saat file selesai dibaca
-          reader.onload = function (event) {
-            // Buat elemen baru untuk menampilkan PDF
-            const pdfElement = document.createElement("embed");
-            pdfElement.setAttribute("src", event.target.result);
-            pdfElement.setAttribute("type", "application/pdf");
-            pdfElement.setAttribute("style", "width: 200px; height: 250px;");
-
-            // Dapatkan file preview pertama
-            const filePreview = document.querySelector(
-              '.file-preview[data-index="0"]'
-            );
-
-            // Sisipkan elemen PDF ke dalam file preview
-            filePreview.appendChild(pdfElement);
-          };
-
-          // Membaca file sebagai URL data
-          reader.readAsDataURL(filePDF);
-        }
-
         // Function to get user ID from session
         function getUserIdFromSession() {
           // Implement logic to get user ID from session
@@ -778,6 +711,7 @@
           // Membaca file sebagai URL data
           reader.readAsDataURL(filePDF);
         }
+
         // Function to handle form submission
         function handleSubmit(event) {
           event.preventDefault();
@@ -816,51 +750,40 @@
             formData.append("id_user[]", idUser);
           });
 
-          fetch("/file/store", {
+          // Kirim data ke server
+          fetch("/files/store", {
             method: "POST",
             body: formData,
           })
             .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              console.log("Response:", data);
-              // Handle response as needed
-              if (data.success) {
-                // Jika unggahan berhasil, hapus file PDF dari tampilan
-                const uploadedFilePreview = document.querySelector(
-                  '.file-preview[data-index="0"]'
-                );
-                if (uploadedFilePreview) {
-                  uploadedFilePreview.remove();
-                }
-                // Reset nilai filePDF
-                filePDF = null;
-                // Sembunyikan tombol unggah setelah file dihapus
-                uploadButton.style.display = "none";
-
-                // Jalankan deleteFile di sini
-                deleteFile(0); // Menghapus file pertama karena file PDF
+              if (response.ok) {
+                // Berhasil mengunggah file
+                console.log("Files uploaded successfully");
+                alert("File berhasil diunggah!");
+                // Redirect atau perbarui halaman setelah unggahan berhasil
+                window.location.href = "/files/create";
               } else {
-                // Di sini, jika Anda ingin tetap melanjutkan dengan deleteFile
-                // meskipun ada kesalahan, maka jalankan deleteFile langsung di sini
-                deleteFile(0); // Menghapus file pertama karena file PDF
-
-                // Mungkin tambahkan logging untuk menandai bahwa ada kesalahan
-                console.error(
-                  "Terjadi kesalahan saat mengunggah file dan data."
-                );
+                // Gagal mengunggah file
+                console.error("Failed to upload files");
               }
+            })
+            .catch((error) => {
+              console.error("Error uploading files:", error);
             });
         }
 
         uploadForm.addEventListener("submit", handleSubmit);
 
+        // Event listener untuk memanggil handlePDFUpload saat file diunggah
         fileInput.addEventListener("change", function (event) {
           const files = event.target.files;
+          handlePDFUpload(files);
+        });
+
+        dropContainer.addEventListener("drop", function (event) {
+          event.preventDefault();
+          dropContainer.classList.remove("dragging");
+          const files = event.dataTransfer.files;
           handlePDFUpload(files);
         });
       });

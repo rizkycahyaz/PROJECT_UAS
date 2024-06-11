@@ -49,6 +49,18 @@
       font-weight: bold;
       background-color: #f8f9fc;
     }
+    .text-center {
+      text-align: center;
+    }
+    .mt-4 {
+      margin-top: 1.5rem;
+    }
+    .mb-4 {
+      margin-bottom: 1.5rem;
+    }
+    .btn-add {
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 
@@ -110,14 +122,7 @@
                 <span class="hide-menu">dokumen</span>
               </a>
             </li>
-            <!-- <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-cards"></i>
-                </span>
-                <span class="hide-menu">Card</span>
-              </a>
-            </li>
+            <!-- 
             <li class="sidebar-item">
               <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
                 <span>
@@ -190,69 +195,39 @@
       </header>
       <!-- Header End -->
       <div class="container-fluid main-content">
-        <!-- Dashboard Overview -->
-        <div class="card">
-          <div class="card-header">Dashboard Overview</div>
-          <div class="card-body">
-            <p>Welcome to the Admin Dashboard. Use the navigation menu to explore different sections.</p>
-          </div>
-        </div>
-        <!-- Recent Activities -->
-        <div class="card">
-          <div class="card-header">Recent Activities</div>
-          <div class="card-body">
-            <p>No recent activities.</p>
-          </div>
-        </div>
-        <!-- Chart Example -->
-        <div class="card chart-container">
-          <div class="card-header">User Statistics</div>
-          <div class="card-body">
-            <div id="user-chart"></div>
-          </div>
-        </div>
-        <!-- Table Example -->
-        <div class="card table-responsive">
-          <div class="card-header">Recent Users</div>
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>John Doe</td>
-                  <td>john@example.com</td>
-                  <td>Active</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Jane Smith</td>
-                  <td>jane@example.com</td>
-                  <td>Inactive</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Mike Johnson</td>
-                  <td>mike@example.com</td>
-                  <td>Active</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <!-- Data Pengguna -->
+<div class="card">
+    <div class="card-header text-center mt-4 mb-4">Data Dokumen</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                <th>NO</th>
+                <th>File Name</th>
+                <th>User Name</th>
+                <th>Kategori</th>
+                <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% data.map((file, index) => { %>
+              <tr>
+                <th scope="row"><%= (index + 1) %></th>
+                <td><%= file.nama_file %></td>
+                <td><%= file.email %></td>
+                <td><%= file.nama_kategori %></td>
+                <td>
+                  <a href="/dokumen/delete/<%= file.id_file %>" class="btn btn-sm btn-danger btn-action">Delete</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>          
+        </table>
       </div>
-      <footer class="footer">
-        <div class="container-fluid py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank" class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a></p>
-        </div>
-      </footer>
+    </div>
+  </div>  
+      </div>
     </div>
   </div>
   <script src="/src/assets/libs/jquery/dist/jquery.min.js"></script>
@@ -262,25 +237,5 @@
   <script src="/src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="/src/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="/src/assets/js/dashboard.js"></script>
-  <script>
-    // Initialize ApexCharts
-    var options = {
-      chart: {
-        type: 'line',
-        height: 350
-      },
-      series: [{
-        name: 'Users',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
-      }],
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#user-chart"), options);
-    chart.render();
-  </script>
 </body>
-
 </html>
