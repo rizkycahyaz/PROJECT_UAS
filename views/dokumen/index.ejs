@@ -190,22 +190,29 @@
                 <th>File Name</th>
                 <th>User Name</th>
                 <th>Kategori</th>
+                <th>status</th>
                 <th>Action</th>
               </tr>
           </thead>
           <tbody>
             <% data.map((file, index) => { %>
-              <tr>
-                <th scope="row"><%= (index + 1) %></th>
-                <td><%= file.nama_file %></td>
-                <td><%= file.email %></td>
-                <td><%= file.nama_kategori %></td>
-                <td>
-                  <a href="/dokumen/delete/<%= file.id_file %>" class="btn btn-sm btn-danger btn-action">Delete</a>
-                  <a href="/dokumen/approve/<%= file.id_file %>" class="btn btn-sm btn-success btn-action">Approve</a>
-                  <a href="/dokumen/disapprove/<%= file.id_file %>" class="btn btn-sm btn-warning btn-action">Tidak Setuju</a>
-                </td>
-              </tr>
+                                  <!-- Di dalam loop data -->
+                    <tr>
+                      <th scope="row"><%= (index + 1) %></th>
+                      <td><%= file.nama_file %></td>
+                      <td><%= file.email %></td>
+                      <td><%= file.nama_kategori %></td>
+                      <td><%= file.pengajuan %></td> <!-- Menampilkan status pengajuan -->
+                      <td>
+                          <a href="/dokumen/delete/<%= file.id_file %>" class="btn btn-sm btn-danger btn-action">Delete</a>
+                          <% if (file.pengajuan === 'pending') { %> <!-- Hanya menampilkan tombol jika status pengajuan adalah 'pending' -->
+                              <a href="/dokumen/approve/<%= file.id_file %>" class="btn btn-sm btn-success btn-action">Approve</a>
+                              <a href="/dokumen/disapprove/<%= file.id_file %>" class="btn btn-sm btn-warning btn-action">Disapprove</a>
+                          <% } %>
+                      </td>
+                    </tr>
+                <!-- Di dalam loop data -->
+
             <% }) %>
           </tbody>          
         </table>
