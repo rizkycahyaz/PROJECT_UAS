@@ -46,8 +46,42 @@ class Model_Dokumen {
           );
         });
       }
+
+      static async approve(id) {
+        return new Promise((resolve, reject) => {
+          connection.query(
+            "UPDATE file SET pengajuan = 'setuju' WHERE id_file = ?",
+            [id],
+            (err, result) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+        });
+      }
+    
+      static async disapprove(id) {
+        return new Promise((resolve, reject) => {
+          connection.query(
+            "UPDATE file SET pengajuan = 'tidak setuju' WHERE id_file = ?",
+            [id],
+            (err, result) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+        });
+      }
       
     }
+
+    
 
     
   

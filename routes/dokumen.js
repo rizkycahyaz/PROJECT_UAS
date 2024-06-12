@@ -54,4 +54,27 @@ router.get("/", async function (req, res, next) {
     }
   });
 
+ // Route to approve a document
+router.get("/approve/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await Model_Dokumen.approve(id);
+    res.redirect("/dokumen"); // Redirect back to the documents page after approval
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
+// Route to disapprove a document
+router.get("/disapprove/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    await Model_Dokumen.disapprove(id);
+    res.redirect("/dokumen"); // Redirect back to the documents page after disapproval
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;

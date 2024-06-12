@@ -122,24 +122,7 @@
                 <span class="hide-menu">dokumen</span>
               </a>
             </li>
-            <!-- 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-file-description"></i>
-                </span>
-                <span class="hide-menu">Forms</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-typography"></i>
-                </span>
-                <span class="hide-menu">Typography</span>
-              </a>
-            </li> -->
-          </ul>
+           </ul>
         </nav>
         <!-- End Sidebar navigation -->
       </div>
@@ -219,6 +202,8 @@
                 <td><%= file.nama_kategori %></td>
                 <td>
                   <a href="/dokumen/delete/<%= file.id_file %>" class="btn btn-sm btn-danger btn-action">Delete</a>
+                  <a href="/dokumen/approve/<%= file.id_file %>" class="btn btn-sm btn-success btn-action">Approve</a>
+                  <a href="/dokumen/disapprove/<%= file.id_file %>" class="btn btn-sm btn-warning btn-action">Tidak Setuju</a>
                 </td>
               </tr>
             <% }) %>
