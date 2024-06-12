@@ -184,7 +184,13 @@
         background-color: #f9f9f9;
         /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
       }
-
+      .btn-login {
+        background-color: #28a745;
+        color: white;
+        padding: 0.5em 1em;
+        border-radius: 0.25em;
+        text-decoration: none;
+      }
       .file-preview input,
       .file-preview select,
       .file-preview textarea {
@@ -247,7 +253,7 @@
   <body>
     <div class="landing-page">
       <header class="header">
-        <a href="/users">
+        <a href="/">
           <img
             src="/images/img_header_logo.png"
             alt="headerlogo"
@@ -258,7 +264,7 @@
         </div>
         <ul class="header__menu">
           <li>
-            <a href="/users"><p class="ui text size-s">Beranda</p></a>
+            <a href="/"><p class="ui text size-s">Beranda</p></a>
           </li>
           <li class="group">
             <div class="header__submenu">
@@ -293,6 +299,7 @@
           </div>
           <ul class="header__user-menu">
             <li>
+              <a href="/login" class="btn btn-login">Login</a>
               <a href="#" id="emailLink"
                 ><p class="header__user-menu-item ui text size-xs"></p
               ></a>
