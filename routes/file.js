@@ -87,6 +87,7 @@ router.post(
         privasi: req.body.privasi,
         izin: req.body.izin,
         hak_cipta: req.body.hak_cipta,
+        pengajuan: req.body.pengajuan,
       };
       await Model_File.Store(Data);
       req.flash("success", "Berhasil menyimpan data");
