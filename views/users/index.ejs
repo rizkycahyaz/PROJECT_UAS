@@ -235,41 +235,31 @@
             <img src="/images/img_rewind.svg" alt="rewind" class="rewind" />
             <input name="search" placeholder="Search..." type="text" />
           </label>
-          <div id="rekomendasiModal" class="modal">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">
-                    Rekomendasi File yang Sering Diunduh
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    aria-label="Close"
-                    onclick="toggleRekomendasiModal()"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Nama File</th>
-                        <th>Total Download</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% rekomendasiDownloads.forEach((item) => { %>
-                      <tr>
-                        <td><%= item.nama_file %></td>
-                        <td><%= item.totalDownload %></td>
-                      </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+
+          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nama File</th>
+                <th>Total Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (popularFiles && popularFiles.length > 0) { %> <%
+              popularFiles.forEach(record => { %>
+              <tr>
+                <td><%= record.nama_file %></td>
+                <td><%= record.total_download %></td>
+              </tr>
+              <% }) %> <% } else { %>
+              <tr>
+                <td colspan="2">
+                  Tidak ada data file yang populer untuk ditampilkan.
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
 
           <!-- <div class="content__features">
             <div class="content__feature-item"></div>
@@ -415,10 +405,15 @@
     </div>
 
     <script>
-      function toggleRekomendasiModal() {
-        var modal = document.getElementById("rekomendasiModal");
-        modal.classList.toggle("show");
-      }
+      // function toggleRekomendasiModal() {
+      //   var modal = document.getElementById("rekomendasiModal");
+      //   if (modal) {
+      //     // Tambahkan pengecekan ini
+      //     modal.classList.toggle("show");
+      //   } else {
+      //     console.error("Elemen dengan id 'rekomendasiModal' tidak ditemukan.");
+      //   }
+      // }
 
       // Tampilkan modal saat halaman dimuat
       document.addEventListener("DOMContentLoaded", function () {
@@ -461,6 +456,19 @@
           document.querySelector(".header__menu").classList.toggle("show");
           document.querySelector(".header__actions").classList.toggle("show");
         });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const totalDownloads = JSON.parse(
+          `<%- JSON.stringify(totalDownloads).replace(/</g, '\\u003c') %>`
+        );
+        const popularFiles = JSON.parse(
+          `<%- JSON.stringify(popularFiles).replace(/</g, '\\u003c') %>`
+        );
+
+        console.log("Total download di Client:", totalDownloads);
+        console.log("Popular Files di Client:", popularFiles); // Log data di klien
+      });
     </script>
 
     <script

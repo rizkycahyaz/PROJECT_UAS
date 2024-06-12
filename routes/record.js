@@ -7,23 +7,30 @@ const Model_Kategori = require("../model/Model_Kategori");
 router.get("/", async function (req, res, next) {
   try {
     let id = req.session.userId;
-    let userData = await Model_Users.getId(id);
-    if (userData.length > 0) {
-      let records = await Model_Record.getAll();
-      let kategori = await Model_Kategori.getAll();
-      let totalDownloads = await Model_Record.getTotalDownloads();
-      res.render("record/index", { 
-        records: records, 
-        email: userData[0].email, 
-        kategori: kategori, 
-        totalDownloads: totalDownloads 
-      });
+    let Data = await Model_Users.getId(id);
+    if (Data.length > 0) {
+      if (Data[0].role != 1) {
+        res.redirect("/logout");
+      } else {
+        let kategori = await Model_Kategori.getAll();
+        let totalDownloads = await Model_Record.getAll();
+        let popularFiles = await Model_Record.getAll();
+        console.log("Popular Files di Server:", popularFiles); // Log data di server
+        res.render("users/index", {
+          title: "Users Home",
+          nama: Data[0].nama,
+          role: Data[0].role,
+          email: Data[0].email,
+          kategori: kategori,
+          totalDownloads: totalDownloads,
+          popularFiles: popularFiles,
+        });
+      }
     } else {
-      res.redirect("/login");
+      res.status(401).json({ error: "user tidak ada" });
     }
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(501).json("Butuh akses login");
   }
 });
 

@@ -223,21 +223,35 @@ router.get("/download/:id", async function (req, res, next) {
 
     let fileData = await Model_Files.downloadFile(req.params.id);
     if (!fileData) {
-      throw new Error("File data not found.");
+      throw new Error("Data file tidak ditemukan.");
     }
 
-    console.log(`File data retrieved: ${fileData.filename}`);
+    console.log(`Data file ditemukan: ${fileData.filename}`);
 
-    let now = new Date();
-    let recordData = {
-      id_user: req.session.userId,
-      id_file: req.params.id,
-      tanggal: now.getDate(),
-      bulan: now.getMonth() + 1, // Bulan dimulai dari 0
-      tahun: now.getFullYear(),
-    };
+    // Periksa apakah pengguna sudah pernah mengunduh file ini sebelumnya
+    let existingDownload = await Model_Record.getDownloadByUserAndFile(
+      req.session.userId,
+      req.params.id
+    );
 
-    await Model_Record.store(recordData);
+    if (!existingDownload) {
+      // Jika belum pernah, buat catatan unduhan baru
+      let now = new Date();
+      let recordData = {
+        id_user: req.session.userId,
+        id_file: req.params.id,
+        tanggal: now.getDate(),
+        bulan: now.getMonth() + 1, // Bulan dimulai dari 0
+        tahun: now.getFullYear(),
+      };
+      await Model_Record.store(recordData);
+    } else {
+      // Jika sudah pernah, tingkatkan total unduhan pada catatan unduhan yang sudah ada
+      await Model_Record.incrementTotalDownload(existingDownload.id);
+    }
+
+    // Increment total_download in the file table
+    await Model_Files.incrementTotalDownload(req.params.id);
 
     res.setHeader(
       "Content-disposition",
@@ -247,9 +261,8 @@ router.get("/download/:id", async function (req, res, next) {
     res.end(fileData.data);
   } catch (error) {
     console.error("Error:", error);
-    req.flash("error", "Gagal mengunduh file.");
+    req.flash("error", `Gagal mengunduh file: ${error.message}`);
     res.redirect("/files");
   }
 });
-
 module.exports = router;

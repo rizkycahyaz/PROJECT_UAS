@@ -62,6 +62,22 @@ class Model_Files {
     });
   }
 
+  static async getWithRecord(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM `file` JOIN record ON file.id_file = record.id_file ORDER BY record.total_download DESC",
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  }
+
   static async Update(id, Data) {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -115,7 +131,7 @@ class Model_Files {
       connection.query(
         "SELECT * FROM file WHERE id_file = ?",
         [id],
-        (err, rows) => {
+        async (err, rows) => {
           if (err) {
             reject(err);
           } else {
@@ -130,17 +146,39 @@ class Model_Files {
               );
 
               // Baca file dari sistem file
-              fs.readFile(filePath, (err, data) => {
+              fs.readFile(filePath, async (err, data) => {
                 if (err) {
                   reject(err);
                 } else {
-                  resolve({
-                    filename: file.file_pdf,
-                    data: data,
-                  });
+                  // Memperbarui nilai total unduhan dalam tabel file
+                  try {
+                    await Model_Files.incrementTotalDownload(id); // Memanggil fungsi untuk menambah total unduhan
+                    resolve({
+                      filename: file.file_pdf,
+                      data: data,
+                    });
+                  } catch (error) {
+                    reject(error);
+                  }
                 }
               });
             }
+          }
+        }
+      );
+    });
+  }
+
+  static async incrementTotalDownload(idFile) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE record SET total_download = total_download + 1 WHERE id_file = ?",
+        [idFile],
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
           }
         }
       );

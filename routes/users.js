@@ -18,7 +18,10 @@ router.get("/", async function (req, res, next) {
         // Ambil data kategori
         let kategori = await Model_Kategori.getAll();
         let totalDownloads = await Model_Record.getAll();
-        let rekomendasiDownloads = await Model_Record.getTotalDownloads();
+        let popularFiles = await Model_Record.getPopularFiles();
+        // Log semua data record di console
+        console.log("Total Downloads:", totalDownloads);
+        console.log("Popular Files di Server:", popularFiles);
         res.render("users/index", {
           title: "Users Home",
           nama: Data[0].nama,
@@ -26,7 +29,7 @@ router.get("/", async function (req, res, next) {
           email: Data[0].email,
           kategori: kategori,
           totalDownloads: totalDownloads,
-          rekomendasiDownloads: rekomendasiDownloads
+          popularFiles: popularFiles,
         });
       }
       //akhir kondisi
