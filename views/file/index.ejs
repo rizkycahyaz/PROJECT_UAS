@@ -316,7 +316,12 @@
                   >PDF</span
                 >
                 <% } %>
-                <canvas id="pdf-canvas-<%= item.id_file %>"></canvas>
+                <canvas
+                  id="pdf-canvas-<%= item.id_file %>"
+                  data-file-id="<%= item.id_file %>"
+                  onclick="viewPDF('<%= item.id_file %>')"
+                  style="cursor: pointer"
+                ></canvas>
                 <div class="card-body">
                   <h5 class="card-title text-center"><%= item.nama_file %></h5>
                   <p class="card-text text-center"><%= item.deskripsi %></p>
@@ -468,6 +473,11 @@
         });
     </script>
     <script>
+      //klik pdf
+      function viewPDF(id) {
+        window.location.href = `/files/detail/${id}`;
+      }
+
       const files = JSON.parse(
         `<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`
       );
@@ -543,6 +553,9 @@
       });
     </script>
     <script>
+      function viewPDF(id) {
+        window.location.href = `/files/detail/${id}`;
+      }
       document.addEventListener("DOMContentLoaded", async function () {
         const pdfjsLib = window["pdfjs-dist/build/pdf"];
         pdfjsLib.GlobalWorkerOptions.workerSrc =
