@@ -14,8 +14,9 @@ router.get("/", async function (req, res, next) {
       let rows = await Model_Save.getAll();
       res.render("save/index", {
         data: rows,
-        kategori2: kategori,
         email: Data[0].email,
+        kategori2: kategori
+        
       });
     } else {
       res.redirect("/login");
