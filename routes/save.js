@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Model_File = require("../model/Model_Files");
+const Model_Files = require("../model/Model_Files");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
 const Model_Save = require("../model/Model_Save");
@@ -8,11 +8,15 @@ const Model_Save = require("../model/Model_Save");
 router.get("/", async function (req, res, next) {
   let id = req.session.userId;
   let Data = await Model_Users.getId(id);
+  let kategori = await Model_Kategori.getAll();
   try {
     if (Data.length > 0) {
       let rows = await Model_Save.getAll();
       res.render("save/index", {
         data: rows,
+        email: Data[0].email,
+        kategori2: kategori
+        
       });
     } else {
       res.redirect("/login");
