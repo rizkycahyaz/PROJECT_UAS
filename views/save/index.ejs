@@ -160,6 +160,11 @@
           display: block;
         }
 
+        .icon-right {
+  margin-left: auto;
+}
+
+
         .header__menu {
           display: none;
           flex-direction: column;
@@ -309,7 +314,9 @@
                 <canvas id="pdf-canvas-<%= item.id_file %>"></canvas>
                 <div class="card-body">
                   <p class="card-text">
-                    <strong>Email:</strong> <%= item.email %>
+                    <h4><strong><%= item.nama_file %></strong>  </h4>
+                  <p class="card-text">
+                    <strong></strong> <%= item.email %>
                   </p>
                   <p class="card-text">
                     <strong>Tanggal:</strong> <%= item.tanggal %>
@@ -324,10 +331,11 @@
                   </p>
 
                   <div class="d-flex justify-content-center mt-2">
-                    <a href="/save/delete/<%= item.id_save %>" class="ms-2"
-                      ><i class="bi bi-trash text-dark fs-6"></i
-                    ></a>
+                    <a href="/save/delete/<%= item.id_save %>" class="ms-auto icon-right">
+                      <i class="bi bi-trash text-dark fs-6"></i>
+                    </a>
                   </div>
+                  
                 </div>
               </div>
             </div>
