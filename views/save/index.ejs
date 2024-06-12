@@ -4,77 +4,27 @@
     <meta charset="utf-8" />
     <title>UAS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <!-- Bootstrap 5 CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <!-- Bootstrap 5 CSS -->
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
-
-    <!-- Bootstrap JS and dependencies (jQuery) -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-      integrity="sha384-Sk7+5n1ta9jzHeKgj+eTtPupckG+ItgBp6eZM1/SMhX8ehvz43JPLlLhS+Hne8oD"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2rO+eLY2vI3jxu5+BSsb1Dpj6eAMFjphP"
-      crossorigin="anonymous"
-    ></script>
-    <!-- CSS Bootstrap -->
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- JavaScript Bootstrap (Jika tidak menggunakan bundle) -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-
     <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
     />
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="/stylesheets/css/index.css" />
     <link rel="stylesheet" href="/stylesheets/css/font.css" />
     <link rel="stylesheet" href="/stylesheets/css/style.css" />
     <link rel="stylesheet" href="/stylesheets/css/components.css" />
     <link rel="stylesheet" href="/stylesheets/css/Landingpage.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
+
     <style>
       .modal {
         display: none;
@@ -93,7 +43,6 @@
         display: block;
         right: 0;
       }
-
       .modal-header {
         display: flex;
         justify-content: space-between;
@@ -119,7 +68,6 @@
       .modal-close {
         cursor: pointer;
       }
-
       .modal-backdrop {
         display: none;
         position: fixed;
@@ -129,42 +77,29 @@
         right: 0;
         background-color: rgba(0, 0, 0, 0);
       }
-
       .modal-backdrop.active {
         display: block;
       }
-
       .hamburger-menu {
         display: none;
         cursor: pointer;
       }
-
       .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 1em;
       }
-
       .header__logo {
         max-height: 50px;
       }
-
-      .hamburger-menu {
-        display: none;
-        cursor: pointer;
-      }
-
       @media (max-width: 768px) {
         .hamburger-menu {
           display: block;
         }
-
         .icon-right {
-  margin-left: auto;
-}
-
-
+          margin-left: auto;
+        }
         .header__menu {
           display: none;
           flex-direction: column;
@@ -178,7 +113,6 @@
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           z-index: 9999;
         }
-
         .header__actions {
           display: none;
           flex-direction: column;
@@ -192,21 +126,22 @@
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           z-index: 9999;
         }
-
         .header__upload {
           display: block;
           margin-top: 1em;
         }
-
         .header__user-menu {
           display: block;
           margin-top: 1em;
         }
-
         .header__menu.show,
         .header__actions.show {
           display: flex;
         }
+      }
+
+      .card-body h4 {
+        margin-top: 5px; /* Mengurangi jarak antara elemen canvas dan h4 */
       }
     </style>
   </head>
@@ -214,18 +149,13 @@
     <div class="landing-page">
       <header class="header">
         <a href="/users">
-          <img
-            src="/images/img_header_logo.png"
-            alt="headerlogo"
-            class="header__logo"
-        /></a>
+          <img src="/images/img_header_logo.png" alt="headerlogo" class="header__logo" />
+        </a>
         <div class="hamburger-menu">
           <i class="bi bi-list" id="menuToggle"></i>
         </div>
         <ul class="header__menu">
-          <li>
-            <a href="/record"><p class="ui text size-s">Beranda</p></a>
-          </li>
+          <li><a href="/record"><p class="ui text size-s">Beranda</p></a></li>
           <li class="group">
             <div class="header__submenu">
               <p class="ui text size-s">Kategori</p>
@@ -236,9 +166,7 @@
                 <div class="menu-group">
                   <% kategori2.forEach((item) => { %>
                   <div class="menu">
-                    <p class="mega-menu__title ui text">
-                      <%= item.nama_kategori %>
-                    </p>
+                    <p class="mega-menu__title ui text"><%= item.nama_kategori %></p>
                     <div class="menu-column"></div>
                   </div>
                   <% }); %>
@@ -246,9 +174,7 @@
               </div>
             </div>
           </li>
-          <li>
-            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
-          </li>
+          <li><a href="/files"><p class="ui text size-s">Semua Dokumen</p></a></li>
         </ul>
         <div class="header__actions">
           <div class="header__upload">
@@ -259,11 +185,7 @@
           </div>
           <ul class="header__user-menu">
             <li>
-              <a href="#" id="emailLink"
-                ><p class="header__user-menu-item ui text size-xs">
-                  <%= email %>
-                </p></a
-              >
+              <a href="#" id="emailLink"><p class="header__user-menu-item ui text size-xs"><%= email %></p></a>
             </li>
           </ul>
         </div>
@@ -289,10 +211,7 @@
 
       <div class="container">
         <h1 class="text-center mt-4 mb-4">Simpan Document</h1>
-        <div
-          class="container d-flex justify-content-center"
-          style="width: 100%; display: flex; justify-content: center"
-        >
+        <div class="container d-flex justify-content-center" style="width: 100%; display: flex; justify-content: center">
           <div
             class="row"
             style="
@@ -305,37 +224,34 @@
             <% data.forEach((item, index) => { %>
             <div class="col" style="width: 100%">
               <div class="card" style="width: 90%">
-                <!-- Tambahkan kondisi untuk menampilkan label jika file PDF -->
                 <% if (item.file_pdf) { %>
-                <span class="badge bg-danger position-absolute top-0 start-0"
-                  >PDF</span
-                >
+                <span class="badge bg-danger position-absolute top-0 start-0">PDF</span>
                 <% } %>
-                <canvas id="pdf-canvas-<%= item.id_file %>"></canvas>
-                <div class="card-body">
-                  <p class="card-text">
-                    <h4><strong><%= item.nama_file %></strong>  </h4>
-                  <p class="card-text">
-                    <strong></strong> <%= item.email %>
-                  </p>
+                  <canvas
+                    id="pdf-canvas-<%= item.id_file %>"
+                    data-file-id="<%= item.id_file %>"
+                    onclick="viewPDF('<%= item.id_file %>')"
+                    style="cursor: pointer"
+                  ></canvas>
+
+                  <div class="card-body">
+                    <p class="card-text"></p>
+                    <h4><strong><%= item.nama_file %></strong></h4>
+                  <p class="card-text"><strong> <%= item.email %></p>
                   <p class="card-text">
                     <strong>Tanggal:</strong> <%= item.tanggal %>
                   </p>
                   <p class="card-text">
-                    <strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID',
-                    { month: 'long' }).format(new Date(item.tahun, item.bulan -
-                    1, item.tanggal)) %>
+                    <strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %>
                   </p>
                   <p class="card-text">
                     <strong>Tahun:</strong> <%= item.tahun %>
                   </p>
-
                   <div class="d-flex justify-content-center mt-2">
                     <a href="/save/delete/<%= item.id_save %>" class="ms-auto icon-right">
                       <i class="bi bi-trash text-dark fs-6"></i>
                     </a>
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -345,23 +261,16 @@
       </div>
       <!-- isi section -->
       <!-- footer section -->
-      <!-- footer section -->
       <div class="landing-page-footer">
         <div class="footer__column">
           <div class="footer__column--info">
-            <img
-              src="/images/img_footer_logo.png"
-              alt="footerlogo"
-              class="header__logo"
-            />
+            <img src="/images/img_footer_logo.png" alt="footerlogo" class="header__logo" />
           </div>
           <div class="footer__row">
             <div class="footer__row--rights">
               <div class="footer__column--navigation">
                 <div class="footer__copyright-row">
-                  <p class="footer__copyright-text mt-5">
-                    © 2021 All Rights Reserved
-                  </p>
+                  <p class="footer__copyright-text mt-5">© 2021 All Rights Reserved</p>
                 </div>
               </div>
             </div>
@@ -369,28 +278,17 @@
         </div>
       </div>
       <!-- Modal -->
-      <div
-        id="emailModalBackdrop"
-        class="modal-backdrop"
-        onclick="closeModal()"
-      ></div>
+      <div id="emailModalBackdrop" class="modal-backdrop" onclick="closeModal()"></div>
       <div id="emailModal" class="modal">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Hai <%= email %>!</h5>
-              <button
-                type="button"
-                class="btn-close"
-                aria-label="Close"
-                onclick="toggleModal()"
-              ></button>
+              <button type="button" class="btn-close" aria-label="Close" onclick="toggleModal()"></button>
             </div>
             <div class="modal-body">
               <a href="/save"><i class="bi bi-heart"></i> Disimpan</a>
-              <a href="/file"
-                ><i class="bi bi-file-earmark-text"></i> Unggahan Dokumen</a
-              >
+              <a href="/file"><i class="bi bi-file-earmark-text"></i> Unggahan Dokumen</a>
               <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </div>
           </div>
@@ -406,12 +304,10 @@
         backdrop.classList.toggle("active");
       }
 
-      document
-        .getElementById("emailLink")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          toggleModal();
-        });
+      document.getElementById("emailLink").addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleModal();
+      });
 
       function closeModal() {
         var modal = document.getElementById("emailModal");
@@ -420,42 +316,34 @@
         backdrop.classList.remove("active");
       }
 
-      document
-        .getElementById("emailModalBackdrop")
-        .addEventListener("click", function () {
-          closeModal();
-        });
+      document.getElementById("emailModalBackdrop").addEventListener("click", function () {
+        closeModal();
+      });
 
       window.addEventListener("scroll", function () {
         closeModal();
       });
 
-      document
-        .getElementById("menuToggle")
-        .addEventListener("click", function () {
-          document.querySelector(".header__menu").classList.toggle("show");
-          document.querySelector(".header__actions").classList.toggle("show");
-        });
-    </script>
-    <script>
-      const files = JSON.parse(
-        `<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`
-      );
+      function viewPDF(id) {
+        window.location.href = `/files/detail/${id}`;
+      }
 
-      // Tambahkan properti file_url ke setiap objek data
-      files.forEach((file) => {
-        file.file_url = file.file_pdf
-          ? `/images/upload/${file.file_pdf}`
-          : undefined;
+      document.getElementById("menuToggle").addEventListener("click", function () {
+        document.querySelector(".header__menu").classList.toggle("show");
+        document.querySelector(".header__actions").classList.toggle("show");
       });
     </script>
-
+    <script>
+      const files = JSON.parse(`<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`);
+      files.forEach((file) => {
+        file.file_url = file.file_pdf ? `/images/upload/${file.file_pdf}` : undefined;
+      });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", async function () {
         const pdfjsLib = window["pdfjs-dist/build/pdf"];
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
 
         for (const file of files) {
           const url = file.file_url;
@@ -469,33 +357,24 @@
           const context = canvas.getContext("2d");
 
           try {
-            console.log(
-              `Loading PDF for file id ${file.id_file} from URL: ${url}`
-            );
+            console.log(`Loading PDF for file id ${file.id_file} from URL: ${url}`);
             const pdf = await pdfjsLib.getDocument(url).promise;
             const page = await pdf.getPage(1);
             const viewport = page.getViewport({ scale: 1 });
 
-            // Sesuaikan tinggi canvas berdasarkan aspek rasio PDF
             const scale = canvas.width / viewport.width;
             const scaledViewport = page.getViewport({ scale });
             canvas.height = scaledViewport.height;
 
-            const renderContext = {
-              canvasContext: context,
-              viewport: scaledViewport,
-            };
+            const renderContext = { canvasContext: context, viewport: scaledViewport };
 
             await page.render(renderContext).promise;
             console.log(`Page 1 of PDF ${file.id_file} rendered.`);
           } catch (error) {
-            console.error(
-              `Error loading/rendering PDF ${file.id_file}:`,
-              error
-            );
+            console.error(`Error loading/rendering PDF ${file.id_file}:`, error);
           }
         }
-
+     
         document.querySelectorAll(".far.fa-bookmark").forEach((icon) => {
           icon.addEventListener("click", function () {
             const index = this.closest(".file-preview").dataset.index;
@@ -508,31 +387,15 @@
         }
       });
     </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap 4 JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Bootstrap 5 JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>
