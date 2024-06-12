@@ -82,7 +82,5 @@ class Model_Dokumen {
     }
 
     
-
-    
   
   module.exports = Model_Dokumen;
