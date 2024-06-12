@@ -258,7 +258,7 @@
         </div>
         <ul class="header__menu">
           <li>
-            <a href="/record"><p class="ui text size-s">Beranda</p></a>
+            <a href="/users"><p class="ui text size-s">Beranda</p></a>
           </li>
           <li class="group">
             <div class="header__submenu">
@@ -328,13 +328,18 @@
             <span class="badge bg-danger position-absolute top-0 start-0"
               >PDF</span
             >
-            <% } %>
+            <% } %> //klik pdf
             <canvas
               id="pdf-canvas-<%= item.id_file %>"
               data-file-id="<%= item.id_file %>"
+              onclick="viewPDF('<%= item.id_file %>')"
+              style="cursor: pointer"
             ></canvas>
+
             <div class="card-body">
               <h5 class="card-title"><%= item.nama_file %></h5>
+              <!-- ID pengguna disembunyikan -->
+              <!-- <p class="card-text">Upload by: ID Pengguna: <%= item.id_user %>, Email: <%= item.email %></p> -->
               <p class="card-text">Upload by: <%= item.email %></p>
             </div>
             <div class="icon-container">
@@ -446,6 +451,7 @@
     </script>
 
     <script>
+      //klik pdf
       function viewPDF(id) {
         window.location.href = `/files/detail/${id}`;
       }
@@ -552,8 +558,16 @@
 
     <!-- Bootstrap JS and dependencies (jQuery) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
     <!-- PDF.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <!-- Font Awesome -->

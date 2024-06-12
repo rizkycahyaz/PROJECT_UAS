@@ -17,6 +17,7 @@ const saveRouter = require("./routes/save");
 const recordRouter = require("./routes/record");
 const superusersRouter = require("./routes/superusers");
 const adminRouter = require("./routes/admin");
+const detailRouter = require("./routes/files");
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/save", saveRouter);
 app.use("/record", recordRouter);
 app.use("/admin", adminRouter);
 app.use("/dokumen", dokumenRouter);
+app.use("/detail", detailRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

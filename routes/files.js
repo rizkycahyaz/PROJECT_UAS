@@ -265,4 +265,18 @@ router.get("/download/:id", async function (req, res, next) {
     res.redirect("/files");
   }
 });
+
+router.get("/detail/:id", async function (req, res, next) {
+  try {
+    let id = req.params.id;
+    let detail = await Model_Files.getById(id);
+    res.render("files/detail", {
+      detail: detail, // Pastikan properti file_pdf disertakan di sini
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

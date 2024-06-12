@@ -33,8 +33,7 @@ class Model_Files {
   static async getById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM file WHERE id_file = ?",
-        [id],
+        "SELECT * FROM file WHERE id_file = " + id,
         (err, rows) => {
           if (err) {
             reject(err);
