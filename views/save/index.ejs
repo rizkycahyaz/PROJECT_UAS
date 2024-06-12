@@ -219,10 +219,7 @@
         </div>
         <ul class="header__menu">
           <li>
-            <a href="#contact"><p class="ui text size-s">Contact</p></a>
-          </li>
-          <li>
-            <a href="#"><p class="ui text size-s">About Us</p></a>
+            <a href="/record"><p class="ui text size-s">Beranda</p></a>
           </li>
           <li class="group">
             <div class="header__submenu">
@@ -311,13 +308,22 @@
                 <% } %>
                 <canvas id="pdf-canvas-<%= item.id_file %>"></canvas>
                 <div class="card-body">
-                  <p class="card-text"><strong>Email:</strong> <%= item.email %></p>
-                <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
-                <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
-                <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
+                  <p class="card-text">
+                    <strong>Email:</strong> <%= item.email %>
+                  </p>
+                  <p class="card-text">
+                    <strong>Tanggal:</strong> <%= item.tanggal %>
+                  </p>
+                  <p class="card-text">
+                    <strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID',
+                    { month: 'long' }).format(new Date(item.tahun, item.bulan -
+                    1, item.tanggal)) %>
+                  </p>
+                  <p class="card-text">
+                    <strong>Tahun:</strong> <%= item.tahun %>
+                  </p>
 
                   <div class="d-flex justify-content-center mt-2">
-
                     <a href="/save/delete/<%= item.id_save %>" class="ms-2"
                       ><i class="bi bi-trash text-dark fs-6"></i
                     ></a>
@@ -373,7 +379,6 @@
               ></button>
             </div>
             <div class="modal-body">
-              <a href="/profile"><i class="bi bi-person"></i> Profile</a>
               <a href="/save"><i class="bi bi-heart"></i> Disimpan</a>
               <a href="/file"
                 ><i class="bi bi-file-earmark-text"></i> Unggahan Dokumen</a
