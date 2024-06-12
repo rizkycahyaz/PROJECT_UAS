@@ -1,41 +1,50 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
-var Model_Users = require('../model/Model_Users');
-const e = require('express');
+const Model_Users = require("../model/Model_Users");
+const Model_Kategori = require("../model/Model_Kategori");
+const Model_Record = require("../model/Model_Record");
+const e = require("express");
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express'
+router.get("/", async function (req, res, next) {
+  let kategori = await Model_Kategori.getAll();
+  let totalDownloads = await Model_Record.getAll();
+  let popularFiles = await Model_Record.getPopularFiles();
+  // Log semua data record di console
+  console.log("Total Downloads:", totalDownloads);
+  console.log("Popular Files di Server:", popularFiles);
+  res.render("auth/dashboard", {
+    title: "Users Home",
+
+    kategori: kategori,
+    totalDownloads: totalDownloads,
+    popularFiles: popularFiles,
   });
 });
-router.get('/register', function (req, res, next) {
-  res.render('auth/register');
+router.get("/register", function (req, res, next) {
+  res.render("auth/register");
 });
-router.get('/login', function (req, res, next) {
-  res.render('auth/login');
+router.get("/login", function (req, res, next) {
+  res.render("auth/login");
 });
 
-router.post('/saveusers', async (req, res) => {
-  let {
-    email,
-    password
-  } = req.body;
+router.post("/saveusers", async (req, res) => {
+  let { email, password } = req.body;
   let enkripsi = await bcrypt.hash(password, 10);
   let Data = {
     email,
-    password: enkripsi
+    password: enkripsi,
   };
   await Model_Users.Store(Data);
-  req.flash('success', 'Berhasil Register!');
-  res.redirect('/login');
+  req.flash("success", "Berhasil Register!");
+  res.redirect("/login");
 });
 
-router.post('/log', async (req, res) => {
-  let {email,password} = req.body;
+router.post("/log", async (req, res) => {
+  let { email, password } = req.body;
   try {
     let Data = await Model_Users.Login(email);
     if (Data.length > 0) {
@@ -46,39 +55,37 @@ router.post('/log', async (req, res) => {
         req.session.role = Data[0].role;
         //tambahkan kondisi pengecekan role pada user yang login
         if (Data[0].role == 2) {
-          req.flash('success', 'Berhasil login');
-          res.redirect('/superusers');
+          req.flash("success", "Berhasil login");
+          res.redirect("/superusers");
         } else if (Data[0].role == 1) {
-          req.flash('success', 'Berhasil login');
-          res.redirect('/users');
+          req.flash("success", "Berhasil login");
+          res.redirect("/users");
         } else {
-          res.redirect('/login');
+          res.redirect("/login");
         }
         // akhir kondisi
       } else {
-        req.flash('error', 'Email atau password salah');
-        res.redirect('/login');
+        req.flash("error", "Email atau password salah");
+        res.redirect("/login");
       }
     } else {
-      req.flash('error', 'Akun tidak ditemukan');
-      res.redirect('/login');
+      req.flash("error", "Akun tidak ditemukan");
+      res.redirect("/login");
     }
   } catch (err) {
-    res.redirect('/login');
-    req.flash('error', 'Error pada fungsi');
+    res.redirect("/login");
+    req.flash("error", "Error pada fungsi");
   }
 });
 
-router.get('/logout', function (req, res) {
+router.get("/logout", function (req, res) {
   req.session.destroy(function (err) {
     if (err) {
       console.error(err);
     } else {
-      res.redirect('/login');
+      res.redirect("/login");
     }
   });
 });
-
-
 
 module.exports = router;
