@@ -185,7 +185,7 @@
         /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
       }
       .btn-login {
-        background-color: #28a745;
+        background-color: #007bff;
         color: white;
         padding: 0.5em 1em;
         border-radius: 0.25em;
@@ -287,12 +287,12 @@
             </div>
           </li>
           <li>
-            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
+            <a href="/files2"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/files2/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -529,8 +529,10 @@
             body: JSON.stringify({ id_file }),
           })
             .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
+              if (response.status === 401) {
+                // User is not logged in, redirect to login page
+                window.location.href = "/login";
+                return;
               }
               return response.json();
             })
@@ -543,7 +545,6 @@
             })
             .catch((error) => {
               console.error("Error:", error);
-              window.location.href = "/login";
             });
         }
       });

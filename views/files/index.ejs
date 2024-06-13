@@ -29,6 +29,20 @@
       crossorigin="anonymous"
     />
     <style>
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+      }
+
       .modal {
         display: none;
         position: fixed;
@@ -302,24 +316,24 @@
           </ul>
         </div>
       </header>
-      <% if(messages.error) { %>
-      <div
-        class="alert alert-danger alert-small text-center"
-        role="alert"
-        style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          max-width: 600px;
-          margin: 0 auto;
-          margin-top: 15px;
-        "
-      >
-        <span><%- messages.error %></span>
-      </div>
-      <% } %>
       <div class="container mt-5">
+        <% if(messages.success) { %>
+        <div
+          class="alert alert-success alert-small text-center"
+          role="alert"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 15px;
+          "
+        >
+          <span><%- messages.success %></span>
+        </div>
+        <% } %>
         <h1 class="text-center">Upload Files</h1>
         <div class="file-previews-container">
           <% data.forEach((item, index) => { %>
@@ -328,7 +342,7 @@
             <span class="badge bg-danger position-absolute top-0 start-0"
               >PDF</span
             >
-            <% } %> //klik pdf
+            <% } %>
             <canvas
               id="pdf-canvas-<%= item.id_file %>"
               data-file-id="<%= item.id_file %>"
@@ -357,6 +371,7 @@
           <% }); %>
         </div>
       </div>
+
       <!-- footer section -->
       <div class="landing-page-footer">
         <div class="footer__column">
@@ -532,9 +547,45 @@
             })
             .then((data) => {
               if (data.success) {
-                alert("Bookmark saved successfully!");
+                const successMessage = "Berhasil menyimpan file!";
+                const alertDiv = document.createElement("div");
+                alertDiv.classList.add(
+                  "alert",
+                  "alert-success",
+                  "alert-small",
+                  "text-center"
+                );
+                alertDiv.setAttribute("role", "alert");
+                alertDiv.style.cssText = `
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          max-width: 600px;
+          margin: 0 auto;
+          margin-top: 15px;
+        `;
+                alertDiv.innerHTML = `<span>${successMessage}</span>`;
+
+                // Insert the alertDiv before the <h1> element
+                const h1Element = document.querySelector("h1.text-center");
+                if (h1Element) {
+                  h1Element.parentNode.insertBefore(alertDiv, h1Element);
+                }
+
+                setTimeout(() => {
+                  alertDiv.remove();
+                }, 2000);
+
+                const icon = document.querySelector(
+                  `.file-preview[data-index="${id_file}"] .bookmark-icon i`
+                );
+                if (icon) {
+                  icon.classList.remove("far");
+                  icon.classList.add("fas");
+                }
               } else {
-                alert("Failed to save bookmark.");
+                throw new Error("Failed to save bookmark.");
               }
             })
             .catch((error) => {
