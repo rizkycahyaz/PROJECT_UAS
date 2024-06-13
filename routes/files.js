@@ -95,9 +95,11 @@ router.post(
         izin,
         hak_cipta,
       };
+      let sum = userData[0].jumlah_download + 1;
 
       // Menyimpan data ke database
       await Model_Files.Store(Data);
+      await Model_Users.Update(req.session.userId, { jumlah_download: sum });
 
       // Mengirim respons ke klien bahwa penyimpanan berhasil
       req.flash("success", "Berhasil menyimpan data");
@@ -209,7 +211,8 @@ router.get("/download/:id", async function (req, res, next) {
     let uploadedFiles = await Model_Files.getUploadedFilesCount(
       req.session.userId
     );
-    if (uploadedFiles < 3) {
+    let user = await Model_Users.getId(req.session.userId);
+    if (user[0].jumlah_download < 3) {
       req.flash(
         "error",
         "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
@@ -245,13 +248,16 @@ router.get("/download/:id", async function (req, res, next) {
         tahun: now.getFullYear(),
       };
       await Model_Record.store(recordData);
+      await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
     } else {
       // Jika sudah pernah, tingkatkan total unduhan pada catatan unduhan yang sudah ada
       await Model_Record.incrementTotalDownload(existingDownload.id);
+      await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
     }
 
     // Increment total_download in the file table
     await Model_Files.incrementTotalDownload(req.params.id);
+    await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
 
     res.setHeader(
       "Content-disposition",
@@ -263,19 +269,6 @@ router.get("/download/:id", async function (req, res, next) {
     console.error("Error:", error);
     req.flash("error", `Gagal mengunduh file: ${error.message}`);
     res.redirect("/files");
-  }
-});
-
-router.get("/detail/:id", async function (req, res, next) {
-  try {
-    let id = req.params.id;
-    let detail = await Model_Files.getById(id);
-    res.render("files/detail", {
-      detail: detail, // Pastikan properti file_pdf disertakan di sini
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Internal Server Error");
   }
 });
 

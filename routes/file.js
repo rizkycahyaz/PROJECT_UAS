@@ -7,6 +7,7 @@ const Model_File = require("../model/Model_File");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
 const Model_Record = require("../model/Model_Record");
+const Model_Files = require("../model/Model_Files");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -88,7 +89,11 @@ router.post(
         izin: req.body.izin,
         hak_cipta: req.body.hak_cipta,
       };
+      let sum = userData[0].jumlah_download + 1;
+
+      // Menyimpan data ke database
       await Model_File.Store(Data);
+      await Model_Users.Update(req.session.userId, { jumlah_download: sum });
       req.flash("success", "Berhasil menyimpan data");
       res.redirect("/file");
     } catch (error) {
@@ -197,7 +202,8 @@ router.get("/download/:id", async function (req, res, next) {
     let uploadedFiles = await Model_File.getUploadedFilesCount(
       req.session.userId
     );
-    if (uploadedFiles < 3) {
+    let user = await Model_Users.getId(req.session.userId);
+    if (user[0].jumlah_download < 3) {
       req.flash(
         "error",
         "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
@@ -214,8 +220,8 @@ router.get("/download/:id", async function (req, res, next) {
         tahun: now.getFullYear(),
       };
       await Model_Record.store(recordData);
-
-      res.setHeader(
+      await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
+      await res.setHeader(
         "Content-disposition",
         "attachment; filename=" + fileData.filename
       );

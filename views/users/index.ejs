@@ -158,6 +158,70 @@
           display: flex;
         }
       }
+
+      .file-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 300px;
+        height: 450px;
+        text-align: center;
+        background-color: #f9f9f9;
+      }
+
+      .icon-container {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 10px;
+      }
+
+      .icon-container a {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .icon-container a:hover {
+        color: #000;
+      }
+
+      .download-icon {
+        padding-left: 10px;
+      }
+
+      .bookmark-icon {
+        cursor: pointer;
+        color: #ffc107;
+        padding-right: 10px;
+      }
+
+      .bookmark-icon:hover {
+        color: #e0a800;
+      }
+
+      .card-body {
+        height: 100px;
+        overflow: hidden;
+      }
+
+      .card-body .card-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-body .card-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     </style>
   </head>
   <body>
@@ -233,29 +297,44 @@
             <input name="search" placeholder="Search..." type="text" />
           </label>
 
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Nama File</th>
-                <th>Total Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% if (popularFiles && popularFiles.length > 0) { %> <%
-              popularFiles.forEach(record => { %>
-              <tr>
-                <td><%= record.nama_file %></td>
-                <td><%= record.total_download %></td>
-              </tr>
-              <% }) %> <% } else { %>
-              <tr>
-                <td colspan="2">
-                  Tidak ada data file yang populer untuk ditampilkan.
-                </td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
+          <div class="row">
+            <% if (popularFiles && popularFiles.length > 0) { %> <%
+            popularFiles.forEach(record => { %>
+            <div class="col-md-4 mb-4">
+              <div class="card file-preview">
+                <div class="card-body">
+                  <h5 class="card-title"><%= record.nama_file %></h5>
+                  <p class="card-text">
+                    Total Download: <%= record.total_download %>
+                  </p>
+                  <div
+                    class="icon-container d-flex justify-content-between mt-3"
+                  >
+                    <a
+                      href="/files/download/<%= record.id_file %>"
+                      class="download-icon"
+                    >
+                      <i class="fas fa-download"></i>
+                    </a>
+                    <a
+                      href="#"
+                      class="bookmark-icon"
+                      onclick="toggleBookmark(this)"
+                    >
+                      <i class="far fa-bookmark"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }) %> <% } else { %>
+            <div class="col-12">
+              <div class="alert alert-info text-center" role="alert">
+                Tidak ada data file yang populer untuk ditampilkan.
+              </div>
+            </div>
+            <% } %>
+          </div>
 
           <!-- <div class="content__features">
             <div class="content__feature-item"></div>
@@ -359,6 +438,12 @@
         backdrop.classList.remove("active");
       }
 
+      function toggleBookmark(element) {
+        const icon = element.querySelector("i");
+        icon.classList.toggle("far"); // non-bookmarked state
+        icon.classList.toggle("fas"); // bookmarked state
+      }
+
       document
         .getElementById("emailModalBackdrop")
         .addEventListener("click", function () {
@@ -377,6 +462,11 @@
         });
     </script>
     <script>
+      function viewPDF(fileId) {
+        // Logika untuk membuka PDF
+        console.log("Open PDF with ID:", fileId);
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
         const totalDownloads = JSON.parse(
           `<%- JSON.stringify(totalDownloads).replace(/</g, '\\u003c') %>`
