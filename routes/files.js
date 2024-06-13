@@ -8,31 +8,30 @@ const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
 const Model_Record = require("../model/Model_Record");
 
+// Multer configuration for file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images/upload");
   },
   filename: (req, file, cb) => {
-    console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
 const upload = multer({ storage: storage });
 
-router.get("/", async function (req, res, next) {
-  let id = req.session.userId;
-  let Data = await Model_Users.getId(id);
-
+// Home route
+router.get("/", async (req, res) => {
+  const userId = req.session.userId;
   try {
-    if (Data.length > 0) {
-      let rows = await Model_Files.getAll();
-      let kategori = await Model_Kategori.getAll();
-      console.log(id);
+    const user = await Model_Users.getId(userId);
+    if (user.length > 0) {
+      const files = await Model_Files.getAll();
+      const categories = await Model_Kategori.getAll();
       res.render("files/index", {
-        data: rows,
-        email: Data[0].email,
-        kategori: kategori,
+        data: files,
+        email: user[0].email,
+        kategori: categories,
       });
     } else {
       res.redirect("/login");
@@ -43,28 +42,24 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/create", async function (req, res, next) {
+// Create route
+router.get("/create", async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(400).send("User ID not found in session");
+  }
+
   try {
-    let id = req.session.userId;
-
-    if (!id) {
-      return res.status(400).send("User ID not found in session");
-    }
-
-    let userData = await Model_Users.getId(id); // Mengambil data pengguna
-    if (!userData || userData.length === 0) {
-      return res.status(404).send("User data not found");
-    }
-
-    let kategoriData = await Model_Kategori.getAll(); // Mengambil semua data kategori
-    if (!kategoriData) {
-      return res.status(404).send("Category data not found");
+    const user = await Model_Users.getId(userId);
+    const categories = await Model_Kategori.getAll();
+    if (!user || !categories) {
+      return res.status(404).send("User or category data not found");
     }
 
     res.render("files/create", {
-      users: userData[0],
-      kategori: kategoriData,
-      email: userData[0].email, // Mengirimkan data pengguna ke view
+      users: user[0],
+      kategori: categories,
+      email: user[0].email,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -72,67 +67,55 @@ router.get("/create", async function (req, res, next) {
   }
 });
 
-router.post(
-  "/store",
-  upload.single("file_pdf"),
-  async function (req, res, next) {
-    try {
-      // Mendapatkan data dari body permintaan
-      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
-        req.body;
+// Store route
+router.post("/store", upload.single("file_pdf"), async (req, res) => {
+  const { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
+    req.body;
+  const userId = req.session.userId;
 
-      // Mendapatkan data pengguna
-      let userData = await Model_Users.getId(req.session.userId);
-
-      // Menyiapkan data untuk disimpan
-      let Data = {
-        nama_file,
-        deskripsi,
-        file_pdf: req.file.filename, // Nama file yang diunggah
-        id_kategori,
-        id_user: req.session.userId,
-        privasi,
-        izin,
-        hak_cipta,
-      };
-
-      // Menyimpan data ke database
-      await Model_Files.Store(Data);
-
-      // Mengirim respons ke klien bahwa penyimpanan berhasil
-      req.flash("success", "Berhasil menyimpan data");
-      res.redirect("/files/create"); // Redirect ke halaman pembuatan file lagi
-    } catch (error) {
-      // Jika ada kesalahan, tampilkan pesan kesalahan
-      console.error("Error:", error);
-      req.flash("error", "Gagal menyimpan data");
-      res.redirect("/files/create"); // Redirect ke halaman pembuatan file lagi
-    }
-  }
-);
-
-router.get("/edit/:id", async function (req, res, next) {
-  let id = req.params.id;
   try {
-    let rows = await Model_Files.getById(id);
-    let userData = await Model_Users.getId(req.session.userId);
-    let kategoriData = await Model_Kategori.getAll();
-    let kategoriId = rows[0].id_kategori;
-    let kategoriById = await Model_Kategori.getId(kategoriId);
+    const user = await Model_Users.getId(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const fileData = {
+      nama_file,
+      deskripsi,
+      file_pdf: req.file.filename,
+      id_kategori,
+      id_user: userId,
+      privasi,
+      izin,
+      hak_cipta,
+    };
+
+    await Model_Files.Store(fileData);
+    req.flash("success", "Berhasil menyimpan data");
+    res.redirect("/files/create");
+  } catch (error) {
+    console.error("Error:", error);
+    req.flash("error", "Gagal menyimpan data");
+    res.redirect("/files/create");
+  }
+});
+
+// Edit route
+router.get("/edit/:id", async (req, res) => {
+  const fileId = req.params.id;
+  const userId = req.session.userId;
+
+  try {
+    const file = await Model_Files.getById(fileId);
+    const user = await Model_Users.getId(userId);
+    const categories = await Model_Kategori.getAll();
+    const categoryById = await Model_Kategori.getId(file[0].id_kategori);
+
     res.render("files/edit", {
-      id: rows[0].id_file,
-      nama_file: rows[0].nama_file,
-      deskripsi: rows[0].deskripsi,
-      file_pdf: rows[0].file_pdf,
-      kategoriData: kategoriData,
-      privasi: rows[0].privasi,
-      izin: rows[0].izin,
-      hak_cipta: rows[0].hak_cipta,
-      kategori: rows[0].id_kategori,
-      kategoriById: kategoriById[0],
-      user: userData,
-      userId: req.params.userId,
-      kategoriData,
+      ...file[0],
+      kategoriData: categories,
+      kategoriById: categoryById[0],
+      user: user[0],
     });
   } catch (error) {
     console.error("Error:", error);
@@ -140,61 +123,56 @@ router.get("/edit/:id", async function (req, res, next) {
   }
 });
 
-router.post(
-  "/update/:id",
-  upload.single("file_pdf"),
-  async function (req, res, next) {
-    let id = req.params.id;
-    try {
-      let filebaru = req.file ? req.file.filename : null;
-      let rows = await Model_Files.getById(id);
-      const namaFileLama = rows[0].file_pdf;
-      if (filebaru && namaFileLama) {
-        const pathFileLama = path.join(
-          __dirname,
-          "../public/images/upload",
-          namaFileLama
-        );
-        fs.unlinkSync(pathFileLama);
-      }
-      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
-        req.body;
-      let file_pdf = filebaru || namaFileLama;
-      let Data = {
-        nama_file,
-        deskripsi,
-        file_pdf,
-        id_kategori,
-        privasi,
-        izin,
-        hak_cipta,
-      };
+// Update route
+router.post("/update/:id", upload.single("file_pdf"), async (req, res) => {
+  const fileId = req.params.id;
+  const { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
+    req.body;
+  const newFile = req.file ? req.file.filename : null;
 
-      await Model_Files.Update(id, Data);
-      req.flash("success", "Berhasil menyimpan data");
-      res.redirect("/files");
-    } catch (error) {
-      console.error("Error:", error);
-      req.flash("error", "Gagal menyimpan data");
-      res.redirect("/files/edit/" + id);
-    }
-  }
-);
-
-router.get("/delete/:id", async function (req, res, next) {
-  let id = req.params.id;
   try {
-    let rows = await Model_Files.getById(id);
-    if (rows.length > 0 && rows[0].file_pdf) {
-      const namaFileLama = rows[0].file_pdf;
-      const pathFileLama = path.join(
-        __dirname,
-        "../public/images/upload",
-        namaFileLama
+    const file = await Model_Files.getById(fileId);
+    const oldFileName = file[0].file_pdf;
+
+    if (newFile && oldFileName) {
+      fs.unlinkSync(
+        path.join(__dirname, "../public/images/upload", oldFileName)
       );
-      fs.unlinkSync(pathFileLama);
     }
-    await Model_Files.Delete(id);
+
+    const fileData = {
+      nama_file,
+      deskripsi,
+      file_pdf: newFile || oldFileName,
+      id_kategori,
+      privasi,
+      izin,
+      hak_cipta,
+    };
+
+    await Model_Files.Update(fileId, fileData);
+    req.flash("success", "Berhasil menyimpan data");
+    res.redirect("/files");
+  } catch (error) {
+    console.error("Error:", error);
+    req.flash("error", "Gagal menyimpan data");
+    res.redirect(`/files/edit/${fileId}`);
+  }
+});
+
+// Delete route
+router.get("/delete/:id", async (req, res) => {
+  const fileId = req.params.id;
+
+  try {
+    const file = await Model_Files.getById(fileId);
+    if (file.length > 0 && file[0].file_pdf) {
+      fs.unlinkSync(
+        path.join(__dirname, "../public/images/upload", file[0].file_pdf)
+      );
+    }
+
+    await Model_Files.Delete(fileId);
     req.flash("success", "Berhasil menghapus data");
   } catch (error) {
     console.error("Error:", error);
@@ -204,12 +182,14 @@ router.get("/delete/:id", async function (req, res, next) {
   }
 });
 
-router.get("/download/:id", async function (req, res, next) {
+// Download route
+router.get("/download/:id", async (req, res) => {
+  const userId = req.session.userId;
+  const fileId = req.params.id;
+
   try {
-    let uploadedFiles = await Model_Files.getUploadedFilesCount(
-      req.session.userId
-    );
-    if (uploadedFiles < 3) {
+    const uploadedFilesCount = await Model_Files.getUploadedFilesCount(userId);
+    if (uploadedFilesCount < 3) {
       req.flash(
         "error",
         "Anda harus mengunggah minimal 3 file sebelum dapat mengunduh."
@@ -217,48 +197,35 @@ router.get("/download/:id", async function (req, res, next) {
       return res.redirect("/files");
     }
 
-    console.log(
-      `User ID: ${req.session.userId} is downloading file ID: ${req.params.id}`
-    );
-
-    let fileData = await Model_Files.downloadFile(req.params.id);
-    if (!fileData) {
+    const file = await Model_Files.downloadFile(fileId);
+    if (!file) {
       throw new Error("Data file tidak ditemukan.");
     }
 
-    console.log(`Data file ditemukan: ${fileData.filename}`);
-
-    // Periksa apakah pengguna sudah pernah mengunduh file ini sebelumnya
-    let existingDownload = await Model_Record.getDownloadByUserAndFile(
-      req.session.userId,
-      req.params.id
+    const existingDownload = await Model_Record.getDownloadByUserAndFile(
+      userId,
+      fileId
     );
-
     if (!existingDownload) {
-      // Jika belum pernah, buat catatan unduhan baru
-      let now = new Date();
-      let recordData = {
-        id_user: req.session.userId,
-        id_file: req.params.id,
-        tanggal: now.getDate(),
-        bulan: now.getMonth() + 1, // Bulan dimulai dari 0
-        tahun: now.getFullYear(),
-      };
-      await Model_Record.store(recordData);
+      await Model_Record.store({
+        id_user: userId,
+        id_file: fileId,
+        tanggal: new Date().getDate(),
+        bulan: new Date().getMonth() + 1,
+        tahun: new Date().getFullYear(),
+      });
     } else {
-      // Jika sudah pernah, tingkatkan total unduhan pada catatan unduhan yang sudah ada
       await Model_Record.incrementTotalDownload(existingDownload.id);
+      await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
     }
 
-    // Increment total_download in the file table
-    await Model_Files.incrementTotalDownload(req.params.id);
-
+    await Model_Files.incrementTotalDownload(fileId);
     res.setHeader(
       "Content-disposition",
-      "attachment; filename=" + fileData.filename
+      `attachment; filename=${file.filename}`
     );
     res.setHeader("Content-type", "application/pdf");
-    res.end(fileData.data);
+    res.end(file.data);
   } catch (error) {
     console.error("Error:", error);
     req.flash("error", `Gagal mengunduh file: ${error.message}`);
@@ -266,13 +233,13 @@ router.get("/download/:id", async function (req, res, next) {
   }
 });
 
-router.get("/detail/:id", async function (req, res, next) {
+// Detail route
+router.get("/detail/:id", async (req, res) => {
+  const fileId = req.params.id;
+
   try {
-    let id = req.params.id;
-    let detail = await Model_Files.getById(id);
-    res.render("files/detail", {
-      detail: detail, // Pastikan properti file_pdf disertakan di sini
-    });
+    const fileDetail = await Model_Files.getById(fileId);
+    res.render("files/detail", { detail: fileDetail });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
