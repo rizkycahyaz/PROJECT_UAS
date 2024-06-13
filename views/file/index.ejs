@@ -294,7 +294,54 @@
           class="container d-flex justify-content-center"
           style="width: 100%; display: flex; justify-content: center"
         >
-          <div
+          <div class="row d-flex" style="width: 50%">
+            <div class="col-12" id="setujuRow">
+              <h2>Setuju</h2>
+              <div
+                class="row"
+                id="setujuColumn"
+                style="
+                  width: 100%;
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                "
+              >
+                <!-- Data dari JavaScript akan dimasukkan di sini -->
+              </div>
+            </div>
+
+            <div class="col-12" id="tidakSetujuRow">
+              <h2>Tidak Setuju</h2>
+              <div
+                class="row"
+                id="tidakSetujuColumn"
+                style="
+                  width: 100%;
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                "
+              >
+                <!-- Data dari JavaScript akan dimasukkan di sini -->
+              </div>
+            </div>
+
+            <div class="col-12" id="pendingRow">
+              <h2>Pending</h2>
+              <div
+                class="row"
+                style="
+                  width: 100%;
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                "
+                id="pendingColumn"
+              >
+                <!-- Data dari JavaScript akan dimasukkan di sini -->
+              </div>
+            </div>
+          </div>
+
+          <!-- <div
             class="row"
             style="
               display: grid;
@@ -310,7 +357,7 @@
                 style="width: 90%"
                 data-url="<%= item.file_url %>"
               >
-                <!-- Display PDF badge -->
+               
                 <% if (item.file_pdf) { %>
                 <span class="badge bg-danger position-absolute top-0 start-0"
                   >PDF</span
@@ -341,7 +388,7 @@
             </div>
 
             <% }); %>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- isi section -->
@@ -565,79 +612,134 @@
           `<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`
         );
 
-        files.forEach((file) => {
+        files.forEach(async (file) => {
           file.file_url = file.file_pdf
             ? `/images/upload/${file.file_pdf}`
             : undefined;
-        });
 
-        for (const file of files) {
           const url = file.file_url;
-
           if (!url || typeof url !== "string" || url.trim() === "") {
             console.error(`Invalid URL for file id ${file.id_file}:`, url);
-            continue;
+            return;
           }
-
-          const canvas = document.getElementById(`pdf-canvas-${file.id_file}`);
-          const context = canvas.getContext("2d");
 
           try {
             const pdf = await pdfjsLib.getDocument(url).promise;
             const page = await pdf.getPage(1);
             const viewport = page.getViewport({ scale: 1 });
 
-            const scale = canvas.width / viewport.width;
+            const scale = 0.5;
             const scaledViewport = page.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            canvas.width = scaledViewport.width;
             canvas.height = scaledViewport.height;
 
+            const context = canvas.getContext("2d");
             const renderContext = {
               canvasContext: context,
               viewport: scaledViewport,
             };
 
             await page.render(renderContext).promise;
+
+            // Buat elemen card
+            const card = document.createElement("div");
+            card.classList.add("card", "file-card");
+            card.style.width = "90%";
+            card.dataset.url = url;
+
+            // Tambahkan badge PDF jika ada
+            if (file.file_pdf) {
+              const pdfBadge = document.createElement("span");
+              pdfBadge.classList.add(
+                "badge",
+                "bg-danger",
+                "position-absolute",
+                "top-0",
+                "start-0"
+              );
+              pdfBadge.textContent = "PDF";
+              card.appendChild(pdfBadge);
+            }
+
+            // Tambahkan canvas ke dalam card-body
+            const cardBody = document.createElement("div");
+            cardBody.classList.add("card-body");
+            const cardTitle = document.createElement("h5");
+            cardTitle.classList.add("card-title", "text-center");
+            cardTitle.textContent = file.nama_file;
+            const cardText = document.createElement("p");
+            cardText.classList.add("card-text", "text-center");
+            cardText.textContent = file.deskripsi;
+            const actionLinks = document.createElement("div");
+            actionLinks.classList.add(
+              "d-flex",
+              "justify-content-center",
+              "mt-5"
+            );
+            const downloadLink = document.createElement("a");
+            downloadLink.href = `/file/download/${file.id_file}`;
+            const downloadIcon = document.createElement("i");
+            downloadIcon.classList.add(
+              "bi",
+              "bi-download",
+              "text-dark",
+              "fs-6"
+            );
+            downloadLink.appendChild(downloadIcon);
+            actionLinks.appendChild(downloadLink);
+            const editLink = document.createElement("a");
+            editLink.href = `/file/edit/${file.id_file}`;
+            editLink.classList.add("ms-2");
+            const editIcon = document.createElement("i");
+            editIcon.classList.add("bi", "bi-pencil", "text-dark", "fs-6");
+            editLink.appendChild(editIcon);
+            actionLinks.appendChild(editLink);
+            const deleteLink = document.createElement("a");
+            deleteLink.href = `/file/delete/${file.id_file}`;
+            deleteLink.classList.add("ms-2");
+            const deleteIcon = document.createElement("i");
+            deleteIcon.classList.add("bi", "bi-trash", "text-dark", "fs-6");
+            deleteLink.appendChild(deleteIcon);
+            actionLinks.appendChild(deleteLink);
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(cardText);
+            cardBody.appendChild(actionLinks);
+            card.appendChild(canvas);
+            card.appendChild(cardBody);
+
+            // Tentukan kolom untuk card berdasarkan nilai pengajuan
+            const columnId = determineColumn(file.pengajuan);
+
+            // Masukkan card ke dalam kolom yang sesuai
+            const columnElement = document.getElementById(columnId);
+            if (columnElement) {
+              columnElement.appendChild(card);
+            } else {
+              console.error(
+                `Invalid column id ${columnId} for file id ${file.id_file}`
+              );
+            }
           } catch (error) {
             console.error(
               `Error loading/rendering PDF ${file.id_file}:`,
               error
             );
           }
-
-          canvas.addEventListener("click", () => {
-            openModalWithFile(url);
-          });
-        }
+        });
       });
 
-      function openModalWithFile(url) {
-        const modalCanvas = document.getElementById("pdfModalCanvas");
-        const context = modalCanvas.getContext("2d");
-
-        pdfjsLib
-          .getDocument(url)
-          .promise.then((pdf) => {
-            pdf.getPage(1).then((page) => {
-              const viewport = page.getViewport({ scale: 1 });
-              modalCanvas.width = viewport.width;
-              modalCanvas.height = viewport.height;
-
-              const renderContext = {
-                canvasContext: context,
-                viewport: viewport,
-              };
-
-              page.render(renderContext).promise.then(() => {
-                const modal = new bootstrap.Modal(
-                  document.getElementById("fileModal")
-                );
-                modal.show();
-              });
-            });
-          })
-          .catch((error) => {
-            console.error("Error opening PDF in modal:", error);
-          });
+      function determineColumn(pengajuan) {
+        switch (pengajuan) {
+          case "setuju":
+            return "setujuColumn";
+          case "tidak setuju":
+            return "tidakSetujuColumn";
+          case "pending":
+            return "pendingColumn";
+          default:
+            return "pendingColumn"; // Default to "pending" if pengajuan is not recognized
+        }
       }
     </script>
 
