@@ -88,6 +88,7 @@ router.post(
         privasi: req.body.privasi,
         izin: req.body.izin,
         hak_cipta: req.body.hak_cipta,
+        pengajuan: req.body.pengajuan,
       };
       let sum = userData[0].jumlah_download + 1;
 

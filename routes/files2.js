@@ -20,15 +20,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Middleware untuk memeriksa apakah pengguna sudah login
+const isLoggedIn = (req, res, next) => {
+  if (req.session.userId) {
+    next(); // Lanjut ke penangan rute selanjutnya jika pengguna sudah login
+  } else {
+    res.redirect("/Login"); // Pengguna belum login, kembalikan status Unauthorized
+  }
+};
+
+// Terapkan middleware `isLoggedIn` sebelum penangan rute
 router.get("/", async function (req, res, next) {
   try {
-    // let Data = await Model_Users.getAll();
     let rows = await Model_Files.getAll();
     let kategori = await Model_Kategori.getAll();
-   
+
     res.render("files2/index", {
       data: rows,
-      //   email: Data[0].email,
       kategori: kategori,
     });
   } catch (error) {
@@ -37,13 +45,10 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/create", async function (req, res, next) {
+// Terapkan middleware `isLoggedIn` sebelum rute /create
+router.get("/create", isLoggedIn, async function (req, res, next) {
   try {
     let id = req.session.userId;
-
-    if (!id) {
-      return res.status(400).send("User ID not found in session");
-    }
 
     let userData = await Model_Users.getId(id); // Mengambil data pengguna
     if (!userData || userData.length === 0) {
@@ -58,7 +63,7 @@ router.get("/create", async function (req, res, next) {
     res.render("files/create", {
       users: userData[0],
       kategori: kategoriData,
-      email: userData[0].email, // Mengirimkan data pengguna ke view
+      email: userData[0].email,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -71,18 +76,15 @@ router.post(
   upload.single("file_pdf"),
   async function (req, res, next) {
     try {
-      // Mendapatkan data dari body permintaan
       let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
         req.body;
 
-      // Mendapatkan data pengguna
       let userData = await Model_Users.getId(req.session.userId);
 
-      // Menyiapkan data untuk disimpan
       let Data = {
         nama_file,
         deskripsi,
-        file_pdf: req.file.filename, // Nama file yang diunggah
+        file_pdf: req.file.filename,
         id_kategori,
         id_user: req.session.userId,
         privasi,
@@ -90,17 +92,14 @@ router.post(
         hak_cipta,
       };
 
-      // Menyimpan data ke database
       await Model_Files.Store(Data);
 
-      // Mengirim respons ke klien bahwa penyimpanan berhasil
       req.flash("success", "Berhasil menyimpan data");
-      res.redirect("/files/create"); // Redirect ke halaman pembuatan file lagi
+      res.redirect("/files/create");
     } catch (error) {
-      // Jika ada kesalahan, tampilkan pesan kesalahan
       console.error("Error:", error);
       req.flash("error", "Gagal menyimpan data");
-      res.redirect("/files/create"); // Redirect ke halaman pembuatan file lagi
+      res.redirect("/files/create");
     }
   }
 );
@@ -222,29 +221,25 @@ router.get("/download/:id", async function (req, res, next) {
 
     console.log(`Data file ditemukan: ${fileData.filename}`);
 
-    // Periksa apakah pengguna sudah pernah mengunduh file ini sebelumnya
     let existingDownload = await Model_Record.getDownloadByUserAndFile(
       req.session.userId,
       req.params.id
     );
 
     if (!existingDownload) {
-      // Jika belum pernah, buat catatan unduhan baru
       let now = new Date();
       let recordData = {
         id_user: req.session.userId,
         id_file: req.params.id,
         tanggal: now.getDate(),
-        bulan: now.getMonth() + 1, // Bulan dimulai dari 0
+        bulan: now.getMonth() + 1,
         tahun: now.getFullYear(),
       };
       await Model_Record.store(recordData);
     } else {
-      // Jika sudah pernah, tingkatkan total unduhan pada catatan unduhan yang sudah ada
       await Model_Record.incrementTotalDownload(existingDownload.id);
     }
 
-    // Increment total_download in the file table
     await Model_Files.incrementTotalDownload(req.params.id);
 
     res.setHeader(
@@ -259,4 +254,5 @@ router.get("/download/:id", async function (req, res, next) {
     res.redirect("/files");
   }
 });
+
 module.exports = router;
