@@ -26,123 +26,123 @@
     <link rel="stylesheet" href="/stylesheets/css/Landingpage.css" />
 
     <style>
-      .modal {
-        display: none;
-        position: fixed;
-        top: calc(0% + 180px);
-        right: -100%;
-        left: auto;
-        transform: translateY(-50%);
-        padding: 1em;
-        width: 80%;
-        max-width: 400px;
-        border-radius: 0.5em 0 0 0.5em;
-        transition: right 0.5s ease;
-      }
-      .modal.active {
-        display: block;
-        right: 0;
-      }
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #dee2e6;
-        padding-bottom: 0.5em;
-      }
-      .modal-header h5 {
-        margin: 0;
-      }
-      .modal-body {
-        margin-top: 1em;
-      }
-      .modal-body a {
-        display: block;
-        margin-bottom: 0.5em;
-        color: #007bff;
-        text-decoration: none;
-      }
-      .modal-body a:hover {
-        text-decoration: underline;
-      }
-      .modal-close {
-        cursor: pointer;
-      }
-      .modal-backdrop {
-        display: none;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, 0);
-      }
-      .modal-backdrop.active {
-        display: block;
-      }
-      .hamburger-menu {
-        display: none;
-        cursor: pointer;
-      }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1em;
-      }
-      .header__logo {
-        max-height: 50px;
-      }
-      @media (max-width: 768px) {
+       .modal {
+            display: none;
+            position: fixed;
+            top: calc(0% + 180px);
+            right: -100%;
+            left: auto;
+            transform: translateY(-50%);
+            padding: 1em;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 0.5em 0 0 0.5em;
+            transition: right 0.5s ease;
+        }
+        .modal.active {
+            display: block;
+            right: 0;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 0.5em;
+        }
+        .modal-header h5 {
+            margin: 0;
+        }
+        .modal-body {
+            margin-top: 1em;
+        }
+        .modal-body a {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .modal-body a:hover {
+            text-decoration: underline;
+        }
+        .modal-close {
+            cursor: pointer;
+        }
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .modal-backdrop.active {
+            display: block;
+        }
         .hamburger-menu {
-          display: block;
+            display: none;
+            cursor: pointer;
         }
-        .icon-right {
-          margin-left: auto;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em;
         }
-        .header__menu {
-          display: none;
-          flex-direction: column;
-          align-items: flex-start;
-          background-color: #fff;
-          padding: 1em;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          width: 100%;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          z-index: 9999;
+        .header__logo {
+            max-height: 50px;
         }
-        .header__actions {
-          display: none;
-          flex-direction: column;
-          align-items: flex-start;
-          background-color: #fff;
-          padding: 1em;
-          position: absolute;
-          top: 100%;
-          right: 0;
-          width: 100%;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          z-index: 9999;
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
+            }
+            .icon-right {
+                margin-left: auto;
+            }
+            .header__menu {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                background-color: #fff;
+                padding: 1em;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+            }
+            .header__actions {
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                background-color: #fff;
+                padding: 1em;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 100%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+            }
+            .header__upload {
+                display: block;
+                margin-top: 1em;
+            }
+            .header__user-menu {
+                display: block;
+                margin-top: 1em;
+            }
+            .header__menu.show,
+            .header__actions.show {
+                display: flex;
+            }
         }
-        .header__upload {
-          display: block;
-          margin-top: 1em;
-        }
-        .header__user-menu {
-          display: block;
-          margin-top: 1em;
-        }
-        .header__menu.show,
-        .header__actions.show {
-          display: flex;
-        }
-      }
 
-      .card-body h4 {
-        margin-top: 3px; /* Mengurangi jarak antara elemen canvas dan h4 */
-      }
+        .card-body h4 {
+            margin-top: 3px; /* Mengurangi jarak antara elemen canvas dan h4 */
+        }
     </style>
   </head>
   <body>
@@ -213,53 +213,47 @@
       <div class="container">
         <h1 class="text-center mt-4 mb-4">Simpan Document</h1>
         <div class="container d-flex justify-content-center" style="width: 100%; display: flex; justify-content: center">
-          <div
-            class="row"
-            style="
+            <div
+                    class="row"
+                    style="
               display: grid;
               grid-template-columns: repeat(3, minmax(0, 1fr));
               gap: 10px;
               width: 80%;
             "
-          >
-            <% data.forEach((item, index) => { %>
-            <div class="col" style="width: 100%">
-              <div class="card" style="width: 90%">
-                <% if (item.file_pdf) { %>
-                <span class="badge bg-danger position-absolute top-0 start-0">PDF</span>
-                <% } %>
-                  <canvas
-                    id="pdf-canvas-<%= item.id_file %>"
-                    data-file-id="<%= item.id_file %>"
-                    onclick="viewPDF('<%= item.id_file %>')"
-                    style="cursor: pointer"
-                  ></canvas>
+            >
+                <% data.forEach((item, index) => { %>
+                <div class="col" style="width: 100%">
+                    <div class="card" style="width: 90%">
+                        <% if (item.file_pdf) { %>
+                        <span class="badge bg-danger position-absolute top-0 start-0">PDF</span>
+                        <% } %>
+                        <canvas
+                                id="pdf-canvas-<%= item.id_file %>"
+                                data-file-id="<%= item.id_file %>"
+                                onclick="viewPDF('<%= item.id_file %>')"
+                                style="cursor: pointer"
+                        ></canvas>
 
-                  <div class="card-body">
-                    <p class="card-text"></p>
-                    <h4><strong><%= item.nama_file %></strong></h4>
-                  <p class="card-text"><strong> <%= item.email %></p>
-                  <p class="card-text">
-                    <strong>Tanggal:</strong> <%= item.tanggal %>
-                  </p>
-                  <p class="card-text">
-                    <strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %>
-                  </p>
-                  <p class="card-text">
-                    <strong>Tahun:</strong> <%= item.tahun %>
-                  </p>
-                  <div class="d-flex justify-content-center mt-2">
-                    <a href="/save/delete/<%= item.id_save %>" class="ms-auto icon-right">
-                      <i class="bi bi-trash text-dark fs-6"></i>
-                    </a>
-                  </div>
+                        <div class="card-body">
+                            <h4><strong><%= item.nama_file %></strong></h4>
+                            <p class="card-text"><strong></strong> <%= item.email %></p>
+                            <p class="card-text"><strong>Tanggal:</strong> <%= item.tanggal %></p>
+                            <p class="card-text"><strong>Bulan:</strong> <%= new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(new Date(item.tahun, item.bulan - 1, item.tanggal)) %></p>
+                            <p class="card-text"><strong>Tahun:</strong> <%= item.tahun %></p>
+                            <div class="d-flex justify-content-center mt-2">
+                                <a href="/save/delete/<%= item.id_save %>" class="ms-auto icon-right">
+                                    <i class="bi bi-trash text-dark fs-6"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <% }); %>
             </div>
-            <% }); %>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
       <!-- isi section -->
       <!-- footer section -->
       <div class="landing-page-footer">
