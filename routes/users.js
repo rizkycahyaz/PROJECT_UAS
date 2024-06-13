@@ -6,6 +6,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
+  let popularFiles = await Model_Record.getPopularFiles();
   try {
     let id = req.session.userId;
     let Data = await Model_Users.getId(id);
@@ -17,7 +18,7 @@ router.get("/", async function (req, res, next) {
         // Ambil data kategori
         let kategori = await Model_Kategori.getAll();
         let totalDownloads = await Model_Record.getAll();
-        let popularFiles = await Model_Record.getPopularFiles();
+
         // Log semua data record di console
         res.render("users/index", {
           title: "Users Home",

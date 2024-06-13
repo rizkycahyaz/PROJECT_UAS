@@ -326,7 +326,7 @@
           <li>
             <a href="/users"><p class="ui text size-s">Beranda</p></a>
           </li>
-          <li class="group">
+          <!-- <li class="group">
             <div class="header__submenu">
               <p class="ui text size-s">Kategori</p>
               <i class="bi bi-chevron-down header__submenu-icon"></i>
@@ -345,7 +345,7 @@
                 </div>
               </div>
             </div>
-          </li>
+          </li> -->
           <li>
             <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
@@ -403,6 +403,7 @@
           </div>
         </div>
       </form>
+      <!-- upload section -->
       <!-- Upload section -->
       <div class="upload-section">
         <div class="upload-section__column">
@@ -491,7 +492,6 @@
               ></button>
             </div>
             <div class="modal-body">
-              <a href="/profile"><i class="bi bi-person"></i> Profile</a>
               <a href="/save"><i class="bi bi-heart"></i> Disimpan</a>
               <a href="/file"
                 ><i class="bi bi-file-earmark-text"></i> Unggahan Dokumen</a
@@ -609,39 +609,39 @@
 
             // Add input elements for additional information
             const additionalInputs = `
-              <label for="nama_file_${i}" class="form-label">Nama File</label>
-              <input id="nama_file_${i}" class="form-control" type="text" name="nama_file" placeholder="Nama File">
+    <label for="nama_file_${i}" class="form-label">Nama File</label>
+    <input id="nama_file_${i}" class="form-control" type="text" name="nama_file" placeholder="Nama File">
 
-              <label for="id_kategori_${i}" class="form-label">Kategori</label>
-              <select id="id_kategori_${i}" class="form-select" name="id_kategori" required>
-                <% for(var i = 0; i < kategori.length; i++){ %>
-                  <option value="<%= kategori[i].id_kategori %>">
-                    <%= kategori[i].nama_kategori %>
-                  </option>
-                <% } %>
-              </select>
+    <label for="id_kategori_${i}" class="form-label">Kategori</label>
+    <select id="id_kategori_${i}" class="form-select" name="id_kategori" required>
+        <% for(var i = 0; i < kategori.length; i++){ %>
+            <option value="<%= kategori[i].id_kategori %>">
+                <%= kategori[i].nama_kategori %>
+            </option>
+        <% } %>
+    </select>
 
-              <label for="deskripsi_${i}" class="form-label">Deskripsi</label>
-              <input id="deskripsi_${i}" class="form-control" type="text" name="deskripsi" placeholder="Deskripsi">
+    <label for="deskripsi_${i}" class="form-label">Deskripsi</label>
+    <input id="deskripsi_${i}" class="form-control" type="text" name="deskripsi" placeholder="Deskripsi">
 
-              <label for="privasi_${i}" class="form-label">Privasi</label>
-              <select id="privasi_${i}" class="form-select" name="privasi" required>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
+    <label for="privasi_${i}" class="form-label">Privasi</label>
+    <select id="privasi_${i}" class="form-select" name="privasi" required>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+    </select>
 
-              <label for="izin_${i}" class="form-label">Izin</label>
-              <select id="izin_${i}" class="form-select" name="izin" required>
-                <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
-                <option value="Unduh dokumen">Unduh dokumen</option>
-              </select>
+    <label for="izin_${i}" class="form-label">Izin</label>
+    <select id="izin_${i}" class="form-select" name="izin" required>
+        <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
+        <option value="Unduh dokumen">Unduh dokumen</option>
+    </select>
 
-              <label for="hak_cipta_${i}" class="form-label">Hak Cipta</label>
-              <select id="hak_cipta_${i}" class="form-select" name="hak_cipta" required>
-                <option value="All Rights Reserved">All Rights Reserved</option>
-                <option value="Public Domain">Public Domain</option>
-              </select>
-            `;
+    <label for="hak_cipta_${i}" class="form-label">Hak Cipta</label>
+    <select id="hak_cipta_${i}" class="form-select" name="hak_cipta" required>
+        <option value="All Rights Reserved">All Rights Reserved</option>
+        <option value="Public Domain">Public Domain</option>
+    </select>
+`;
             filePreview.insertAdjacentHTML("beforeend", additionalInputs);
 
             filePreview.appendChild(deleteButton);
@@ -670,7 +670,6 @@
             uploadButton.style.display = "none";
           }
         }
-
         // Function to get user ID from session
         function getUserIdFromSession() {
           // Implement logic to get user ID from session
@@ -755,38 +754,10 @@
             .then((response) => {
               if (response.ok) {
                 // Berhasil mengunggah file
-                // Function to display success message
-
-                const alertDiv = document.createElement("div");
-                alertDiv.classList.add(
-                  "alert",
-                  "alert-success",
-                  "alert-small",
-                  "text-center"
-                );
-                alertDiv.setAttribute("role", "alert");
-                alertDiv.style.cssText = `
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          max-width: 600px;
-          margin: 0 auto;
-          margin-top: 15px;
-        `;
-                alertDiv.innerHTML = `<span>${message}</span>`;
-
-                // Insert the alertDiv before the <h1> element
-                const h1Element = document.querySelector("h1.text-center");
-                if (h1Element) {
-                  h1Element.parentNode.insertBefore(alertDiv, h1Element);
-                }
-
-                // Remove the alertDiv after 2 seconds (2000 milliseconds)
-                setTimeout(() => {
-                  alertDiv.remove();
-                }, 2000);
-                // Redirect setelah 2 detik
+                console.log("Files uploaded successfully");
+                alert("File berhasil diunggah!");
+                // Redirect atau perbarui halaman setelah unggahan berhasil
+                window.location.href = "/files/create";
               } else {
                 // Gagal mengunggah file
                 console.error("Failed to upload files");
@@ -813,7 +784,6 @@
         });
       });
     </script>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

@@ -250,7 +250,7 @@
           <li>
             <a href="/users"><p class="ui text size-s">Beranda</p></a>
           </li>
-          <li class="group">
+          <!-- <li class="group">
             <div class="header__submenu">
               <p class="ui text size-s">Kategori</p>
               <i class="bi bi-chevron-down header__submenu-icon"></i>
@@ -269,14 +269,14 @@
                 </div>
               </div>
             </div>
-          </li>
+          </li> -->
           <li>
-            <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
+            <a href="/files2"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/login" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -305,9 +305,8 @@
             <img src="/images/img_rewind.svg" alt="rewind" class="rewind" />
             <input name="search" placeholder="Search..." type="text" />
           </label>
-          <br>
-          <br>
-          
+          <br />
+          <br />
 
           <div class="file-previews-container">
             <% if (popularFiles && popularFiles.length > 0) { %> <%
@@ -333,7 +332,7 @@
               </div>
               <div class="icon-container">
                 <a
-                  href="/files/download/<%= item.id_file %>"
+                  href="/files2/download/<%= item.id_file %>"
                   class="download-icon"
                 >
                   <i class="fas fa-download"></i>

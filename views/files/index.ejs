@@ -274,7 +274,7 @@
           <li>
             <a href="/users"><p class="ui text size-s">Beranda</p></a>
           </li>
-          <li class="group">
+          <!-- <li class="group">
             <div class="header__submenu">
               <p class="ui text size-s">Kategori</p>
               <i class="bi bi-chevron-down header__submenu-icon"></i>
@@ -292,8 +292,8 @@
                   <% }); %>
                 </div>
               </div>
-            </div>
-          </li>
+            </div> 
+          </li> -->
           <li>
             <a href="/files"><p class="ui text size-s">Semua Dokumen</p></a>
           </li>
@@ -316,6 +316,23 @@
           </ul>
         </div>
       </header>
+      <% if(messages.error) { %>
+      <div
+        class="alert alert-danger alert-small text-center"
+        role="alert"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          max-width: 600px;
+          margin: 0 auto;
+          margin-top: 15px;
+        "
+      >
+        <span><%- messages.error %></span>
+      </div>
+      <% } %>
       <div class="container mt-5">
         <% if(messages.success) { %>
         <div
@@ -485,6 +502,16 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc =
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
 
+        const files = JSON.parse(
+          `<%- JSON.stringify(data).replace(/</g, '\\u003c') %>`
+        );
+
+        for (const file of files) {
+          file.file_url = file.file_pdf
+            ? `/images/upload/${file.file_pdf}`
+            : undefined;
+        }
+
         for (const file of files) {
           const url = file.file_url;
 
@@ -526,11 +553,11 @@
         document.querySelectorAll(".bookmark-icon").forEach((icon) => {
           icon.addEventListener("click", function () {
             const index = this.closest(".file-preview").dataset.index;
-            bookmarkFile(files[index].id_file);
+            bookmarkFile(files[index].id_file, this);
           });
         });
 
-        function bookmarkFile(id_file) {
+        function bookmarkFile(id_file, iconElement) {
           fetch("/save/store", {
             method: "POST",
             headers: {
@@ -556,17 +583,16 @@
                 );
                 alertDiv.setAttribute("role", "alert");
                 alertDiv.style.cssText = `
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          max-width: 600px;
-          margin: 0 auto;
-          margin-top: 15px;
-        `;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        max-width: 600px;
+                        margin: 0 auto;
+                        margin-top: 15px;
+                    `;
                 alertDiv.innerHTML = `<span>${successMessage}</span>`;
 
-                // Insert the alertDiv before the <h1> element
                 const h1Element = document.querySelector("h1.text-center");
                 if (h1Element) {
                   h1Element.parentNode.insertBefore(alertDiv, h1Element);
@@ -576,9 +602,7 @@
                   alertDiv.remove();
                 }, 2000);
 
-                const icon = document.querySelector(
-                  `.file-preview[data-index="${id_file}"] .bookmark-icon i`
-                );
+                const icon = iconElement.querySelector("i");
                 if (icon) {
                   icon.classList.remove("far");
                   icon.classList.add("fas");
