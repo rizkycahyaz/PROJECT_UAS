@@ -77,34 +77,43 @@ router.post(
   "/store",
   upload.single("file_pdf"),
   async function (req, res, next) {
+    let userData = await Model_Users.getId(req.session.userId);
     try {
-      // Mendapatkan data dari body permintaan
-      let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
-        req.body;
+      if (userData[0].jumlah_upload >= 3) {
+        req.flash(
+          "error",
+          "Anda harus menunggu file yang anda upload disetujui"
+        );
 
-      // Mendapatkan data pengguna
-      let userData = await Model_Users.getId(req.session.userId);
+        res.redirect("/files");
+      } else {
+        // Mendapatkan data dari body permintaan
+        let { nama_file, deskripsi, id_kategori, privasi, izin, hak_cipta } =
+          req.body;
 
-      // Menyiapkan data untuk disimpan
-      let Data = {
-        nama_file,
-        deskripsi,
-        file_pdf: req.file.filename, // Nama file yang diunggah
-        id_kategori,
-        id_user: req.session.userId,
-        privasi,
-        izin,
-        hak_cipta,
-      };
-      let sum = userData[0].jumlah_download + 1;
+        // Mendapatkan data pengguna
 
-      // Menyimpan data ke database
-      await Model_Files.Store(Data);
-      await Model_Users.Update(req.session.userId, { jumlah_download: sum });
+        // Menyiapkan data untuk disimpan
+        let Data = {
+          nama_file,
+          deskripsi,
+          file_pdf: req.file.filename, // Nama file yang diunggah
+          id_kategori,
+          id_user: req.session.userId,
+          privasi,
+          izin,
+          hak_cipta,
+        };
+        let sum = userData[0].jumlah_upload + 1;
 
-      // Mengirim respons ke klien bahwa penyimpanan berhasil
-      req.flash("success", "Berhasil menyimpan data");
-      res.redirect("/files/create"); // Redirect ke halaman pembuatan file lagi
+        // Menyimpan data ke database
+        await Model_Files.Store(Data);
+        await Model_Users.Update(req.session.userId, { jumlah_upload: sum });
+
+        // Mengirim respons ke klien bahwa penyimpanan berhasil
+        req.flash("success", "Berhasil menyimpan data");
+        res.redirect("/files/create");
+      } // Redirect ke halaman pembuatan file lagi
     } catch (error) {
       // Jika ada kesalahan, tampilkan pesan kesalahan
       console.error("Error:", error);

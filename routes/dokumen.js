@@ -78,9 +78,22 @@ router.get("/approve/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const file = await Model_Dokumen.getById(id);
+    let userData = await Model_Users.getId(file.id_user);
     if (file.pengajuan === "pending") {
+      let sum = userData[0].jumlah_download + 1;
       await Model_Dokumen.approve(id);
-      res.redirect("/dokumen"); // Redirect back to the documents page after approval
+      if (userData[0].jumlah_download < 3) {
+        await Model_Users.Update(userData[0].id_user, {
+          jumlah_download: sum,
+        });
+        res.redirect("/dokumen"); // Redirect back to the documents page after approval
+      } else {
+        await Model_Users.Update(userData[0].id_user, {
+          jumlah_download: sum,
+          jumlah_upload: 0,
+        });
+        res.redirect("/dokumen");
+      }
     } else {
       res.status(400).send("Document approval status is not pending");
     }

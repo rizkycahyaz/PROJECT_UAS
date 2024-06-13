@@ -76,32 +76,23 @@ router.post(
   "/store",
   upload.single("file_pdf"),
   async function (req, res, next) {
-    try {
-      let { nama_file, deskripsi, id_kategori } = req.body;
-      let userData = await Model_Users.getId(req.session.userId);
-      let Data = {
-        nama_file,
-        deskripsi,
-        file_pdf: req.file.filename,
-        id_kategori,
-        id_user: req.session.userId,
-        privasi: req.body.privasi,
-        izin: req.body.izin,
-        hak_cipta: req.body.hak_cipta,
-        pengajuan: req.body.pengajuan,
-      };
-      let sum = userData[0].jumlah_download + 1;
+    let { nama_file, deskripsi, id_kategori } = req.body;
+    let Data = {
+      nama_file,
+      deskripsi,
+      file_pdf: req.file.filename,
+      id_kategori,
+      id_user: req.session.userId,
+      privasi: req.body.privasi,
+      izin: req.body.izin,
+      hak_cipta: req.body.hak_cipta,
+      pengajuan: "pending",
+    };
 
-      // Menyimpan data ke database
-      await Model_File.Store(Data);
-      await Model_Users.Update(req.session.userId, { jumlah_download: sum });
-      req.flash("success", "Berhasil menyimpan data");
-      res.redirect("/file");
-    } catch (error) {
-      console.error("Error:", error);
-      req.flash("error", "Gagal menyimpan data");
-      res.redirect("/file/create");
-    }
+    // Menyimpan data ke database
+    await Model_File.Store(Data);
+    req.flash("success", "Berhasil menyimpan data");
+    res.redirect("/file");
   }
 );
 

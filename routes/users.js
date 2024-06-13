@@ -17,7 +17,7 @@ router.get("/", async function (req, res, next) {
       } else {
         // Ambil data kategori
         let kategori = await Model_Kategori.getAll();
-        let totalDownloads = await Model_Record.getAll();
+        let record = await Model_Record.getAll();
 
         // Log semua data record di console
         res.render("users/index", {
@@ -26,7 +26,7 @@ router.get("/", async function (req, res, next) {
           role: Data[0].role,
           email: Data[0].email,
           kategori: kategori,
-          totalDownloads: totalDownloads,
+          totalDownloads: record,
           popularFiles: popularFiles,
         });
       }

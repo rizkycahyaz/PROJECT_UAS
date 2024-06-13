@@ -20,7 +20,7 @@ class Model_Files {
 
   static async Store(Data) {
     return new Promise((resolve, reject) => {
-      connection.query("INSERT INTO file SET ?", Data, function (err, result) {
+      connection.query("insert into file set ?", Data, function (err, result) {
         if (err) {
           reject(err);
         } else {

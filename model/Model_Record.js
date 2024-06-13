@@ -22,10 +22,10 @@ class Model_Record {
   static async getAll() {
     return new Promise((resolve, reject) => {
       const query = `
-        SELECT Record.*, users.email, file.nama_file 
-        FROM Record 
-        JOIN users ON Record.id_user = users.id_user 
-        JOIN file ON Record.id_file = file.id_file
+        SELECT record.*, users.email, file.nama_file 
+        FROM record 
+        JOIN users ON record.id_user = users.id_user 
+        JOIN file ON record.id_file = file.id_file
       `;
       db.query(query, (err, rows) => {
         if (err) {
@@ -40,14 +40,7 @@ class Model_Record {
   static async getPopularFiles(minDownloads = 2) {
     return new Promise((resolve, reject) => {
       const query = `
-        SELECT file.*, users.*,
-               COUNT(record.id_file) AS total_download 
-        FROM file 
-        LEFT JOIN record ON file.id_file = record.id_file 
-        LEFT JOIN users ON file.id_user = users.id_user
-        GROUP BY record.id_file 
-        HAVING total_download > ?
-        ORDER BY total_download DESC;
+        SELECT file.*, users.*, COUNT(record.id_file) AS total_download FROM file LEFT JOIN record ON file.id_file = record.id_file LEFT JOIN users ON file.id_user = users.id_user GROUP BY file.id_file, file.id_user, file.nama_file, file.file_pdf, users.id_user, users.email HAVING total_download > 2 ORDER BY total_download DESC;
       `;
       db.query(query, [minDownloads], (err, rows) => {
         if (err) {

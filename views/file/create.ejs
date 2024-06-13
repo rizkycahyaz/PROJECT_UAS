@@ -579,6 +579,7 @@
 
         fileInput.addEventListener("change", function (event) {
           const files = event.target.files;
+          console.log(files);
           handleFiles(files);
         });
 
@@ -609,39 +610,39 @@
 
             // Add input elements for additional information
             const additionalInputs = `
-    <label for="nama_file_${i}" class="form-label">Nama File</label>
-    <input id="nama_file_${i}" class="form-control" type="text" name="nama_file" placeholder="Nama File">
+          <label for="nama_file_${i}" class="form-label">Nama File</label>
+          <input id="nama_file_${i}" class="form-control" type="text" name="nama_file" placeholder="Nama File">
 
-    <label for="id_kategori_${i}" class="form-label">Kategori</label>
-    <select id="id_kategori_${i}" class="form-select" name="id_kategori" required>
-        <% for(var i = 0; i < kategori.length; i++){ %>
-            <option value="<%= kategori[i].id_kategori %>">
-                <%= kategori[i].nama_kategori %>
-            </option>
-        <% } %>
-    </select>
+          <label for="id_kategori_${i}" class="form-label">Kategori</label>
+          <select id="id_kategori_${i}" class="form-select" name="id_kategori" required>
+              <% for(var i = 0; i < kategori.length; i++){ %>
+                  <option value="<%= kategori[i].id_kategori %>">
+                      <%= kategori[i].nama_kategori %>
+                  </option>
+              <% } %>
+          </select>
 
-    <label for="deskripsi_${i}" class="form-label">Deskripsi</label>
-    <input id="deskripsi_${i}" class="form-control" type="text" name="deskripsi" placeholder="Deskripsi">
+          <label for="deskripsi_${i}" class="form-label">Deskripsi</label>
+          <input id="deskripsi_${i}" class="form-control" type="text" name="deskripsi" placeholder="Deskripsi">
 
-    <label for="privasi_${i}" class="form-label">Privasi</label>
-    <select id="privasi_${i}" class="form-select" name="privasi" required>
-        <option value="public">Public</option>
-        <option value="private">Private</option>
-    </select>
+          <label for="privasi_${i}" class="form-label">Privasi</label>
+          <select id="privasi_${i}" class="form-select" name="privasi" required>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+          </select>
 
-    <label for="izin_${i}" class="form-label">Izin</label>
-    <select id="izin_${i}" class="form-select" name="izin" required>
-        <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
-        <option value="Unduh dokumen">Unduh dokumen</option>
-    </select>
+          <label for="izin_${i}" class="form-label">Izin</label>
+          <select id="izin_${i}" class="form-select" name="izin" required>
+              <option value="Salin dan rekatkan teks">Salin dan rekatkan teks</option>
+              <option value="Unduh dokumen">Unduh dokumen</option>
+          </select>
 
-    <label for="hak_cipta_${i}" class="form-label">Hak Cipta</label>
-    <select id="hak_cipta_${i}" class="form-select" name="hak_cipta" required>
-        <option value="All Rights Reserved">All Rights Reserved</option>
-        <option value="Public Domain">Public Domain</option>
-    </select>
-`;
+          <label for="hak_cipta_${i}" class="form-label">Hak Cipta</label>
+          <select id="hak_cipta_${i}" class="form-select" name="hak_cipta" required>
+              <option value="All Rights Reserved">All Rights Reserved</option>
+              <option value="Public Domain">Public Domain</option>
+          </select>
+      `;
             filePreview.insertAdjacentHTML("beforeend", additionalInputs);
 
             filePreview.appendChild(deleteButton);
@@ -737,13 +738,13 @@
             ).value;
             const idUser = getUserIdFromSession();
 
-            formData.append("nama_file[]", namaFile);
-            formData.append("id_kategori[]", idKategori);
-            formData.append("deskripsi[]", deskripsi);
-            formData.append("privasi[]", privasi);
-            formData.append("izin[]", izin);
-            formData.append("hak_cipta[]", hakCipta);
-            formData.append("id_user[]", idUser);
+            formData.append("nama_file", namaFile);
+            formData.append("id_kategori", idKategori);
+            formData.append("deskripsi", deskripsi);
+            formData.append("privasi", privasi);
+            formData.append("izin", izin);
+            formData.append("hak_cipta", hakCipta);
+            formData.append("id_user", idUser);
           });
 
           // Kirim data ke server
@@ -754,10 +755,11 @@
             .then((response) => {
               if (response.ok) {
                 // Berhasil mengunggah file
+                // console.log(response);
                 console.log("Files uploaded successfully");
-                alert("File berhasil diunggah!");
+                // alert("File berhasil diunggah!");
                 // Redirect atau perbarui halaman setelah unggahan berhasil
-                window.location.href = "/files/create";
+                // window.location.href = "/file/create";
               } else {
                 // Gagal mengunggah file
                 console.error("Failed to upload files");
