@@ -94,6 +94,22 @@ class Model_File {
     });
   }
 
+  static async DeleteByUser(id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM file WHERE id_user = ?",
+        [id],
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    });
+  }
+
   static async getUploadedFilesCount(userId) {
     return new Promise((resolve, reject) => {
       connection.query(

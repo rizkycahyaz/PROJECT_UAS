@@ -8,7 +8,6 @@ var router = express.Router();
 router.get("/", async function (req, res, next) {
   try {
     let id = req.session.userId;
-
     let Data = await Model_Users.getId(id);
     if (Data.length > 0) {
       //tambahkan kondisi pengecekan role
@@ -20,8 +19,6 @@ router.get("/", async function (req, res, next) {
         let totalDownloads = await Model_Record.getAll();
         let popularFiles = await Model_Record.getPopularFiles();
         // Log semua data record di console
-        console.log("Total Downloads:", totalDownloads);
-        console.log("Popular Files di Server:", popularFiles);
         res.render("users/index", {
           title: "Users Home",
           nama: Data[0].nama,
@@ -37,6 +34,9 @@ router.get("/", async function (req, res, next) {
       res.status(401).json({ error: "user tidak ada" });
     }
   } catch (error) {
+    console.log(req.session.userId);
+    let Data = await Model_Users.getId(req.session.userId);
+    console.log(Data);
     res.status(501).json("Butuh akses login");
   }
 });

@@ -40,13 +40,14 @@ class Model_Record {
   static async getPopularFiles(minDownloads = 2) {
     return new Promise((resolve, reject) => {
       const query = `
-        SELECT file.nama_file, 
+        SELECT file.*, users.*,
                COUNT(record.id_file) AS total_download 
         FROM file 
-        JOIN record ON file.id_file = record.id_file 
+        LEFT JOIN record ON file.id_file = record.id_file 
+        LEFT JOIN users ON file.id_user = users.id_user
         GROUP BY record.id_file 
-        HAVING total_download > ? 
-        ORDER BY total_download DESC
+        HAVING total_download > ?
+        ORDER BY total_download DESC;
       `;
       db.query(query, [minDownloads], (err, rows) => {
         if (err) {

@@ -216,6 +216,7 @@ router.get("/download/:id", async (req, res) => {
       });
     } else {
       await Model_Record.incrementTotalDownload(existingDownload.id);
+      await Model_Users.Update(req.session.userId, { jumlah_download: 0 });
     }
 
     await Model_Files.incrementTotalDownload(fileId);
