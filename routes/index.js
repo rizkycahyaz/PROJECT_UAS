@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
 const Model_Record = require("../model/Model_Record");
+const Model_File = require("../model/Model_File");
 const e = require("express");
 
 /* GET home page. */
@@ -13,6 +14,7 @@ router.get("/", async function (req, res, next) {
   let kategori = await Model_Kategori.getAll();
   let totalDownloads = await Model_Record.getAll();
   let popularFiles = await Model_Record.getPopularFiles();
+  let newestFiles = await Model_File.getNewestFile();
   // Log semua data record di console
   console.log("Total Downloads:", totalDownloads);
   console.log("Popular Files di Server:", popularFiles);
@@ -22,6 +24,7 @@ router.get("/", async function (req, res, next) {
     kategori: kategori,
     totalDownloads: totalDownloads,
     popularFiles: popularFiles,
+    newestFiles,
   });
 });
 router.get("/register", function (req, res, next) {
@@ -32,9 +35,10 @@ router.get("/login", function (req, res, next) {
 });
 
 router.post("/saveusers", async (req, res) => {
-  let { email, password } = req.body;
+  let { username, email, password } = req.body;
   let enkripsi = await bcrypt.hash(password, 10);
   let Data = {
+    username,
     email,
     password: enkripsi,
   };

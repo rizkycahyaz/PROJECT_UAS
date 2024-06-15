@@ -49,6 +49,13 @@ app.use(
 
 app.use(flash());
 
+// Set up middleware to expose flash messages to views
+app.use((req, res, next) => {
+  res.locals.successMessages = req.flash("success");
+  res.locals.errorMessages = req.flash("error");
+  next();
+});
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/superusers", superusersRouter);

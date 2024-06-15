@@ -19,6 +19,23 @@ const storage = multer.diskStorage({
   },
 });
 
+const checkUserStatus = async (req, res, next) => {
+  const id = req.session.userId; // Adjust according to how you store user information
+
+  try {
+    const user = await Model_Users.getIdLogin(id); // Replace with the appropriate method to get the user from your model
+    if (!user || user.status == "banned") {
+      req.flash("error", "Akun anda telah di banned");
+      res.redirect("/files"); // Replace with an appropriate route
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.error("Error checking user status:", error);
+    res.status(500).json({ message: "Failed to check user status." });
+  }
+};
+
 const upload = multer({ storage: storage });
 
 router.get("/", async function (req, res, next) {
@@ -33,6 +50,7 @@ router.get("/", async function (req, res, next) {
       res.render("files/index", {
         data: rows,
         email: Data[0].email,
+        username: Data[0].username,
         kategori: kategori,
       });
     } else {
@@ -66,6 +84,7 @@ router.get("/create", async function (req, res, next) {
       users: userData[0],
       kategori: kategoriData,
       email: userData[0].email, // Mengirimkan data pengguna ke view
+      username: userData[0].username, // Mengirimkan data pengguna ke view
     });
   } catch (error) {
     console.error("Error:", error);
@@ -76,6 +95,7 @@ router.get("/create", async function (req, res, next) {
 router.post(
   "/store",
   upload.single("file_pdf"),
+  checkUserStatus,
   async function (req, res, next) {
     let userData = await Model_Users.getId(req.session.userId);
     try {
@@ -216,7 +236,7 @@ router.get("/delete/:id", async function (req, res, next) {
   }
 });
 
-router.get("/download/:id", async function (req, res, next) {
+router.get("/download/:id", checkUserStatus, async function (req, res, next) {
   try {
     let uploadedFiles = await Model_Files.getUploadedFilesCount(
       req.session.userId

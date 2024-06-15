@@ -33,7 +33,8 @@ class Model_Files {
   static async getById(id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM file WHERE id_file = " + id,
+        "SELECT file.*, users.*, kategori.*, COUNT(file.id_file) as jumlah_file FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori WHERE id_file = " +
+          id,
         (err, rows) => {
           if (err) {
             reject(err);

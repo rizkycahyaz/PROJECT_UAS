@@ -324,7 +324,7 @@
         </div>
         <ul class="header__menu">
           <li>
-            <a href="/record"><p class="ui text size-s">Beranda</p></a>
+            <a href="/users"><p class="ui text size-s">Beranda</p></a>
           </li>
           <!-- <li class="group">
             <div class="header__submenu">
@@ -352,7 +352,7 @@
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/files/create" class="header__upload-link">
+            <a href="/file/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -402,13 +402,13 @@
             </div>
           </div>
         </div>
-      </form>
+
       <!-- upload section -->
       <!-- Upload section -->
       <div class="upload-section">
         <div class="upload-section__column">
           <div class="flex-col-center-center upload-section__upload-file">
-            <div
+            <d  iv
               class="upload-section__drag-drop-container"
               id="drop-container"
             >
@@ -449,6 +449,7 @@
             </div>
           </div>
         </div>
+              </form>
       </div>
       <!-- footer section -->
       <div class="landing-page-footer">
@@ -483,7 +484,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Hai <%= email %>!</h5>
+              <h5 class="modal-title">Hai <%= username %>!</h5>
               <button
                 type="button"
                 class="btn-close"
@@ -559,22 +560,6 @@
         browseLink.addEventListener("click", function (event) {
           event.preventDefault();
           fileInput.click();
-        });
-
-        dropContainer.addEventListener("dragover", function (event) {
-          event.preventDefault();
-          dropContainer.classList.add("dragging");
-        });
-
-        dropContainer.addEventListener("dragleave", function () {
-          dropContainer.classList.remove("dragging");
-        });
-
-        dropContainer.addEventListener("drop", function (event) {
-          event.preventDefault();
-          dropContainer.classList.remove("dragging");
-          const files = event.dataTransfer.files;
-          handleFiles(files);
         });
 
         fileInput.addEventListener("change", function (event) {
@@ -710,67 +695,67 @@
         }
 
         // Function to handle form submission
-        function handleSubmit(event) {
-          event.preventDefault();
-          const formData = new FormData();
+        // function handleSubmit(event) {
+        //   event.preventDefault();
+        //   const formData = new FormData();
 
-          if (filePDF) {
-            formData.append("file_pdf", filePDF);
-          }
+        //   if (filePDF) {
+        //     formData.append("file_pdf", filePDF);
+        //   }
 
-          const additionalInputs = document.querySelectorAll(".file-preview");
-          additionalInputs.forEach((filePreview, index) => {
-            const namaFile = filePreview.querySelector(
-              'input[name="nama_file"]'
-            ).value;
-            const idKategori = filePreview.querySelector(
-              'select[name="id_kategori"]'
-            ).value;
-            const deskripsi = filePreview.querySelector(
-              'input[name="deskripsi"]'
-            ).value;
-            const privasi = filePreview.querySelector(
-              'select[name="privasi"]'
-            ).value;
-            const izin = filePreview.querySelector('select[name="izin"]').value;
-            const hakCipta = filePreview.querySelector(
-              'select[name="hak_cipta"]'
-            ).value;
-            const idUser = getUserIdFromSession();
+        //   const additionalInputs = document.querySelectorAll(".file-preview");
+        //   additionalInputs.forEach((filePreview, index) => {
+        //     const namaFile = filePreview.querySelector(
+        //       'input[name="nama_file"]'
+        //     ).value;
+        //     const idKategori = filePreview.querySelector(
+        //       'select[name="id_kategori"]'
+        //     ).value;
+        //     const deskripsi = filePreview.querySelector(
+        //       'input[name="deskripsi"]'
+        //     ).value;
+        //     const privasi = filePreview.querySelector(
+        //       'select[name="privasi"]'
+        //     ).value;
+        //     const izin = filePreview.querySelector('select[name="izin"]').value;
+        //     const hakCipta = filePreview.querySelector(
+        //       'select[name="hak_cipta"]'
+        //     ).value;
+        //     const idUser = getUserIdFromSession();
 
-            formData.append("nama_file", namaFile);
-            formData.append("id_kategori", idKategori);
-            formData.append("deskripsi", deskripsi);
-            formData.append("privasi", privasi);
-            formData.append("izin", izin);
-            formData.append("hak_cipta", hakCipta);
-            formData.append("id_user", idUser);
-          });
+        //     formData.append("nama_file", namaFile);
+        //     formData.append("id_kategori", idKategori);
+        //     formData.append("deskripsi", deskripsi);
+        //     formData.append("privasi", privasi);
+        //     formData.append("izin", izin);
+        //     formData.append("hak_cipta", hakCipta);
+        //     formData.append("id_user", idUser);
+        //   });
 
-          // Kirim data ke server
-          fetch("/files/store", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => {
-              if (response.ok) {
-                // Berhasil mengunggah file
-                // console.log(response);
-                console.log("Files uploaded successfully");
-                // alert("File berhasil diunggah!");
-                // Redirect atau perbarui halaman setelah unggahan berhasil
-                // window.location.href = "/file/create";
-              } else {
-                // Gagal mengunggah file
-                console.error("Failed to upload files");
-              }
-            })
-            .catch((error) => {
-              console.error("Error uploading files:", error);
-            });
-        }
+        //   // Kirim data ke server
+        //   fetch("/files/store", {
+        //     method: "POST",
+        //     body: formData,
+        //   })
+        //     .then((response) => {
+        //       if (response.ok) {
+        //         // Berhasil mengunggah file
+        //         // console.log(response);
+        //         console.log("Files uploaded successfully");
+        //         alert("File berhasil diunggah!");
+        //         // Redirect atau perbarui halaman setelah unggahan berhasil
+        //         window.location.href = "/file/create";
+        //       } else {
+        //         // Gagal mengunggah file
+        //         console.error("Failed to upload files");
+        //       }
+        //     })
+        //     .catch((error) => {
+        //       console.error("Error uploading files:", error);
+        //     });
+        // }
 
-        uploadForm.addEventListener("submit", handleSubmit);
+        // uploadForm.addEventListener("submit", handleSubmit);
 
         // Event listener untuk memanggil handlePDFUpload saat file diunggah
         fileInput.addEventListener("change", function (event) {

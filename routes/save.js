@@ -15,6 +15,7 @@ router.get("/", async function (req, res, next) {
       res.render("save/index", {
         data: rows,
         email: Data[0].email,
+        username: Data[0].username,
         kategori2: kategori,
       });
     } else {

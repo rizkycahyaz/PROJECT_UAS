@@ -6,7 +6,7 @@ class Model_File {
   static async getAll() {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT file.*, users.*, kategori.*, COUNT(file.id_file) as jumlah_file FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori GROUP BY file.id_file",
+        "SELECT file.*, users.*, kategori.*, COUNT(file.id_file) as jumlah_file FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori GROUP BY file.id_file, file.id_user, file.nama_file, file.file_pdf, users.id_user, users.email",
         (err, rows) => {
           if (err) {
             reject(err);
@@ -35,6 +35,21 @@ class Model_File {
       connection.query(
         "SELECT * FROM file WHERE id_file = ?",
         [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  }
+
+  static async getNewestFile() {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT file.*, users.*, kategori.*, COUNT(file.id_file) as jumlah_file FROM file JOIN users ON file.id_user = users.id_user JOIN kategori ON file.id_kategori = kategori.id_kategori GROUP BY file.id_file, file.id_user, file.nama_file, file.file_pdf, users.id_user, users.email ORDER BY file.id_file DESC LIMIT 4",
         (err, rows) => {
           if (err) {
             reject(err);

@@ -2,11 +2,13 @@ var express = require("express");
 const Model_Users = require("../model/Model_Users");
 const Model_Kategori = require("../model/Model_Kategori");
 const Model_Record = require("../model/Model_Record");
+const Model_File = require("../model/Model_File");
 var router = express.Router();
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
   let popularFiles = await Model_Record.getPopularFiles();
+  let newestFiles = await Model_File.getNewestFile();
   try {
     let id = req.session.userId;
     let Data = await Model_Users.getId(id);
@@ -25,9 +27,11 @@ router.get("/", async function (req, res, next) {
           nama: Data[0].nama,
           role: Data[0].role,
           email: Data[0].email,
+          username: Data[0].username,
           kategori: kategori,
           totalDownloads: record,
           popularFiles: popularFiles,
+          newestFiles,
         });
       }
       //akhir kondisi

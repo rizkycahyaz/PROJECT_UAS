@@ -253,7 +253,7 @@
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/files/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -262,7 +262,7 @@
             <li>
               <a href="#" id="emailLink"
                 ><p class="header__user-menu-item ui text size-xs">
-                  <%= email %>
+                  <%= username %>
                 </p></a
               >
             </li>
@@ -341,7 +341,7 @@
               </div>
             </div> -->
 
-            <div class="col-12" id="pendingRow">
+            <!-- <div class="col-12" id="pendingRow">
               <h2>Menunggu verifikasi</h2>
               <div
                 class="row"
@@ -352,9 +352,8 @@
                 "
                 id="pendingColumn"
               >
-                <!-- Data dari JavaScript akan dimasukkan di sini -->
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -393,7 +392,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Hai <%= email %>!</h5>
+              <h5 class="modal-title">Hai <%= username %>!</h5>
               <button
                 type="button"
                 class="btn-close"
@@ -612,7 +611,10 @@
             // Buat elemen card
             const card = document.createElement("div");
             card.classList.add("card", "file-card");
+            card.style.marginBottom = "20px";
             card.style.width = "90%";
+            card.style.display = "flex";
+            card.style.justifyContent = "space-around";
             card.dataset.url = url;
 
             // Tambahkan badge PDF jika ada
@@ -626,24 +628,65 @@
                 "start-0"
               );
               pdfBadge.textContent = "PDF";
+              const approve = document.createElement("span");
+              if (file.pengajuan == "setuju") {
+                approve.classList.add(
+                  "badge",
+                  "bg-info",
+                  "position-absolute",
+                  "top-0",
+                  "end-0"
+                );
+                approve.textContent = "Approve";
+              } else if (file.pengajuan == "pending") {
+                approve.classList.add(
+                  "badge",
+                  "bg-warning",
+                  "position-absolute",
+                  "top-0",
+                  "end-0"
+                );
+                approve.textContent = "Pending";
+              } else {
+                approve.classList.add(
+                  "badge",
+                  "bg-danger",
+                  "position-absolute",
+                  "top-0",
+                  "end-0"
+                );
+                approve.textContent = "Unapprove";
+              }
+              card.appendChild(approve);
               card.appendChild(pdfBadge);
             }
 
             // Tambahkan canvas ke dalam card-body
             const cardBody = document.createElement("div");
             cardBody.classList.add("card-body");
+
             const cardTitle = document.createElement("h5");
             cardTitle.classList.add("card-title", "text-center");
             cardTitle.textContent = file.nama_file;
+
             const cardText = document.createElement("p");
             cardText.classList.add("card-text", "text-center");
             cardText.textContent = file.deskripsi;
+
+            const totalDownloadText = document.createElement("p");
+            totalDownloadText.classList.add("card-text", "text-center");
+            totalDownloadText.style.fontSize = "10px";
+            totalDownloadText.textContent = file.jumlah_download
+              ? `Total Download: ${file.jumlah_download}`
+              : "Total Download: 0";
+
             const actionLinks = document.createElement("div");
             actionLinks.classList.add(
               "d-flex",
               "justify-content-center",
               "mt-5"
             );
+
             const downloadLink = document.createElement("a");
             downloadLink.href = `/file/download/${file.id_file}`;
             const downloadIcon = document.createElement("i");
@@ -654,24 +697,14 @@
               "fs-6"
             );
             downloadLink.appendChild(downloadIcon);
+
             actionLinks.appendChild(downloadLink);
-            const editLink = document.createElement("a");
-            editLink.href = `/file/edit/${file.id_file}`;
-            editLink.classList.add("ms-2");
-            const editIcon = document.createElement("i");
-            editIcon.classList.add("bi", "bi-pencil", "text-dark", "fs-6");
-            editLink.appendChild(editIcon);
-            actionLinks.appendChild(editLink);
-            const deleteLink = document.createElement("a");
-            deleteLink.href = `/file/delete/${file.id_file}`;
-            deleteLink.classList.add("ms-2");
-            const deleteIcon = document.createElement("i");
-            deleteIcon.classList.add("bi", "bi-trash", "text-dark", "fs-6");
-            deleteLink.appendChild(deleteIcon);
-            actionLinks.appendChild(deleteLink);
+
             cardBody.appendChild(cardTitle);
             cardBody.appendChild(cardText);
+            cardBody.appendChild(totalDownloadText);
             cardBody.appendChild(actionLinks);
+
             card.appendChild(canvas);
             card.appendChild(cardBody);
 
@@ -703,9 +736,9 @@
           case "tidak setuju":
             return "tidakSetujuColumn";
           case "pending":
-            return "pendingColumn";
+            return "setujuColumn";
           default:
-            return "pendingColumn"; // Default to "pending" if pengajuan is not recognized
+            return "setujuColumn"; // Default to "pending" if pengajuan is not recognized
         }
       }
     </script>

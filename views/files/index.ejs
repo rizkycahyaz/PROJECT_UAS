@@ -300,7 +300,7 @@
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/files/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -309,14 +309,38 @@
             <li>
               <a href="#" id="emailLink"
                 ><p class="header__user-menu-item ui text size-xs">
-                  <%= email %>
+                  <%= username %>
                 </p></a
               >
             </li>
           </ul>
         </div>
       </header>
-      <% if(messages.error) { %>
+      <% if (errorMessages.length > 0) { %>
+      <div
+        class="alert alert-danger alert-small text-center"
+        role="alert"
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          max-width: 600px;
+          margin: 0 auto;
+          margin-top: 15px;
+        "
+      >
+        <% errorMessages.forEach(message => { %>
+        <p><%= message %></p>
+        <% }) %>
+      </div>
+      <% } %> <% if (successMessages.length > 0) { %>
+      <div class="alert alert-success">
+        <% successMessages.forEach(message => { %>
+        <p><%= message %></p>
+        <% }) %>
+      </div>
+      <% } %> <% if(messages.error) { %>
       <div
         class="alert alert-danger alert-small text-center"
         role="alert"
@@ -371,7 +395,7 @@
               <h5 class="card-title"><%= item.nama_file %></h5>
               <!-- ID pengguna disembunyikan -->
               <!-- <p class="card-text">Upload by: ID Pengguna: <%= item.id_user %>, Email: <%= item.email %></p> -->
-              <p class="card-text">Upload by: <%= item.email %></p>
+              <p class="card-text">Upload by: <%= item.username %></p>
             </div>
             <div class="icon-container">
               <a
@@ -422,7 +446,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Hai <%= email %>!</h5>
+              <h5 class="modal-title">Hai <%= username %>!</h5>
               <button
                 type="button"
                 class="btn-close"

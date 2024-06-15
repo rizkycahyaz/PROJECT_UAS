@@ -1,17 +1,103 @@
-.card {
-  margin-bottom: 20px; /* Jarak antara setiap kartu */
+/* card.css */
+.custom-card {
+  width: 80%;
+  max-width: 800px;
+  margin: auto;
 }
 
-.row-cols-10 {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px; /* Margin negatif untuk menangani padding container */
-  margin-left: -15px; /* Margin negatif untuk menangani padding container */
+.custom-card .left-col {
+  position: relative;
+  padding: 20px;
+  border: 2px dashed #6c757d;
+  text-align: center;
+  cursor: pointer;
+  height: 100%; /* Consistent height with card */
 }
 
-.col {
-  flex: 0 0 33.333%; /* Lebar kartu */
-  max-width: 33.333%; /* Lebar maksimum kartu */
-  padding-right: 15px; /* Padding kanan untuk menangani margin negatif */
-  padding-left: 15px; /* Padding kiri untuk menangani margin negatif */
+.custom-card .left-col img {
+  width: 200px; /* Larger icon */
+  height: 120px;
+  margin-bottom: 10px;
+  margin-top: 90px;
+}
+
+.custom-card .left-col input[type="file"] {
+  display: none;
+}
+
+.custom-card .left-col label {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-card .left-col label svg {
+  width: 50px;
+  height: 50px;
+  fill: #6c757d;
+}
+
+.custom-card .upload-section__drag-drop-text {
+  margin-bottom: 10px;
+  color: #6c757d;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.custom-card .upload-section__formats-list {
+  color: #6c757d;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+.custom-card .right-col {
+  padding: 20px;
+}
+
+.custom-card .uploaded-pdf {
+  width: 100%;
+  height: 500px;
+  margin-top: 20px;
+}
+
+.custom-card .form-label {
+  color: #6c757d;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.custom-card .form-control,
+.custom-card .form-select {
+  color: #6c757d;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #6c757d;
+}
+
+.custom-card .form-control:focus,
+.custom-card .form-select:focus {
+  border-color: #6c757d;
+  box-shadow: none;
+}
+
+.custom-card .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.custom-card .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
 }

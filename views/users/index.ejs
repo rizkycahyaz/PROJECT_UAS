@@ -15,6 +15,16 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+    />
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -271,7 +281,7 @@
         </ul>
         <div class="header__actions">
           <div class="header__upload">
-            <a href="/file/create" class="header__upload-link">
+            <a href="/files/create" class="header__upload-link">
               <i class="bi bi-upload header__upload-icon"></i>
               <p class="header__upload-text ui text size-s">Unggah</p>
             </a>
@@ -280,7 +290,7 @@
             <li>
               <a href="#" id="emailLink"
                 ><p class="header__user-menu-item ui text size-xs">
-                  <%= email %>
+                  <%= username %>
                 </p></a
               >
             </li>
@@ -297,16 +307,27 @@
               bagikan informasi, dan temukan inspirasi
             </p>
           </div>
-          <label class="content__search">
-            <img src="/images/img_rewind.svg" alt="rewind" class="rewind" />
-            <input name="search" placeholder="Search..." type="text" />
-          </label>
+          <!-- <label class="content__search">
+            <img
+              src="/images/img_rewind.svg"
+              alt="rewind"
+              class="rewind"
+              onclick="searchFiles()"
+            />
+            <input
+              id="searchInput"
+              name="search"
+              placeholder="Search..."
+              type="text"
+              onclick="searchFiles()"
+            />
+          </label> -->
 
-          <div class="file-previews-container">
+          <div class="file-previews-container mt-5 pb-5">
             <H1>Paling banyak didownload hari ini</H1>
             <% if (popularFiles && popularFiles.length > 0) { %> <%
             popularFiles.forEach((item, index) => { %>
-            <div class="card file-preview" data-index="<%= index %>">
+            <div class="card file-preview pb-5" data-index="<%= index %>">
               <% if (item.file_pdf) { %>
               <span class="badge bg-danger position-absolute top-0 start-0"
                 >PDF</span
@@ -323,7 +344,10 @@
                 <h5 class="card-title"><%= item.nama_file %></h5>
                 <!-- ID pengguna disembunyikan -->
                 <!-- <p class="card-text">Upload by: ID Pengguna: <%= item.id_user %>, Email: <%= item.email %></p> -->
-                <p class="card-text">Upload by: <%= item.email %></p>
+                <p class="card-text">Upload by: <%= item.username %></p>
+                <p class="card-text" style="font-size: 10px">
+                  Total Download: <%= item.total_download %>
+                </p>
               </div>
               <div class="icon-container">
                 <a
@@ -332,13 +356,15 @@
                 >
                   <i class="fas fa-download"></i>
                 </a>
-                <a
-                  href="#"
-                  class="bookmark-icon"
-                  onclick="toggleBookmark(this)"
-                >
-                  <i class="far fa-bookmark"></i>
-                </a>
+                <div class="file-item" data-file-id="123">
+                  <a
+                    href="#"
+                    class="bookmark-icon"
+                    onclick="toggleBookmark(this)"
+                  >
+                    <i class="far fa-bookmark"></i>
+                  </a>
+                </div>
               </div>
             </div>
             <% }); %> <% } else { %>
@@ -347,11 +373,65 @@
             </p>
             <% } %>
           </div>
+
+          <div class="row">
+            <div class="row">
+              <H1>File Terbaru</H1>
+            </div>
+            <div class="file-previews-container mt-5 pb-5 row">
+              <% if (newestFiles && newestFiles.length > 0) { %> <%
+              newestFiles.forEach((item, index) => { %>
+              <div class="card file-preview pb-5" data-index="<%= index %>">
+                <% if (item.file_pdf) { %>
+                <span class="badge bg-danger position-absolute top-0 start-0"
+                  >PDF</span
+                >
+                <% } %>
+                <canvas
+                  id="pdf-canvas2-<%= item.id_file %>"
+                  data-file-id="<%= item.id_file %>"
+                  onclick="viewPDF('<%= item.id_file %>')"
+                  style="cursor: pointer"
+                ></canvas>
+                <div class="card-body">
+                  <h5 class="card-title"><%= item.nama_file %></h5>
+                  <!-- ID pengguna disembunyikan -->
+                  <!-- <p class="card-text">Upload by: ID Pengguna: <%= item.id_user %>, Email: <%= item.email %></p> -->
+                  <p class="card-text">Upload by: <%= item.username %></p>
+                  <p class="card-text" style="font-size: 10px">
+                    Total Download: <%= item.total_download %>
+                  </p>
+                </div>
+                <div class="icon-container">
+                  <a
+                    href="/files/download/<%= item.id_file %>"
+                    class="download-icon"
+                  >
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <div class="file-item" data-file-id="123">
+                    <a
+                      href="#"
+                      class="bookmark-icon"
+                      onclick="toggleBookmark(this)"
+                    >
+                      <i class="far fa-bookmark"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <% }); %> <% } else { %>
+              <p class="text-center">
+                Tidak ada data file yang populer untuk ditampilkan.
+              </p>
+              <% } %>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="landing-page-footer">
-        <div class="footer__column">
+        <div class="footer__column mt-5">
           <div class="footer__column--info">
             <img
               src="/images/img_footer_logo.png"
@@ -383,7 +463,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Hai <%= email %>!</h5>
+              <h5 class="modal-title">Hai <%= username %>!</h5>
               <button
                 type="button"
                 class="btn-close"
@@ -542,20 +622,225 @@
               alert("An error occurred while saving the bookmark.");
             });
         }
-      });
 
-      function toggleBookmark(element) {
-        const icon = element.querySelector("i");
-        if (icon.classList.contains("far")) {
-          icon.classList.remove("far");
-          icon.classList.add("fas");
-        } else {
-          icon.classList.remove("fas");
-          icon.classList.add("far");
+        function removeBookmark(id_file) {
+          fetch("/save/delete", {
+            method: "POST", // You can also use DELETE method if supported by the server
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id_file }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                alert("Bookmark removed successfully!");
+              } else {
+                alert("Failed to remove bookmark.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while removing the bookmark.");
+            });
         }
-      }
+        function toggleBookmark(element) {
+          const icon = element.querySelector("i");
+          const fileItemId = element.closest(".file-item").dataset.fileId; // Ambil id file dari atribut dataset
+
+          if (icon.classList.contains("far")) {
+            // Jika sebelumnya tidak di-bookmark, maka bookmark sekarang
+            icon.classList.remove("far");
+            icon.classList.add("fas");
+            bookmarkFile(fileItemId); // Panggil fungsi untuk menyimpan bookmark ke server
+          } else {
+            // Jika sebelumnya di-bookmark, maka hapus bookmark sekarang
+            icon.classList.remove("fas");
+            icon.classList.add("far");
+            removeBookmark(fileItemId); // Panggil fungsi untuk menghapus bookmark dari server
+          }
+        }
+        function searchFiles() {
+          var input = document.getElementById("searchInput");
+          var filter = input.value.toLowerCase();
+          var fileList = document.getElementById("fileList");
+          var files = fileList.getElementsByTagName("a");
+          var found = false;
+
+          // Loop melalui semua tautan file
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (file.innerHTML.toLowerCase().includes(filter)) {
+              // Jika file ditemukan, arahkan ke file tersebut
+              window.location.href = file.href;
+              found = true;
+              break;
+            }
+          }
+        }
+      });
     </script>
 
+    <script>
+      //klik pdf
+      function viewPDF(id) {
+        window.location.href = `/files/detail/${id}`;
+      }
+
+      const files2 = JSON.parse(
+        `<%- JSON.stringify(popularFiles).replace(/</g, '\\u003c') %>`
+      );
+
+      files.forEach((file) => {
+        file.file_url = file.file_pdf
+          ? `/images/upload/${file.file_pdf}`
+          : undefined;
+      });
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const pdfjsLib = window["pdfjs-dist/build/pdf"];
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
+
+        for (const file of files) {
+          const url = file.file_url;
+
+          if (!url || typeof url !== "string" || url.trim() === "") {
+            console.error(`Invalid URL for file id ${file.id_file}:`, url);
+            continue;
+          }
+
+          const canvas = document.getElementById(`pdf-canvas2-${file.id_file}`);
+          const context = canvas.getContext("2d");
+
+          try {
+            console.log(
+              `Loading PDF for file id ${file.id_file} from URL: ${url}`
+            );
+            const pdf = await pdfjsLib.getDocument(url).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1 });
+
+            const scale = canvas.width / viewport.width;
+            const scaledViewport = page.getViewport({ scale });
+            canvas.height = scaledViewport.height;
+
+            const renderContext = {
+              canvasContext: context,
+              viewport: scaledViewport,
+            };
+
+            await page.render(renderContext).promise;
+            console.log(`Page 1 of PDF ${file.id_file} rendered.`);
+          } catch (error) {
+            console.error(
+              `Error loading/rendering PDF ${file.id_file}:`,
+              error
+            );
+          }
+        }
+
+        document.querySelectorAll(".bookmark-icon").forEach((icon) => {
+          icon.addEventListener("click", function () {
+            const index = this.closest(".file-preview").dataset.index;
+            bookmarkFile(files[index].id_file);
+          });
+        });
+
+        function bookmarkFile(id_file) {
+          fetch("/save/store", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id_file }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                alert("Bookmark saved successfully!");
+              } else {
+                alert("Failed to save bookmark.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while saving the bookmark.");
+            });
+        }
+
+        function removeBookmark(id_file) {
+          fetch("/save/delete", {
+            method: "POST", // You can also use DELETE method if supported by the server
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id_file }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                alert("Bookmark removed successfully!");
+              } else {
+                alert("Failed to remove bookmark.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while removing the bookmark.");
+            });
+        }
+        function toggleBookmark(element) {
+          const icon = element.querySelector("i");
+          const fileItemId = element.closest(".file-item").dataset.fileId; // Ambil id file dari atribut dataset
+
+          if (icon.classList.contains("far")) {
+            // Jika sebelumnya tidak di-bookmark, maka bookmark sekarang
+            icon.classList.remove("far");
+            icon.classList.add("fas");
+            bookmarkFile(fileItemId); // Panggil fungsi untuk menyimpan bookmark ke server
+          } else {
+            // Jika sebelumnya di-bookmark, maka hapus bookmark sekarang
+            icon.classList.remove("fas");
+            icon.classList.add("far");
+            removeBookmark(fileItemId); // Panggil fungsi untuk menghapus bookmark dari server
+          }
+        }
+        function searchFiles() {
+          var input = document.getElementById("searchInput");
+          var filter = input.value.toLowerCase();
+          var fileList = document.getElementById("fileList");
+          var files = fileList.getElementsByTagName("a");
+          var found = false;
+
+          // Loop melalui semua tautan file
+          for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (file.innerHTML.toLowerCase().includes(filter)) {
+              // Jika file ditemukan, arahkan ke file tersebut
+              window.location.href = file.href;
+              found = true;
+              break;
+            }
+          }
+        }
+      });
+    </script>
     <!-- Bootstrap JS and dependencies (jQuery) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script

@@ -82,7 +82,7 @@ router.get("/approve/:id", async (req, res) => {
     if (file.pengajuan === "pending") {
       let sum = userData[0].jumlah_download + 1;
       await Model_Dokumen.approve(id);
-      if (userData[0].jumlah_download < 3) {
+      if (userData[0].jumlah_download < 2) {
         await Model_Users.Update(userData[0].id_user, {
           jumlah_download: sum,
         });
